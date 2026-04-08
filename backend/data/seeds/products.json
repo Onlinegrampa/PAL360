@@ -1,0 +1,54 @@
+[
+  {
+    "product_id": "PROD-LIFE-001",
+    "line": "Life",
+    "name": "SecureFuture Whole Life",
+    "benefits": [
+      "Guaranteed death benefit from day one",
+      "Cash value accumulation with tax advantages",
+      "Dividends reinvested to grow coverage",
+      "Policy loans available at any time"
+    ],
+    "cost_range": "$80–$250/month",
+    "use_case": "Build lifelong protection and a growing cash asset for your family."
+  },
+  {
+    "product_id": "PROD-HEALTH-001",
+    "line": "Health",
+    "name": "MedShield Comprehensive",
+    "benefits": [
+      "In-patient and out-patient coverage",
+      "Specialist consultations included",
+      "Prescription drug benefit",
+      "Emergency medical evacuation"
+    ],
+    "cost_range": "$120–$400/month",
+    "use_case": "Protect against the rising cost of healthcare for you and your family."
+  },
+  {
+    "product_id": "PROD-ANNUITY-001",
+    "line": "Annuities",
+    "name": "RetireWell Fixed Annuity",
+    "benefits": [
+      "Guaranteed monthly income in retirement",
+      "Flexible payout periods (10, 20, lifetime)",
+      "Inflation rider available",
+      "Beneficiary death benefit"
+    ],
+    "cost_range": "$300–$1,000/month",
+    "use_case": "Secure predictable retirement income you cannot outlive."
+  },
+  {
+    "product_id": "PROD-PAS-001",
+    "line": "PA&S",
+    "name": "HomeGuard Property & Savings",
+    "benefits": [
+      "Property damage and loss coverage",
+      "Personal accident benefit",
+      "Savings component with guaranteed returns",
+      "Hurricane and flood rider available"
+    ],
+    "cost_range": "$60–$180/month",
+    "use_case": "Protect your home and assets while building emergency savings."
+  }
+]

@@ -1,0 +1,42 @@
+[
+  {
+    "policy_id": "PAL-TT-2019-001",
+    "client_id": "CLI-001",
+    "line": "Life",
+    "status": "IN-FORCE",
+    "premium": 2400,
+    "due_date": "2026-04-20T00:00:00",
+    "coverage_amount": 500000,
+    "start_date": "2019-03-01T00:00:00"
+  },
+  {
+    "policy_id": "PAL-TT-2021-044",
+    "client_id": "CLI-001",
+    "line": "Health",
+    "status": "IN-FORCE",
+    "premium": 1800,
+    "due_date": "2026-05-01T00:00:00",
+    "coverage_amount": 100000,
+    "start_date": "2021-07-15T00:00:00"
+  },
+  {
+    "policy_id": "PAL-TT-2018-007",
+    "client_id": "CLI-001",
+    "line": "Annuities",
+    "status": "IN-FORCE",
+    "premium": 6000,
+    "due_date": "2026-06-01T00:00:00",
+    "coverage_amount": 250000,
+    "start_date": "2018-01-10T00:00:00"
+  },
+  {
+    "policy_id": "PAL-TT-2022-112",
+    "client_id": "CLI-001",
+    "line": "PA&S",
+    "status": "LAPSED",
+    "premium": 900,
+    "due_date": "2025-11-01T00:00:00",
+    "coverage_amount": 75000,
+    "start_date": "2022-09-01T00:00:00"
+  }
+]

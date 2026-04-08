@@ -1,0 +1,60 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --pal-navy: #002855;
+  --pal-navy-light: #003a7a;
+  --pal-gold: #C9A84C;
+  --pal-gold-light: #e0c06a;
+}
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+html,
+body {
+  max-width: 100vw;
+  overflow-x: hidden;
+  font-family: 'Inter', system-ui, sans-serif;
+  background-color: #f4f6fa;
+  color: #1a1a2e;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #f1f1f1; }
+::-webkit-scrollbar-thumb { background: var(--pal-navy); border-radius: 3px; }
+
+/* Touch targets */
+button, a, [role="button"] {
+  min-height: 44px;
+  min-width: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Card base */
+.pal-card {
+  @apply bg-white rounded-2xl shadow-sm border border-gray-100;
+}
+
+/* Status badge colors */
+.badge-inforce {
+  @apply bg-emerald-100 text-emerald-700 border border-emerald-200;
+}
+.badge-lapsed {
+  @apply bg-red-100 text-red-700 border border-red-200;
+}
+.badge-pending {
+  @apply bg-amber-100 text-amber-700 border border-amber-200;
+}
+
+/* Skeleton loading */
+.skeleton {
+  @apply animate-pulse bg-gray-200 rounded-lg;
+}
