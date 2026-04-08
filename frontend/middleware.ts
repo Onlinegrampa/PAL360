@@ -1,58 +1,29 @@
-import { createServerClient } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
 
 const PUBLIC_ROUTES = ['/login', '/offline']
 
-export async function middleware(request: NextRequest) {
+export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
 
-  // Allow public routes through without auth check
+  // Always allow public pages through
   if (PUBLIC_ROUTES.some((r) => pathname.startsWith(r))) {
     return NextResponse.next()
   }
 
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
-  const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+  // Check for the JWT cookie set by lib/api.ts → setToken()
+  const token = request.cookies.get('pal360_token')?.value
 
-  // Supabase not configured — skip auth (local dev without credentials)
-  if (!supabaseUrl || !supabaseKey || supabaseUrl.includes('your-project')) {
-    return NextResponse.next()
-  }
-
-  const response = NextResponse.next()
-
-  const supabase = createServerClient(supabaseUrl, supabaseKey, {
-    cookies: {
-      getAll() {
-        return request.cookies.getAll()
-      },
-      setAll(cookiesToSet) {
-        cookiesToSet.forEach(({ name, value, options }) =>
-          response.cookies.set(name, value, options)
-        )
-      },
-    },
-  })
-
-  const { data: { session } } = await supabase.auth.getSession()
-
-  if (!session) {
+  if (!token) {
     const loginUrl = new URL('/login', request.url)
     loginUrl.searchParams.set('next', pathname)
     return NextResponse.redirect(loginUrl)
   }
 
-  return response
+  return NextResponse.next()
 }
 
 export const config = {
   matcher: [
-    /*
-     * Match all routes except:
-     * - _next/static, _next/image (Next.js internals)
-     * - favicon.ico, manifest.json, icons, sw.js (PWA assets)
-     * - api routes
-     */
     '/((?!_next/static|_next/image|favicon.ico|manifest.json|icons|sw.js|workbox|api).*)',
   ],
 }

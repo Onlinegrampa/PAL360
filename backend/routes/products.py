@@ -1,12 +1,10 @@
 import json
-from pathlib import Path
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
 from typing import Literal
+from db import get_pool
 
 router = APIRouter()
-
-SEEDS_DIR = Path(__file__).parent.parent / "data" / "seeds"
 
 
 class Product(BaseModel):
@@ -18,21 +16,30 @@ class Product(BaseModel):
     use_case: str
 
 
-def _load_products() -> list[dict]:
-    path = SEEDS_DIR / "products.json"
-    if not path.exists():
-        return []
-    return json.loads(path.read_text())
+def _fmt_product(row) -> dict:
+    d = dict(row)
+    benefits = d.get("benefits", [])
+    if isinstance(benefits, str):
+        benefits = json.loads(benefits)
+    d["benefits"] = benefits
+    return d
 
 
 @router.get("/products", response_model=list[Product])
-def get_products():
-    return _load_products()
+async def get_products():
+    pool = get_pool()
+    async with pool.acquire() as conn:
+        rows = await conn.fetch("SELECT * FROM products ORDER BY product_id")
+    return [_fmt_product(r) for r in rows]
 
 
 @router.get("/products/{product_id}", response_model=Product)
-def get_product(product_id: str):
-    for p in _load_products():
-        if p["product_id"] == product_id:
-            return p
-    raise HTTPException(status_code=404, detail="Product not found")
+async def get_product(product_id: str):
+    pool = get_pool()
+    async with pool.acquire() as conn:
+        row = await conn.fetchrow(
+            "SELECT * FROM products WHERE product_id = $1", product_id
+        )
+    if not row:
+        raise HTTPException(status_code=404, detail="Product not found")
+    return _fmt_product(row)

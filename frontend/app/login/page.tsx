@@ -103,7 +103,7 @@ export default function LoginPage() {
       </div>
 
       <p className="text-white/30 text-xs mt-8">
-        Protected by Supabase Auth · TLS encrypted
+        Protected by JWT Auth · TLS encrypted
       </p>
     </div>
   )

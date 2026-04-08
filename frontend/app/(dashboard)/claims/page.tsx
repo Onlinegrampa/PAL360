@@ -3,6 +3,7 @@
 import { useEffect, useState, useRef } from 'react'
 import { ClaimsPipeline } from '@/components/ClaimsPipeline'
 import { ClaimSkeleton } from '@/components/Skeleton'
+import { apiFetch, wsUrl } from '@/lib/api'
 import type { Claim } from '@/lib/types'
 
 const STAGES = ['Submitted', 'Agent Review', 'Claims Dept', 'Finance', 'Paid']
@@ -13,8 +14,7 @@ export default function ClaimsPage() {
   const wsRef = useRef<WebSocket | null>(null)
 
   useEffect(() => {
-    fetch(`${process.env.NEXT_PUBLIC_API_URL}/claims`)
-      .then((r) => r.json())
+    apiFetch<Claim[]>('/claims')
       .then((data) => {
         setClaims(data)
         setLoading(false)
@@ -28,9 +28,7 @@ export default function ClaimsPage() {
     const activeClaim = claims.find((c) => c.stage !== 'Paid')
     if (!activeClaim) return
 
-    const wsUrl = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000')
-      .replace('http', 'ws')
-    const ws = new WebSocket(`${wsUrl}/ws/claims/${activeClaim.claim_id}`)
+    const ws = new WebSocket(wsUrl(`/ws/claims/${activeClaim.claim_id}`))
     wsRef.current = ws
 
     ws.onmessage = (event) => {

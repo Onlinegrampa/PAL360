@@ -1,58 +1,81 @@
 import os
-from fastapi import APIRouter, HTTPException
+import uuid
+from fastapi import APIRouter, HTTPException, Depends
 from pydantic import BaseModel
+from db import get_pool
+from auth import get_current_client
 
 router = APIRouter()
 
 
 class PaymentRequest(BaseModel):
-    payment_method_id: str
-    amount_cents: int
+    policy_id: str
+    amount: float
+    cardholder_name: str
+    card_number: str      # masked/placeholder — never stored
+    expiry: str
+    cvv: str              # never stored
 
 
 class PaymentResponse(BaseModel):
     success: bool
     transaction_id: str
-    amount_charged: int
+    amount_charged: float
     message: str
 
 
 @router.post("/payment", response_model=PaymentResponse)
-def process_payment(request: PaymentRequest):
+async def process_payment(
+    request: PaymentRequest,
+    current: dict = Depends(get_current_client),
+):
     """
-    Test-mode payment processing via Stripe.
-    In simulation mode, always returns success.
+    WiPay payment placeholder.
+    Demo mode: always returns success and records the transaction.
+    Live mode: uncomment WiPay block when WIPAY_ACCOUNT_NUMBER is set.
     """
-    stripe_key = os.getenv("STRIPE_SECRET_KEY", "")
+    wipay_account = os.getenv("WIPAY_ACCOUNT_NUMBER", "")
 
-    if stripe_key and stripe_key.startswith("sk_test_"):
-        import stripe
-        stripe.api_key = stripe_key
+    if wipay_account:
+        # ── LIVE WIPAY BLOCK (activate after business registration) ──────────
+        # import httpx
+        # wipay_key = os.getenv("WIPAY_API_KEY", "")
+        # async with httpx.AsyncClient() as client:
+        #     resp = await client.post(
+        #         "https://wipayfinancial.com/plugins/payments/request",
+        #         data={
+        #             "account_number": wipay_account,
+        #             "avs": 0,
+        #             "card_number": request.card_number,
+        #             "card_expiry": request.expiry,
+        #             "card_cvv": request.cvv,
+        #             "cardholder": request.cardholder_name,
+        #             "total": str(request.amount),
+        #             "currency": "TTD",
+        #         }
+        #     )
+        # ── end WiPay block ──────────────────────────────────────────────────
+        pass
 
-        try:
-            intent = stripe.PaymentIntent.create(
-                amount=request.amount_cents,
-                currency="usd",
-                payment_method=request.payment_method_id,
-                confirm=True,
-                automatic_payment_methods={"enabled": True, "allow_redirects": "never"},
-            )
-            return PaymentResponse(
-                success=True,
-                transaction_id=intent.id,
-                amount_charged=request.amount_cents,
-                message="Payment confirmed",
-            )
-        except stripe.error.CardError as e:
-            raise HTTPException(status_code=402, detail=str(e.user_message))
-        except stripe.error.StripeError as e:
-            raise HTTPException(status_code=500, detail="Payment processing error")
+    # Simulation mode — always succeeds for demo
+    transaction_id = f"WIPAY-{uuid.uuid4().hex[:10].upper()}"
 
-    # Simulation mode (no Stripe key configured)
-    import uuid
+    pool = get_pool()
+    async with pool.acquire() as conn:
+        await conn.execute(
+            """
+            INSERT INTO payments (payment_id, policy_id, amount, wipay_ref, status)
+            VALUES ($1, $2, $3, $4, 'succeeded')
+            """,
+            f"PAY-{uuid.uuid4().hex[:8].upper()}",
+            request.policy_id,
+            request.amount,
+            transaction_id,
+        )
+
     return PaymentResponse(
         success=True,
-        transaction_id=f"sim_{uuid.uuid4().hex[:12]}",
-        amount_charged=request.amount_cents,
-        message="Payment confirmed (simulation mode)",
+        transaction_id=transaction_id,
+        amount_charged=request.amount,
+        message="Payment confirmed — demo mode",
     )

@@ -8,12 +8,16 @@ import {
   useCallback,
   type ReactNode,
 } from 'react'
-import { type Session, type User } from '@supabase/supabase-js'
-import { supabase } from './supabase'
+import { apiFetch, setToken, removeToken, getToken } from './api'
+
+interface AuthUser {
+  client_id: string
+  name: string
+  email: string
+}
 
 interface AuthContextValue {
-  user: User | null
-  session: Session | null
+  user: AuthUser | null
   loading: boolean
   signIn: (email: string, password: string) => Promise<{ error: string | null }>
   signOut: () => Promise<void>
@@ -22,40 +26,57 @@ interface AuthContextValue {
 const AuthContext = createContext<AuthContextValue | null>(null)
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const [user, setUser] = useState<User | null>(null)
-  const [session, setSession] = useState<Session | null>(null)
+  const [user, setUser] = useState<AuthUser | null>(null)
   const [loading, setLoading] = useState(true)
 
+  // On mount — restore user from the stored token by decoding the JWT payload
   useEffect(() => {
-    // Restore session on mount
-    supabase.auth.getSession().then(({ data }) => {
-      setSession(data.session)
-      setUser(data.session?.user ?? null)
-      setLoading(false)
-    })
-
-    // Listen for auth changes (login, logout, token refresh)
-    const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
-      setSession(session)
-      setUser(session?.user ?? null)
-      setLoading(false)
-    })
-
-    return () => listener.subscription.unsubscribe()
+    const token = getToken()
+    if (token) {
+      try {
+        const segment = token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/')
+        const payload = JSON.parse(atob(segment))
+        const nowSecs = Math.floor(Date.now() / 1000)
+        if (payload.exp && payload.exp > nowSecs) {
+          setUser({ client_id: payload.sub, name: '', email: payload.email })
+        } else {
+          removeToken()
+        }
+      } catch {
+        removeToken()
+      }
+    }
+    setLoading(false)
   }, [])
 
   const signIn = useCallback(async (email: string, password: string) => {
-    const { error } = await supabase.auth.signInWithPassword({ email, password })
-    if (error) return { error: error.message }
-    return { error: null }
+    try {
+      const data = await apiFetch<{
+        access_token: string
+        client_id: string
+        name: string
+        email: string
+      }>('/auth/login', {
+        method: 'POST',
+        auth: false,
+        body: JSON.stringify({ email, password }),
+      })
+
+      setToken(data.access_token)
+      setUser({ client_id: data.client_id, name: data.name, email: data.email })
+      return { error: null }
+    } catch (err) {
+      return { error: err instanceof Error ? err.message : 'Login failed' }
+    }
   }, [])
 
   const signOut = useCallback(async () => {
-    await supabase.auth.signOut()
+    removeToken()
+    setUser(null)
   }, [])
 
   return (
-    <AuthContext.Provider value={{ user, session, loading, signIn, signOut }}>
+    <AuthContext.Provider value={{ user, loading, signIn, signOut }}>
       {children}
     </AuthContext.Provider>
   )

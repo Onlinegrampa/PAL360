@@ -3,22 +3,25 @@
 import { useEffect, useState } from 'react'
 import { PolicyCard } from '@/components/PolicyCard'
 import { PolicySkeleton } from '@/components/Skeleton'
+import { apiFetch } from '@/lib/api'
+import { useAuth } from '@/lib/auth'
 import type { Policy } from '@/lib/types'
 
 export default function DashboardPage() {
+  const { user } = useAuth()
   const [policies, setPolicies] = useState<Policy[]>([])
   const [loading, setLoading] = useState(true)
-  const [clientName, setClientName] = useState('Maria Rodriguez')
 
   useEffect(() => {
-    fetch(`${process.env.NEXT_PUBLIC_API_URL}/policies`)
-      .then((r) => r.json())
+    apiFetch<Policy[]>('/policies')
       .then((data) => {
         setPolicies(data)
         setLoading(false)
       })
       .catch(() => setLoading(false))
   }, [])
+
+  const firstName = user?.name?.split(' ')[0] ?? user?.email?.split('@')[0] ?? 'Welcome'
 
   const totalAnnualPremium = policies
     .filter((p) => p.status === 'IN-FORCE')
@@ -29,7 +32,7 @@ export default function DashboardPage() {
       {/* Greeting */}
       <div className="mb-6">
         <p className="text-gray-500 text-sm">Welcome back,</p>
-        <h1 className="text-[#002855] text-2xl md:text-3xl font-bold">{clientName}</h1>
+        <h1 className="text-[#002855] text-2xl md:text-3xl font-bold">{firstName}</h1>
       </div>
 
       {/* Summary strip */}

@@ -1,22 +1,19 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { loadStripe } from '@stripe/stripe-js'
-import { Elements } from '@stripe/react-stripe-js'
 import { PaymentForm } from '@/components/PaymentForm'
 import { PaymentSkeleton } from '@/components/Skeleton'
+import { apiFetch } from '@/lib/api'
 import type { Policy } from '@/lib/types'
-
-const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY || 'pk_test_placeholder')
 
 export default function PaymentPage() {
   const [policies, setPolicies] = useState<Policy[]>([])
   const [loading, setLoading] = useState(true)
   const [success, setSuccess] = useState(false)
+  const [txnId, setTxnId] = useState('')
 
   useEffect(() => {
-    fetch(`${process.env.NEXT_PUBLIC_API_URL}/policies`)
-      .then((r) => r.json())
+    apiFetch<Policy[]>('/policies')
       .then((data) => {
         setPolicies(data.filter((p: Policy) => p.status === 'IN-FORCE'))
         setLoading(false)
@@ -32,13 +29,20 @@ export default function PaymentPage() {
   })
 
   const totalDue = duePolicies.reduce((sum, p) => sum + p.premium, 0)
+  const primaryPolicy = duePolicies[0]
 
   if (success) {
     return (
       <div className="max-w-md mx-auto text-center py-16 animate-[fadeIn_0.4s_ease-out]">
-        <div className="text-6xl mb-4">✅</div>
+        <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
+          <span className="text-4xl">✅</span>
+        </div>
         <h2 className="text-[#002855] text-2xl font-bold mb-2">Payment Successful</h2>
-        <p className="text-gray-500 mb-6">Your premium has been processed. A receipt has been sent to your email.</p>
+        <p className="text-gray-500 mb-2">
+          Your premium of <strong>${totalDue.toLocaleString()}</strong> has been processed.
+        </p>
+        <p className="text-gray-400 text-sm mb-6">Transaction ID: {txnId}</p>
+        <p className="text-gray-400 text-sm mb-8">A receipt has been sent to your email.</p>
         <button
           onClick={() => setSuccess(false)}
           className="bg-[#002855] text-white px-6 py-3 rounded-xl font-medium hover:bg-[#003a7a] transition-colors"
@@ -53,7 +57,7 @@ export default function PaymentPage() {
     <div className="max-w-2xl mx-auto animate-[fadeIn_0.4s_ease-out]">
       <div className="mb-6">
         <h1 className="text-[#002855] text-2xl md:text-3xl font-bold">Pay Premium</h1>
-        <p className="text-gray-500 text-sm mt-1">Secure payment via Stripe (Test Mode)</p>
+        <p className="text-gray-500 text-sm mt-1">Secure payment powered by WiPay Financial</p>
       </div>
 
       {loading ? (
@@ -84,13 +88,15 @@ export default function PaymentPage() {
             )}
           </div>
 
-          {/* Stripe payment form */}
-          {duePolicies.length > 0 && (
+          {/* WiPay payment form */}
+          {duePolicies.length > 0 && primaryPolicy && (
             <div className="pal-card p-5">
               <h2 className="text-[#002855] font-semibold mb-4">Card Details</h2>
-              <Elements stripe={stripePromise}>
-                <PaymentForm amount={totalDue} onSuccess={() => setSuccess(true)} />
-              </Elements>
+              <PaymentForm
+                amount={totalDue}
+                policyId={primaryPolicy.policy_id}
+                onSuccess={(id) => { setTxnId(id); setSuccess(true) }}
+              />
             </div>
           )}
         </>
