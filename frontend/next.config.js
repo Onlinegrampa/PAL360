@@ -52,7 +52,7 @@ const nextConfig = {
               "style-src 'self' 'unsafe-inline'",
               "img-src 'self' data: blob:",
               "font-src 'self'",
-              "connect-src 'self' http://localhost:8000 https://*.up.railway.app wss://*.up.railway.app wss://localhost:8000",
+              "connect-src 'self' http://localhost:8000 http://localhost:8001 https://*.up.railway.app wss://*.up.railway.app wss://localhost:8000 ws://localhost:8001 https://*.onrender.com wss://*.onrender.com",
               "frame-src 'none'",
             ].join('; '),
           },

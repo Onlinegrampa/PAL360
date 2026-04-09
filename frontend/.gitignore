@@ -1,0 +1,18 @@
+# Next.js
+.next/
+out/
+
+# Dependencies
+node_modules/
+
+# Secrets
+.env
+.env.local
+.env.*.local
+
+# PWA (auto-generated)
+public/sw.js
+public/workbox-*.js
+
+# Build info
+tsconfig.tsbuildinfo
