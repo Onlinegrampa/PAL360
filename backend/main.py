@@ -143,54 +143,18 @@ async def _seed_if_empty(pool):
             ],
         )
 
-        # ── Products ───────────────────────────────────────────────────────────
+        # ── Products (loaded from seed file) ───────────────────────────────────
+        seeds_path = os.path.join(os.path.dirname(__file__), "data", "seeds", "products.json")
+        with open(seeds_path) as f:
+            products_data = json.load(f)
         await conn.executemany(
             "INSERT INTO products (product_id, line, name, benefits, cost_range, use_case) VALUES ($1,$2,$3,$4::jsonb,$5,$6)",
             [
                 (
-                    "PROD-LIFE-001", "Life", "SecureFuture Whole Life",
-                    json.dumps([
-                        "Guaranteed death benefit from day one",
-                        "Cash value accumulation with tax advantages",
-                        "Dividends reinvested to grow coverage",
-                        "Policy loans available at any time",
-                    ]),
-                    "$80–$250/month",
-                    "Build lifelong protection and a growing cash asset for your family.",
-                ),
-                (
-                    "PROD-HEALTH-001", "Health", "MedShield Comprehensive",
-                    json.dumps([
-                        "In-patient and out-patient coverage",
-                        "Specialist consultations included",
-                        "Prescription drug benefit",
-                        "Emergency medical evacuation",
-                    ]),
-                    "$120–$400/month",
-                    "Protect against the rising cost of healthcare for you and your family.",
-                ),
-                (
-                    "PROD-ANNUITY-001", "Annuities", "RetireWell Fixed Annuity",
-                    json.dumps([
-                        "Guaranteed monthly income in retirement",
-                        "Flexible payout periods (10, 20, lifetime)",
-                        "Inflation rider available",
-                        "Beneficiary death benefit",
-                    ]),
-                    "$300–$1,000/month",
-                    "Secure predictable retirement income you cannot outlive.",
-                ),
-                (
-                    "PROD-PAS-001", "PA&S", "HomeGuard Property & Savings",
-                    json.dumps([
-                        "Property damage and loss coverage",
-                        "Personal accident benefit",
-                        "Savings component with guaranteed returns",
-                        "Hurricane and flood rider available",
-                    ]),
-                    "$60–$180/month",
-                    "Protect your home and assets while building emergency savings.",
-                ),
+                    p["product_id"], p["line"], p["name"],
+                    json.dumps(p["benefits"]), p["cost_range"], p["use_case"],
+                )
+                for p in products_data
             ],
         )
 
