@@ -21,6 +21,7 @@ export interface Claim {
 
 export interface Product {
   product_id: string
+  plan_code: string          // PAL plan code e.g. "001-NP", "361", "818", "" for non-life
   line: 'Life' | 'Health' | 'Annuities' | 'PA&S'
   name: string
   benefits: string[]

@@ -1,305 +1,609 @@
 [
   {
-    "product_id": "PROD-LIFE-001",
-    "line": "Life",
-    "name": "SecureFuture Whole Life",
-    "benefits": [
-      "Guaranteed death benefit from day one",
-      "Cash value accumulation with tax advantages",
-      "Dividends reinvested to grow coverage",
-      "Policy loans available at any time"
-    ],
-    "cost_range": "$80–$250/month",
-    "use_case": "Build lifelong protection and a growing cash asset for your family."
-  },
-  {
-    "product_id": "PROD-LIFE-002",
-    "line": "Life",
-    "name": "USD Universal Life",
-    "benefits": [
-      "USD-denominated policy — protection against currency fluctuation",
-      "Flexible premium payments to suit your cash flow",
-      "Adjustable death benefit as your needs change",
-      "Cash value grows tax-deferred in USD"
-    ],
-    "cost_range": "USD $50–$300/month",
-    "use_case": "Ideal for professionals and business owners who want USD-denominated life coverage and flexible premium control."
-  },
-  {
-    "product_id": "PROD-LIFE-003",
-    "line": "Life",
-    "name": "TTD Universal Life",
-    "benefits": [
-      "TTD-denominated flexible life insurance",
-      "Adjust premiums and coverage as life circumstances change",
-      "Accumulates cash value over time",
-      "Death benefit paid to beneficiaries free of income tax"
-    ],
-    "cost_range": "TTD $350–$2,000/month",
-    "use_case": "Flexible local-currency life protection for individuals and families across Trinidad & Tobago."
-  },
-  {
-    "product_id": "PROD-LIFE-004",
-    "line": "Life",
-    "name": "Guaranteed Protector",
-    "benefits": [
-      "Guaranteed acceptance — no medical exam required",
-      "Fixed premiums that never increase",
-      "Immediate full coverage from policy issue",
-      "Peace of mind for the whole family"
-    ],
-    "cost_range": "$40–$150/month",
-    "use_case": "Straightforward, guaranteed protection for those who want reliable coverage without medical underwriting."
-  },
-  {
-    "product_id": "PROD-LIFE-005",
+    "product_id": "PROD-LIFE-001P",
+    "plan_code": "001-P",
     "line": "Life",
     "name": "Ordinary Life - Participating",
     "benefits": [
-      "Traditional whole life with lifelong coverage",
+      "Lifelong whole life coverage — policy never expires",
       "Eligible for annual policy dividends",
-      "Dividends can reduce premiums or increase coverage",
-      "Guaranteed cash surrender value"
+      "Dividends can reduce premiums, increase coverage, or accumulate as cash",
+      "Guaranteed cash surrender value grows with time"
     ],
-    "cost_range": "$70–$220/month",
+    "cost_range": "TTD $150–$600/month",
     "use_case": "Classic whole life protection that rewards long-term policyholders with dividends and growing cash value."
   },
   {
-    "product_id": "PROD-LIFE-006",
+    "product_id": "PROD-LIFE-001NP",
+    "plan_code": "001-NP",
     "line": "Life",
-    "name": "Ordinary Life - Non Participating",
+    "name": "Ordinary Life - Non-Participating",
     "benefits": [
-      "Straightforward whole life coverage",
-      "Fixed premiums guaranteed for life",
-      "Guaranteed death benefit for named beneficiaries",
-      "No fluctuation — predictable cost every year"
+      "Lifelong whole life coverage with fixed premiums",
+      "Guaranteed death benefit paid to named beneficiaries",
+      "Guaranteed cash surrender value",
+      "Predictable cost — no dividend variability"
     ],
-    "cost_range": "$60–$200/month",
+    "cost_range": "TTD $120–$500/month",
     "use_case": "Simple, predictable whole life insurance with fixed costs and guaranteed lifetime coverage."
   },
   {
-    "product_id": "PROD-LIFE-007",
+    "product_id": "PROD-LIFE-002P",
+    "plan_code": "002-P",
     "line": "Life",
-    "name": "Convertible Term To Age 80",
+    "name": "20-Pay Life - Participating",
     "benefits": [
-      "Term coverage convertible to permanent insurance up to age 80",
-      "No new medical exam required on conversion",
-      "Lower cost entry point into life coverage",
-      "Lock in insurability while young and healthy"
+      "Premiums paid over 20 years — coverage lasts a lifetime",
+      "Eligible for annual policy dividends during pay period",
+      "Policy fully paid up after 20 payments",
+      "Cash value accumulates throughout the premium period"
     ],
-    "cost_range": "$30–$120/month",
-    "use_case": "Affordable term protection with the security of converting to permanent coverage — no questions asked."
+    "cost_range": "TTD $180–$700/month",
+    "use_case": "Commit to 20 years of premiums and enjoy lifetime protection with dividend participation."
   },
   {
-    "product_id": "PROD-LIFE-008",
+    "product_id": "PROD-LIFE-002NP",
+    "plan_code": "002-NP",
     "line": "Life",
-    "name": "Convertible Term To Age 65",
+    "name": "20-Pay Life - Non-Participating",
     "benefits": [
-      "Term coverage with conversion option up to age 65",
-      "Convert to whole life without evidence of insurability",
-      "Competitive term premiums",
-      "Ideal for young families building financial security"
+      "Premiums paid over 20 years — fixed and guaranteed",
+      "Lifelong death benefit after 20 payments",
+      "No dividend variability — fully predictable costs",
+      "Guaranteed cash surrender value"
     ],
-    "cost_range": "$25–$100/month",
-    "use_case": "Cost-effective protection for growing families with the flexibility to upgrade to permanent coverage."
+    "cost_range": "TTD $160–$650/month",
+    "use_case": "A structured whole life plan — pay for 20 years, covered for life, with no premium surprises."
   },
   {
-    "product_id": "PROD-LIFE-009",
+    "product_id": "PROD-LIFE-005P",
+    "plan_code": "005-P",
     "line": "Life",
-    "name": "20 Year Convertible Term",
+    "name": "15-Pay Life - Participating",
     "benefits": [
-      "Fixed 20-year term with guaranteed convertibility",
-      "Convert to permanent policy at any point during term",
-      "Level premiums for full 20 years",
-      "High death benefit for low monthly cost"
+      "Fully paid up in 15 years — lifelong coverage continues",
+      "Dividend eligible — builds policy value over time",
+      "Policy loans available against cash value",
+      "Shorter payment period, more flexibility in later years"
     ],
-    "cost_range": "$25–$110/month",
-    "use_case": "Maximum coverage during your peak earning and family-building years, with conversion flexibility built in."
+    "cost_range": "TTD $220–$850/month",
+    "use_case": "Pay off your life insurance in 15 years and enjoy decades of dividend-earning, loan-ready coverage."
   },
   {
-    "product_id": "PROD-LIFE-010",
+    "product_id": "PROD-LIFE-005NP",
+    "plan_code": "005-NP",
     "line": "Life",
-    "name": "Endowment To Age 65 - Participating",
+    "name": "15-Pay Life - Non-Participating",
+    "benefits": [
+      "Fully paid up in 15 years — no further premiums ever",
+      "Guaranteed lifelong death benefit",
+      "Fixed premium schedule — budget with certainty",
+      "Guaranteed cash value accumulation"
+    ],
+    "cost_range": "TTD $200–$800/month",
+    "use_case": "15 years of fixed payments, then lifetime coverage at zero cost — simple and predictable."
+  },
+  {
+    "product_id": "PROD-LIFE-010P",
+    "plan_code": "010-P",
+    "line": "Life",
+    "name": "10-Pay Life - Participating",
+    "benefits": [
+      "Policy fully paid up in just 10 years",
+      "Eligible for annual dividends from day one",
+      "Lifetime death benefit after final payment",
+      "Maximum cash value growth after pay period ends"
+    ],
+    "cost_range": "TTD $350–$1,200/month",
+    "use_case": "The fastest way to pay off whole life insurance — 10 years of payments, lifetime of coverage and dividends."
+  },
+  {
+    "product_id": "PROD-LIFE-010NP",
+    "plan_code": "010-NP",
+    "line": "Life",
+    "name": "10-Pay Life - Non-Participating",
+    "benefits": [
+      "Fully paid up after 10 premium payments",
+      "Guaranteed death benefit continues for life",
+      "Fixed premiums — no surprises",
+      "Guaranteed cash surrender value"
+    ],
+    "cost_range": "TTD $320–$1,100/month",
+    "use_case": "Pay once a year for 10 years, then own your life insurance policy outright — forever."
+  },
+  {
+    "product_id": "PROD-LIFE-015P",
+    "plan_code": "015-P",
+    "line": "Life",
+    "name": "15-Year Endowment - Participating",
+    "benefits": [
+      "Pays full face value at 15-year maturity or on death — whichever is first",
+      "Eligible for annual dividends to grow the fund",
+      "Acts as disciplined savings with life coverage built in",
+      "Lump sum payout ideal for a specific financial goal"
+    ],
+    "cost_range": "TTD $500–$1,800/month",
+    "use_case": "Save toward a specific 15-year goal — home purchase, education, or business — with life cover included."
+  },
+  {
+    "product_id": "PROD-LIFE-015NP",
+    "plan_code": "015-NP",
+    "line": "Life",
+    "name": "15-Year Endowment - Non-Participating",
+    "benefits": [
+      "Guaranteed payout at 15-year maturity",
+      "Fixed premiums — no dividend variability",
+      "Full death benefit if policyholder passes during term",
+      "Predictable savings plan with a defined end date"
+    ],
+    "cost_range": "TTD $480–$1,700/month",
+    "use_case": "A guaranteed 15-year savings plan with fixed costs and a defined payout you can plan around."
+  },
+  {
+    "product_id": "PROD-LIFE-020P",
+    "plan_code": "020-P",
+    "line": "Life",
+    "name": "20-Year Endowment - Participating",
+    "benefits": [
+      "Matures in 20 years with full face value payout",
+      "Dividend participation can significantly increase the final payout",
+      "Death benefit active throughout the savings period",
+      "Ideal for education, property, or retirement planning"
+    ],
+    "cost_range": "TTD $400–$1,500/month",
+    "use_case": "A 20-year savings and protection plan with dividends boosting your payout — perfect for long-term financial goals."
+  },
+  {
+    "product_id": "PROD-LIFE-020NP",
+    "plan_code": "020-NP",
+    "line": "Life",
+    "name": "20-Year Endowment - Non-Participating",
+    "benefits": [
+      "Guaranteed lump sum at 20-year maturity",
+      "Fixed premiums — fully predictable",
+      "Full death benefit if policyholder passes during term",
+      "Disciplined long-term saving with a guaranteed end value"
+    ],
+    "cost_range": "TTD $380–$1,400/month",
+    "use_case": "Know exactly what you will receive in 20 years — guaranteed savings with life protection built in."
+  },
+  {
+    "product_id": "PROD-LIFE-025P",
+    "plan_code": "025-P",
+    "line": "Life",
+    "name": "25-Year Endowment - Participating",
+    "benefits": [
+      "Matures at 25 years with guaranteed face value payout",
+      "Annual dividends enhance the maturity benefit",
+      "Life coverage active throughout the 25-year period",
+      "Structured long-term wealth building"
+    ],
+    "cost_range": "TTD $280–$1,000/month",
+    "use_case": "Build wealth over 25 years with dividend participation — protection and savings working together."
+  },
+  {
+    "product_id": "PROD-LIFE-025NP",
+    "plan_code": "025-NP",
+    "line": "Life",
+    "name": "25-Year Endowment - Non-Participating",
+    "benefits": [
+      "Guaranteed lump sum at 25-year maturity",
+      "Fixed premiums for the full 25-year period",
+      "Full death benefit throughout the term",
+      "No fluctuation — a reliable savings contract"
+    ],
+    "cost_range": "TTD $260–$950/month",
+    "use_case": "A 25-year guaranteed savings contract — fixed payments, guaranteed outcome, full life coverage throughout."
+  },
+  {
+    "product_id": "PROD-LIFE-026P",
+    "plan_code": "026-P",
+    "line": "Life",
+    "name": "30-Year Endowment - Participating",
+    "benefits": [
+      "30-year endowment with dividend participation",
+      "Full face value paid at maturity or on death",
+      "Dividends can be reinvested to boost maturity value",
+      "Ideal retirement planning vehicle"
+    ],
+    "cost_range": "TTD $220–$800/month",
+    "use_case": "A 30-year wealth-building plan — dividends grow your fund while life cover protects your family."
+  },
+  {
+    "product_id": "PROD-LIFE-026NP",
+    "plan_code": "026-NP",
+    "line": "Life",
+    "name": "30-Year Endowment - Non-Participating",
+    "benefits": [
+      "Guaranteed payout at 30-year maturity",
+      "Fixed premiums for the entire term",
+      "Full death benefit throughout the 30 years",
+      "A disciplined, long-range savings commitment"
+    ],
+    "cost_range": "TTD $200–$750/month",
+    "use_case": "Lock in fixed payments for 30 years and guarantee a known lump sum — perfect for retirement planning."
+  },
+  {
+    "product_id": "PROD-LIFE-027P",
+    "plan_code": "027-P",
+    "line": "Life",
+    "name": "Endowment to Age 65 - Participating",
     "benefits": [
       "Policy pays out in full at age 65 or on death — whichever comes first",
       "Eligible for annual dividends to grow the fund",
       "Acts as forced savings and life cover in one",
       "Lump sum payout supports retirement planning"
     ],
-    "cost_range": "$90–$300/month",
-    "use_case": "A dual-purpose plan that builds a retirement nest egg while keeping your family protected."
+    "cost_range": "TTD $160–$600/month",
+    "use_case": "A dual-purpose plan that builds a retirement nest egg while keeping your family protected to age 65."
   },
   {
-    "product_id": "PROD-LIFE-011",
+    "product_id": "PROD-LIFE-027NP",
+    "plan_code": "027-NP",
     "line": "Life",
-    "name": "Endowment At Age 65 - Non Participating",
+    "name": "Endowment to Age 65 - Non-Participating",
     "benefits": [
       "Guaranteed lump sum payout at age 65",
       "Fixed premiums — no dividend variability",
       "Full death benefit if policyholder passes before 65",
-      "Predictable planning for retirement"
+      "Predictable, structured retirement savings"
     ],
-    "cost_range": "$80–$270/month",
-    "use_case": "Guaranteed retirement savings plan with fixed costs and a defined payout target."
+    "cost_range": "TTD $140–$550/month",
+    "use_case": "Guaranteed retirement savings plan with fixed costs and a defined payout at age 65."
   },
   {
-    "product_id": "PROD-LIFE-012",
+    "product_id": "PROD-LIFE-028P",
+    "plan_code": "028-P",
     "line": "Life",
-    "name": "20 Year Endowment",
-    "benefits": [
-      "Matures in 20 years with full face value payout",
-      "Death benefit paid in full if policyholder passes during term",
-      "Encourages disciplined long-term saving",
-      "Can be used for education, property, or business goals"
-    ],
-    "cost_range": "$100–$350/month",
-    "use_case": "A 20-year savings and protection plan — perfect for a specific financial goal like a child's education or property purchase."
-  },
-  {
-    "product_id": "PROD-LIFE-013",
-    "line": "Life",
-    "name": "Life Paid Up At 65 - Participating",
+    "name": "Life Paid Up at 65",
     "benefits": [
       "Premiums stop at age 65 — coverage continues for life",
-      "Dividend participation grows policy value",
-      "Cash value available via policy loans",
-      "No premiums in retirement — coverage remains active"
+      "Participating plan eligible for annual dividends",
+      "No premiums in retirement — full coverage remains active",
+      "Policy loans available against cash value at any time"
     ],
-    "cost_range": "$95–$310/month",
-    "use_case": "Pay off your policy before retirement and enjoy lifelong coverage with zero premiums in your senior years."
+    "cost_range": "TTD $180–$700/month",
+    "use_case": "Pay off your life policy before retirement and enjoy lifelong coverage with zero premiums as a senior."
   },
   {
-    "product_id": "PROD-LIFE-014",
+    "product_id": "PROD-LIFE-032P",
+    "plan_code": "032-P",
     "line": "Life",
-    "name": "Life Paid Up At 65 - Non Participating",
+    "name": "Endowment at 55",
     "benefits": [
-      "Fully paid up at age 65 — no further premiums",
-      "Guaranteed death benefit continues for life",
-      "Fixed premium schedule — no surprises",
-      "Simple, clean coverage with a defined end date for payments"
+      "Policy matures with full payout at age 55",
+      "Earlier retirement planning compared to age-65 endowments",
+      "Full death benefit active throughout the savings period",
+      "Participating — eligible for dividend enhancement"
     ],
-    "cost_range": "$85–$280/month",
-    "use_case": "Pay a fixed amount until 65, then enjoy lifelong coverage completely free of charge."
+    "cost_range": "TTD $250–$900/month",
+    "use_case": "Plan for an early exit at 55 — guaranteed lump sum and life coverage combined into one structured plan."
   },
   {
-    "product_id": "PROD-LIFE-015",
+    "product_id": "PROD-LIFE-056",
+    "plan_code": "056",
     "line": "Life",
-    "name": "30 Payment Life - Participating",
+    "name": "10-Year Term",
     "benefits": [
-      "Fully paid up after 30 premium payments",
-      "Dividend eligible — grows policy value over time",
-      "Lifelong death benefit after premiums end",
-      "Policy loans available against accumulated cash value"
+      "Pure death benefit for a fixed 10-year period",
+      "Lowest cost way to secure a high death benefit",
+      "Level premiums for the full 10-year term",
+      "Ideal for covering a mortgage or business loan"
     ],
-    "cost_range": "$100–$320/month",
-    "use_case": "Commit to 30 years of premiums and enjoy lifetime protection — with dividend participation along the way."
+    "cost_range": "TTD $30–$150/month",
+    "use_case": "Maximum coverage for the least cost — protect a specific liability or income stream for 10 years."
   },
   {
-    "product_id": "PROD-LIFE-016",
+    "product_id": "PROD-LIFE-058",
+    "plan_code": "058",
     "line": "Life",
-    "name": "30 Payment Life - Non Participating",
+    "name": "20-Year Term",
     "benefits": [
-      "Fixed 30-year payment schedule",
-      "Guaranteed lifelong death benefit after final payment",
-      "No dividend variability — fully predictable",
-      "Ideal for budgeting long-term financial commitments"
+      "Guaranteed death benefit for 20 full years",
+      "Level premiums throughout the term",
+      "High coverage at a low entry cost",
+      "Ideal for protecting income during peak earning years"
     ],
-    "cost_range": "$90–$295/month",
-    "use_case": "A structured whole life plan — pay for 30 years, covered for life, with no premium surprises."
+    "cost_range": "TTD $35–$180/month",
+    "use_case": "Protect your family's income and mortgage for 20 years — high benefit, low monthly cost."
   },
   {
-    "product_id": "PROD-LIFE-017",
+    "product_id": "PROD-LIFE-T80S",
+    "plan_code": "T80S",
     "line": "Life",
-    "name": "Education Security Plan - Participating",
+    "name": "Term to Age 80 - Standard Band",
     "benefits": [
-      "Funds your child's university education — guaranteed",
-      "Dividend participation can accelerate fund growth",
-      "Death benefit protects the education fund if parent passes",
-      "Structured payouts aligned to enrollment years"
+      "Term coverage extending all the way to age 80",
+      "Level premiums guaranteed for the entire term",
+      "Standard face amount band — ideal for most coverage needs",
+      "Convertible to permanent insurance"
     ],
-    "cost_range": "$60–$200/month",
-    "use_case": "Guarantee your child's education regardless of what happens — a gift that opens every door."
+    "cost_range": "TTD $40–$250/month",
+    "use_case": "Flexible long-term coverage extending to age 80 — ideal for those who want term protection well into retirement age."
   },
   {
-    "product_id": "PROD-LIFE-018",
+    "product_id": "PROD-LIFE-T80H",
+    "plan_code": "T80H",
     "line": "Life",
-    "name": "Modified Anticipated 20 Year Endowment - Participating",
+    "name": "Term to Age 80 - High Band",
     "benefits": [
-      "Anticipated dividends paid out during the policy term",
-      "Full face value at 20-year maturity",
+      "High face amount term coverage to age 80",
+      "Preferential rates for larger coverage amounts",
+      "Level premiums for the entire term period",
+      "Suitable for high-net-worth protection needs"
+    ],
+    "cost_range": "TTD $50–$300/month",
+    "use_case": "High-value term coverage to age 80 with preferential rates — for those who need substantial long-term protection."
+  },
+  {
+    "product_id": "PROD-LIFE-076",
+    "plan_code": "076",
+    "line": "Life",
+    "name": "10-Year Level Term Rider",
+    "benefits": [
+      "Additional death benefit layer for a 10-year period",
+      "Level premiums throughout the rider term",
+      "Increases total coverage without a new base policy",
+      "Available as a rider on a qualifying base plan"
+    ],
+    "cost_range": "TTD $20–$100/month",
+    "use_case": "Temporarily boost your coverage for 10 years — ideal for covering a mortgage or income replacement need."
+  },
+  {
+    "product_id": "PROD-LIFE-077",
+    "plan_code": "077",
+    "line": "Life",
+    "name": "15-Year Level Term Rider",
+    "benefits": [
+      "Additional death benefit for a 15-year period",
+      "Level premiums guaranteed for the full rider term",
+      "Flexible add-on to an existing life policy",
+      "Provides enhanced coverage during key life stages"
+    ],
+    "cost_range": "TTD $22–$110/month",
+    "use_case": "Add 15 years of extra coverage to your existing policy — cost-effective protection for growing families."
+  },
+  {
+    "product_id": "PROD-LIFE-078",
+    "plan_code": "078",
+    "line": "Life",
+    "name": "20-Year Level Term Rider",
+    "benefits": [
+      "Extended 20-year additional death benefit",
+      "Level premiums for the entire rider period",
+      "Stacks on top of your base whole life policy",
+      "Ideal for covering long-term financial obligations"
+    ],
+    "cost_range": "TTD $25–$120/month",
+    "use_case": "20 more years of extra protection — pairs perfectly with a whole life base to cover peak liability years."
+  },
+  {
+    "product_id": "PROD-LIFE-170",
+    "plan_code": "170",
+    "line": "Life",
+    "name": "25-Year Level Term Rider",
+    "benefits": [
+      "25-year additional death benefit rider",
+      "Level premiums guaranteed for a quarter century",
+      "Maximises total coverage at a young entry age",
+      "Flexible complement to any base life plan"
+    ],
+    "cost_range": "TTD $28–$130/month",
+    "use_case": "Lock in 25 years of supplemental coverage — best entered young for maximum protection at lowest cost."
+  },
+  {
+    "product_id": "PROD-LIFE-168",
+    "plan_code": "168",
+    "line": "Life",
+    "name": "Level Term Rider to Age 55",
+    "benefits": [
+      "Additional coverage layer that remains active until age 55",
+      "Level premiums throughout the rider period",
+      "Designed to protect pre-retirement income years",
+      "Rider terminates at 55 — base policy continues"
+    ],
+    "cost_range": "TTD $22–$115/month",
+    "use_case": "Extra coverage through your working years — the rider drops off at 55 when income protection needs typically reduce."
+  },
+  {
+    "product_id": "PROD-LIFE-074",
+    "plan_code": "074",
+    "line": "Life",
+    "name": "Level Term Rider to Age 60",
+    "benefits": [
+      "Additional death benefit active until age 60",
+      "Level premiums for the full rider period",
+      "Covers peak earning and family responsibility years",
+      "Rider terminates at 60 — underlying policy continues"
+    ],
+    "cost_range": "TTD $25–$125/month",
+    "use_case": "Supplement your base plan with extra coverage through to age 60 — when dependents and mortgages are typically settled."
+  },
+  {
+    "product_id": "PROD-LIFE-075",
+    "plan_code": "075",
+    "line": "Life",
+    "name": "Level Term Rider to Age 65",
+    "benefits": [
+      "Additional death benefit through to retirement age 65",
+      "Level premiums guaranteed for the rider term",
+      "Extends protection through your highest-income years",
+      "Pairs with any qualifying base whole life policy"
+    ],
+    "cost_range": "TTD $28–$140/month",
+    "use_case": "Maximum supplemental coverage right through to retirement — ideal for high-income earners with large financial obligations."
+  },
+  {
+    "product_id": "PROD-LIFE-361",
+    "plan_code": "361",
+    "line": "Life",
+    "name": "10-Year Silver Lining",
+    "benefits": [
+      "All premiums returned in full if no claim is made",
+      "Full death benefit paid if policyholder passes during term",
+      "Level premiums for the 10-year period",
+      "No sex or smoker distinction — single flat rate"
+    ],
+    "cost_range": "TTD $25–$120/month",
+    "use_case": "Win either way — if you survive the 10-year term, every dollar you paid comes back to you."
+  },
+  {
+    "product_id": "PROD-LIFE-362",
+    "plan_code": "362",
+    "line": "Life",
+    "name": "15-Year Silver Lining",
+    "benefits": [
+      "All premiums returned at end of 15-year term",
+      "Full death benefit if claim is made during the term",
+      "Level premiums — no increases over 15 years",
+      "Return of premium feature makes this zero-net-cost coverage"
+    ],
+    "cost_range": "TTD $30–$140/month",
+    "use_case": "15 years of life coverage with a money-back guarantee — your premiums are returned if you outlive the term."
+  },
+  {
+    "product_id": "PROD-LIFE-363",
+    "plan_code": "363",
+    "line": "Life",
+    "name": "20-Year Silver Lining",
+    "benefits": [
+      "All premiums returned at end of 20-year term",
+      "Death benefit paid in full during the 20-year period",
+      "Level premiums throughout — no surprises",
+      "Effective zero-net-cost protection over the long term"
+    ],
+    "cost_range": "TTD $40–$180/month",
+    "use_case": "The most popular Silver Lining — 20 years of family protection with every premium refunded at the end."
+  },
+  {
+    "product_id": "PROD-LIFE-365",
+    "plan_code": "365",
+    "line": "Life",
+    "name": "Silver Lining to Age 55",
+    "benefits": [
+      "Full premium refund when you reach age 55",
       "Death benefit active throughout the term",
-      "Dividend income provides periodic cash flow"
+      "Level premiums — predictable budgeting",
+      "Retirement savings and life cover in one"
     ],
-    "cost_range": "$110–$370/month",
-    "use_case": "An endowment plan that pays dividends along the way — not just at maturity — giving you income and protection together."
+    "cost_range": "TTD $50–$200/month",
+    "use_case": "Protect your family until 55 and receive all your premiums back — a built-in pre-retirement bonus."
   },
   {
-    "product_id": "PROD-LIFE-019",
+    "product_id": "PROD-LIFE-366",
+    "plan_code": "366",
     "line": "Life",
-    "name": "Endowment At Age 60 - Non Participating",
+    "name": "Silver Lining to Age 60",
     "benefits": [
-      "Guaranteed payout at age 60",
-      "Fixed premiums with no dividend variability",
-      "Full death benefit if policyholder passes before 60",
-      "Structured early retirement savings vehicle"
+      "All premiums refunded when you reach age 60",
+      "Full death benefit paid if claim arises before 60",
+      "Level premiums from policy issue to age 60",
+      "Complements retirement planning with a lump-sum return"
     ],
-    "cost_range": "$95–$315/month",
-    "use_case": "Plan for early retirement at 60 with a guaranteed lump sum and fixed-cost protection."
+    "cost_range": "TTD $55–$220/month",
+    "use_case": "Cover your family until 60, then get every cent back — a retirement booster built into your life plan."
   },
   {
-    "product_id": "PROD-LIFE-020",
+    "product_id": "PROD-LIFE-367",
+    "plan_code": "367",
     "line": "Life",
-    "name": "Endowment At Age 60 - Participating",
+    "name": "Silver Lining to Age 65",
     "benefits": [
-      "Matures with guaranteed payout at age 60",
-      "Dividend participation boosts the final payout",
-      "Life coverage active throughout the savings period",
-      "Combines protection and early retirement planning"
+      "Full premium refund at age 65 — your retirement bonus",
+      "Death benefit active from day one through age 65",
+      "Level premiums for the full term period",
+      "No investment risk — guaranteed return of premiums"
     ],
-    "cost_range": "$100–$330/month",
-    "use_case": "Save toward retirement at 60 with dividends enhancing your payout — protection built in throughout."
+    "cost_range": "TTD $65–$250/month",
+    "use_case": "Lifetime coverage to 65 with a guaranteed refund on retirement day — protect and save in a single plan."
+  },
+  {
+    "product_id": "PROD-LIFE-818",
+    "plan_code": "818",
+    "line": "Life",
+    "name": "Education Security Plan",
+    "benefits": [
+      "Guarantees your child's university education fund",
+      "Structured payouts aligned to enrollment years",
+      "Full death benefit protects the fund if the payor passes",
+      "Premiums based on payor's age and chosen plan duration"
+    ],
+    "cost_range": "TTD $80–$400/month",
+    "use_case": "Guarantee your child's education regardless of what happens — a savings plan that opens every door."
+  },
+  {
+    "product_id": "PROD-LIFE-094",
+    "plan_code": "094",
+    "line": "Life",
+    "name": "Plan 094",
+    "benefits": [
+      "Uniform premium rates — no sex or smoker rating",
+      "Coverage available from age 10",
+      "Guaranteed death benefit from policy issue",
+      "Fixed premiums for the life of the plan"
+    ],
+    "cost_range": "TTD $300–$900/month",
+    "use_case": "A specialised life plan with uniform rates across all insured categories — speak to an advisor for full details."
+  },
+  {
+    "product_id": "PROD-LIFE-164",
+    "plan_code": "164",
+    "line": "Life",
+    "name": "Plan 164",
+    "benefits": [
+      "Level term-style rates with multiple face amount bands",
+      "Sex and smoker ratings applied at issue",
+      "Coverage from age 20 through age 55",
+      "Competitive rates for larger face amounts (higher bands)"
+    ],
+    "cost_range": "TTD $25–$130/month",
+    "use_case": "A term-equivalent plan with multi-band pricing — rates improve significantly at higher face amounts."
+  },
+  {
+    "product_id": "PROD-LIFE-201",
+    "plan_code": "201",
+    "line": "Life",
+    "name": "Plan 201-202",
+    "benefits": [
+      "Whole life-style rates available from age 18",
+      "Coverage extends through age 70",
+      "Sex and smoker ratings applied — standard M/F loadings",
+      "Multiple face amount bands for competitive pricing"
+    ],
+    "cost_range": "TTD $100–$450/month",
+    "use_case": "A flexible whole life variant with extended age coverage — ask your advisor which variant suits your situation."
   },
   {
     "product_id": "PROD-ANNUITY-001",
+    "plan_code": "",
     "line": "Annuities",
-    "name": "RetireWell Fixed Annuity",
+    "name": "Flexible Premium Retirement Annuity",
     "benefits": [
-      "Guaranteed monthly income in retirement",
-      "Flexible payout periods (10, 20, lifetime)",
-      "Inflation rider available",
-      "Beneficiary death benefit"
+      "Contribute any amount at any time — no rigid schedule",
+      "Tax-deferred growth during accumulation phase",
+      "Convert to guaranteed income stream at retirement",
+      "Partial withdrawals permitted after lock-in period"
     ],
-    "cost_range": "$300–$1,000/month",
-    "use_case": "Secure predictable retirement income you cannot outlive."
+    "cost_range": "From TTD $500/contribution",
+    "use_case": "Build your retirement fund at your own pace — contribute when you can, grow tax-deferred, withdraw when ready."
   },
   {
     "product_id": "PROD-ANNUITY-002",
+    "plan_code": "",
     "line": "Annuities",
-    "name": "Single Payment Annuity",
+    "name": "Single Premium Retirement Annuity",
     "benefits": [
-      "One lump sum converts to guaranteed income stream",
+      "One lump sum converts to a guaranteed income stream",
       "Immediate income payments from day one",
       "Choose monthly, quarterly, or annual payouts",
       "Beneficiary protection on remaining balance"
     ],
     "cost_range": "Lump sum from TTD $50,000",
-    "use_case": "Turn a lump sum — from a bonus, inheritance, or retirement gratuity — into a guaranteed income for life."
-  },
-  {
-    "product_id": "PROD-ANNUITY-003",
-    "line": "Annuities",
-    "name": "Flexible Premium Annuity",
-    "benefits": [
-      "Contribute any amount, any time — no rigid schedule",
-      "Tax-deferred growth during accumulation phase",
-      "Convert to income stream at retirement",
-      "Partial withdrawals permitted after lock-in period"
-    ],
-    "cost_range": "From TTD $500/contribution",
-    "use_case": "Build your retirement fund at your own pace — contribute when you can, grow tax-deferred, withdraw when you're ready."
+    "use_case": "Turn a bonus, inheritance, or retirement gratuity into a guaranteed income for life."
   },
   {
     "product_id": "PROD-HEALTH-001",
+    "plan_code": "",
     "line": "Health",
     "name": "MedShield Comprehensive",
     "benefits": [
@@ -308,59 +612,49 @@
       "Prescription drug benefit",
       "Emergency medical evacuation"
     ],
-    "cost_range": "$120–$400/month",
+    "cost_range": "TTD $800–$2,700/month",
     "use_case": "Protect against the rising cost of healthcare for you and your family."
   },
   {
     "product_id": "PROD-PAS-001",
+    "plan_code": "pa-std",
     "line": "PA&S",
-    "name": "HomeGuard Property & Savings",
+    "name": "Personal Protector Standard",
     "benefits": [
-      "Property damage and loss coverage",
-      "Personal accident benefit",
-      "Savings component with guaranteed returns",
-      "Hurricane and flood rider available"
+      "Personal accident cover — lump sum on accidental death or disability",
+      "Weekly income benefit during temporary disability",
+      "Medical expense reimbursement after accidents",
+      "24-hour worldwide coverage"
     ],
-    "cost_range": "$60–$180/month",
-    "use_case": "Protect your home and assets while building emergency savings."
+    "cost_range": "TTD $65/month",
+    "use_case": "Core personal accident protection for individuals and families at an affordable flat rate."
   },
   {
     "product_id": "PROD-PAS-002",
+    "plan_code": "pa-plus",
     "line": "PA&S",
-    "name": "Income Shield",
+    "name": "Personal Protector Plus",
     "benefits": [
-      "Monthly income replacement if you cannot work due to accident or illness",
-      "Covers up to 75% of your pre-disability income",
-      "Benefit payments from day one of disability",
-      "Own-occupation definition — protects your specific profession"
+      "Enhanced personal accident benefit — higher payout limits",
+      "Extended weekly income for temporary total disability",
+      "Hospitalisation cash benefit for accident-related stays",
+      "Increased medical expense reimbursement"
     ],
-    "cost_range": "$50–$180/month",
-    "use_case": "Your income is your most valuable asset — Income Shield keeps money coming in if injury or illness stops you from working."
+    "cost_range": "TTD $130/month",
+    "use_case": "Enhanced accident protection with higher limits — for those who need more comprehensive cover."
   },
   {
     "product_id": "PROD-PAS-003",
+    "plan_code": "pa-total",
     "line": "PA&S",
-    "name": "Cancer Care",
+    "name": "Total Protector",
     "benefits": [
-      "Lump sum payout on first cancer diagnosis",
-      "Covers all major cancer types",
-      "No restrictions on how payout is used",
-      "Coverage continues after first claim for recurrence"
+      "Comprehensive all-in-one personal accident package",
+      "Maximum benefit limits across all cover categories",
+      "Full disability income replacement benefit",
+      "Widest scope of accidental injury coverage"
     ],
-    "cost_range": "$35–$130/month",
-    "use_case": "A cancer diagnosis changes everything — Cancer Care gives you a financial buffer so you can focus on recovery, not bills."
-  },
-  {
-    "product_id": "PROD-PAS-004",
-    "line": "PA&S",
-    "name": "Critical Illness",
-    "benefits": [
-      "Lump sum on diagnosis of heart attack, stroke, cancer, or kidney failure",
-      "Covers 10+ major critical illnesses",
-      "Payout is tax-free and unrestricted",
-      "Can be added as a rider or standalone policy"
-    ],
-    "cost_range": "$45–$160/month",
-    "use_case": "When a critical illness strikes, this plan puts a lump sum in your hands — covering treatment costs, lost income, and recovery."
+    "cost_range": "TTD $135/month",
+    "use_case": "The most complete personal accident package — maximum protection at a flat predictable rate."
   }
 ]

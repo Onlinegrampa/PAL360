@@ -1,108 +1,142 @@
 from datetime import date
 from fastapi import APIRouter, HTTPException, Depends
 from pydantic import BaseModel
+from typing import Optional
 from db import get_pool
 from auth import get_current_client
+from routes.plan_rates import (
+    RATES_001P, RATES_001NP,
+    RATES_002P, RATES_002NP,
+    RATES_005P, RATES_005NP,
+    RATES_010P, RATES_010NP,
+    RATES_015P, RATES_015NP,
+    RATES_020P, RATES_020NP,
+    RATES_025P, RATES_025NP,
+    RATES_026P, RATES_026NP,
+    RATES_027P, RATES_027NP,
+    RATES_028P, RATES_032P,
+    RATES_052, RATES_056, RATES_058,
+    RATES_094, RATES_164, RATES_201,
+    RATES_074, RATES_075, RATES_076,
+    RATES_077, RATES_078, RATES_168, RATES_170,
+    RATES_T80S, RATES_T80H,
+    RATES_361, RATES_362, RATES_363,
+    RATES_365, RATES_366, RATES_367,
+    RATES_818, ESP_DURATIONS,
+)
 
 router = APIRouter(prefix="/quotes", tags=["quotes"])
 
-# ── Ordinary Life Non-Participating — Plan 001-NP ────────────────────────────
-# Extracted directly from the PAL Excel Illustration Software (Tablas sheet,
-# rows 552-619, columns 26-30: Age, M_NS, M_SM, F_NS, F_SM — Band 1).
-# Units: TTD annual net premium per $1,000 of face amount.
-#
-# Annual gross premium = (face_amount / 1000 × net_rate) + POLICY_FEE
-# Calibration: Age 57, Female, Non-Smoker, $45,000 face → TTD $1,732.80/yr
-# Cross-check:  45 × 35.15  + 151.05 = 1,581.75 + 151.05 = 1,732.80 ✓
-POLICY_FEE_ANNUAL = 151.05  # TTD — fixed annual policy fee (all Life products)
+# ── Fixed policy fee ──────────────────────────────────────────────────────────
+# TTD annual policy fee — all individual Life products.
+# Calibration: Age 57, Female, Non-Smoker, $45,000 face
+#   → (45 × 35.15) + 151.05 = 1,732.80/yr, 144.40/mo  ✓
+POLICY_FEE_ANNUAL = 151.05
 
-# Dict: age → (M_NS, M_SM, F_NS, F_SM)  — net rate per $1,000/year
-_LIFE_RATES: dict[int, tuple[float, float, float, float]] = {
-    18: (8.86,  8.86,  8.09,  8.09),
-    19: (8.86,  9.14,  8.09,  8.09),
-    20: (9.14,  9.43,  8.09,  8.09),
-    21: (9.43,  9.73,  8.09,  8.09),
-    22: (9.73,  10.04, 8.09,  8.36),
-    23: (10.04, 10.37, 8.36,  8.64),
-    24: (10.37, 10.72, 8.64,  8.93),
-    25: (10.72, 11.09, 8.93,  9.24),
-    26: (11.09, 11.48, 9.24,  9.57),
-    27: (11.48, 11.89, 9.57,  9.92),
-    28: (11.89, 12.32, 9.92,  10.29),
-    29: (12.32, 12.77, 10.29, 10.68),
-    30: (12.77, 13.25, 10.68, 11.09),
-    31: (13.25, 13.76, 11.09, 11.52),
-    32: (13.76, 14.30, 11.52, 11.97),
-    33: (14.30, 14.87, 11.97, 12.44),
-    34: (14.87, 15.47, 12.44, 12.94),
-    35: (15.47, 16.10, 12.94, 13.47),
-    36: (16.10, 16.77, 13.47, 14.03),
-    37: (16.77, 17.48, 14.03, 14.62),
-    38: (17.48, 18.23, 14.62, 15.25),
-    39: (18.23, 19.02, 15.25, 15.92),
-    40: (19.02, 19.85, 15.92, 16.63),
-    41: (19.85, 20.73, 16.63, 17.38),
-    42: (20.73, 21.66, 17.38, 18.17),
-    43: (21.66, 22.64, 18.17, 19.00),
-    44: (22.64, 23.68, 19.00, 19.87),
-    45: (23.68, 24.78, 19.87, 20.79),
-    46: (24.78, 25.94, 20.79, 21.76),
-    47: (25.94, 27.16, 21.76, 22.79),
-    48: (27.16, 28.45, 22.79, 23.88),
-    49: (28.45, 29.82, 23.88, 25.03),
-    50: (29.82, 31.27, 25.03, 26.24),
-    51: (31.27, 32.81, 26.24, 27.52),
-    52: (32.81, 34.44, 27.52, 28.88),
-    53: (34.44, 36.16, 28.88, 30.32),
-    54: (36.16, 37.98, 30.32, 31.84),
-    55: (37.98, 39.91, 31.84, 33.45),
-    56: (39.91, 41.96, 33.45, 35.15),
-    57: (41.96, 44.13, 35.15, 36.95),
-    58: (44.13, 46.43, 36.95, 38.86),
-    59: (46.43, 48.87, 38.86, 40.89),
-    60: (48.87, 51.46, 40.89, 43.04),
-    61: (51.46, 54.22, 43.04, 45.32),
-    62: (54.22, 57.15, 45.32, 47.74),
-    63: (57.15, 60.26, 47.74, 50.31),
-    64: (60.26, 63.56, 50.31, 53.04),
-    65: (63.56, 67.07, 53.04, 55.94),
+# ── Plan registry ─────────────────────────────────────────────────────────────
+# plan_type:
+#   "life"   — standard M/F × NS/SM rate table (cols: M_NS, M_SM, F_NS, F_SM)
+#   "unisex" — single flat rate (Silver Lining plans, no sex/smoker distinction)
+#   "esp"    — Education Security Plan (payor_age × duration lookup)
+#
+# min_age / max_age — quoting age limits from the rate table.
+# name — display name matching the PAL Excel Illustration Software.
+
+PLAN_REGISTRY: dict[str, dict] = {
+    # ── Ordinary Life ──────────────────────────────────────────────────────────
+    "001-P":  {"type": "life",   "rates": RATES_001P,  "min_age": 0,  "max_age": 65, "name": "Ordinary Life - Participating"},
+    "001-NP": {"type": "life",   "rates": RATES_001NP, "min_age": 10, "max_age": 65, "name": "Ordinary Life - Non-Participating"},
+
+    # ── Limited-Pay Life ───────────────────────────────────────────────────────
+    "002-P":  {"type": "life",   "rates": RATES_002P,  "min_age": 0,  "max_age": 55, "name": "20-Pay Life - Participating"},
+    "002-NP": {"type": "life",   "rates": RATES_002NP, "min_age": 0,  "max_age": 55, "name": "20-Pay Life - Non-Participating"},
+    "005-P":  {"type": "life",   "rates": RATES_005P,  "min_age": 0,  "max_age": 55, "name": "15-Pay Life - Participating"},
+    "005-NP": {"type": "life",   "rates": RATES_005NP, "min_age": 0,  "max_age": 55, "name": "15-Pay Life - Non-Participating"},
+    "010-P":  {"type": "life",   "rates": RATES_010P,  "min_age": 0,  "max_age": 65, "name": "10-Pay Life - Participating"},
+    "010-NP": {"type": "life",   "rates": RATES_010NP, "min_age": 0,  "max_age": 65, "name": "10-Pay Life - Non-Participating"},
+    "028-P":  {"type": "life",   "rates": RATES_028P,  "min_age": 0,  "max_age": 8,  "name": "Life Paid Up at 65"},
+
+    # ── Endowment Plans ────────────────────────────────────────────────────────
+    "015-P":  {"type": "life",   "rates": RATES_015P,  "min_age": 0,  "max_age": 65, "name": "15-Year Endowment - Participating"},
+    "015-NP": {"type": "life",   "rates": RATES_015NP, "min_age": 0,  "max_age": 65, "name": "15-Year Endowment - Non-Participating"},
+    "020-P":  {"type": "life",   "rates": RATES_020P,  "min_age": 0,  "max_age": 65, "name": "20-Year Endowment - Participating"},
+    "020-NP": {"type": "life",   "rates": RATES_020NP, "min_age": 0,  "max_age": 65, "name": "20-Year Endowment - Non-Participating"},
+    "025-P":  {"type": "life",   "rates": RATES_025P,  "min_age": 0,  "max_age": 45, "name": "25-Year Endowment - Participating"},
+    "025-NP": {"type": "life",   "rates": RATES_025NP, "min_age": 0,  "max_age": 45, "name": "25-Year Endowment - Non-Participating"},
+    "026-P":  {"type": "life",   "rates": RATES_026P,  "min_age": 0,  "max_age": 50, "name": "30-Year Endowment - Participating"},
+    "026-NP": {"type": "life",   "rates": RATES_026NP, "min_age": 0,  "max_age": 50, "name": "30-Year Endowment - Non-Participating"},
+    "027-P":  {"type": "life",   "rates": RATES_027P,  "min_age": 0,  "max_age": 55, "name": "Endowment to Age 65 - Participating"},
+    "027-NP": {"type": "life",   "rates": RATES_027NP, "min_age": 0,  "max_age": 55, "name": "Endowment to Age 65 - Non-Participating"},
+    "032-P":  {"type": "life",   "rates": RATES_032P,  "min_age": 0,  "max_age": 9,  "name": "Endowment at 55"},
+
+    # ── Term Plans ─────────────────────────────────────────────────────────────
+    "052":    {"type": "life",   "rates": RATES_052,   "min_age": 20, "max_age": 60, "name": "5-Year Term"},
+    "056":    {"type": "life",   "rates": RATES_056,   "min_age": 20, "max_age": 70, "name": "10-Year Term"},
+    "058":    {"type": "life",   "rates": RATES_058,   "min_age": 20, "max_age": 70, "name": "20-Year Term"},
+    "T80S":   {"type": "life",   "rates": RATES_T80S,  "min_age": 20, "max_age": 70, "name": "Term to Age 80 - Standard Band"},
+    "T80H":   {"type": "life",   "rates": RATES_T80H,  "min_age": 20, "max_age": 70, "name": "Term to Age 80 - High Band"},
+
+    # ── Level Term Riders ──────────────────────────────────────────────────────
+    "076":    {"type": "life",   "rates": RATES_076,   "min_age": 20, "max_age": 55, "name": "10-Year Level Term Rider"},
+    "077":    {"type": "life",   "rates": RATES_077,   "min_age": 20, "max_age": 50, "name": "15-Year Level Term Rider"},
+    "078":    {"type": "life",   "rates": RATES_078,   "min_age": 20, "max_age": 45, "name": "20-Year Level Term Rider"},
+    "170":    {"type": "life",   "rates": RATES_170,   "min_age": 20, "max_age": 40, "name": "25-Year Level Term Rider"},
+    "168":    {"type": "life",   "rates": RATES_168,   "min_age": 20, "max_age": 50, "name": "Level Term Rider to Age 55"},
+    "074":    {"type": "life",   "rates": RATES_074,   "min_age": 20, "max_age": 55, "name": "Level Term Rider to Age 60"},
+    "075":    {"type": "life",   "rates": RATES_075,   "min_age": 20, "max_age": 60, "name": "Level Term Rider to Age 65"},
+
+    # ── Silver Lining (Return-of-Premium Term) ─────────────────────────────────
+    "361":    {"type": "unisex", "rates": RATES_361,   "min_age": 20, "max_age": 55, "name": "10-Year Silver Lining"},
+    "362":    {"type": "unisex", "rates": RATES_362,   "min_age": 20, "max_age": 50, "name": "15-Year Silver Lining"},
+    "363":    {"type": "unisex", "rates": RATES_363,   "min_age": 20, "max_age": 45, "name": "20-Year Silver Lining"},
+    "365":    {"type": "unisex", "rates": RATES_365,   "min_age": 20, "max_age": 45, "name": "Silver Lining to Age 55"},
+    "366":    {"type": "unisex", "rates": RATES_366,   "min_age": 20, "max_age": 50, "name": "Silver Lining to Age 60"},
+    "367":    {"type": "unisex", "rates": RATES_367,   "min_age": 20, "max_age": 55, "name": "Silver Lining to Age 65"},
+
+    # ── Education Security Plan ────────────────────────────────────────────────
+    "818":    {"type": "esp",    "rates": RATES_818,   "min_age": 20, "max_age": 60, "name": "Education Security Plan"},
+
+    # ── Specialty Plans ────────────────────────────────────────────────────────
+    "094":    {"type": "life",   "rates": RATES_094,   "min_age": 10, "max_age": 65, "name": "Plan 094"},
+    "164":    {"type": "life",   "rates": RATES_164,   "min_age": 20, "max_age": 55, "name": "Plan 164"},
+    "201":    {"type": "life",   "rates": RATES_201,   "min_age": 18, "max_age": 70, "name": "Plan 201-202"},
 }
 
 # ── PA&S tier packages ────────────────────────────────────────────────────────
-MODAL_MONTHLY = 1.0   # monthly = annual / 12 (no modal load for PA&S)
-
 PA_TIERS = [
     {
         "tier_id":    "pa-std",
         "name":       "Personal Protector Standard",
         "annual":     780,
         "monthly":    round(780  / 12, 2),
-        "description":"Core personal accident protection",
+        "description": "Core personal accident protection",
     },
     {
         "tier_id":    "pa-plus",
         "name":       "Personal Protector Plus",
         "annual":     1560,
         "monthly":    round(1560 / 12, 2),
-        "description":"Enhanced cover with additional benefits",
+        "description": "Enhanced cover with additional benefits",
     },
     {
         "tier_id":    "pa-total",
         "name":       "Total Protector",
         "annual":     1620,
         "monthly":    round(1620 / 12, 2),
-        "description":"Comprehensive all-in-one protection package",
+        "description": "Comprehensive all-in-one protection package",
     },
 ]
 
 
 class QuoteInput(BaseModel):
-    product_line: str           # "Life", "Health", "Annuities", "PA&S"
-    coverage_amount: float = 0  # face amount for Life / Health
-    pa_tier_id: str = ""        # for PA&S
-    sex: str = "F"              # "M" or "F"
+    product_line: str             # "Life", "Health", "Annuities", "PA&S"
+    plan_code: str = ""           # e.g. "001-NP", "361", "818" — if set, overrides product_line for Life
+    coverage_amount: float = 0    # face amount (TTD)
+    pa_tier_id: str = ""          # PA&S tier
+    sex: str = "F"                # "M" or "F"
     smoker: bool = False
-    date_of_birth: str = ""     # YYYY-MM-DD — overrides fact-find age when provided
+    date_of_birth: str = ""       # YYYY-MM-DD
+    esp_duration: int = 0         # for ESP only: plan duration in years (10–25)
 
 
 def _age_from_dob(dob_str: str) -> int:
@@ -111,33 +145,63 @@ def _age_from_dob(dob_str: str) -> int:
     return today.year - dob.year - ((today.month, today.day) < (dob.month, dob.day))
 
 
-def _life_net_rate(age: int, sex: str, smoker: bool) -> float:
-    """
-    Return the net annual premium rate per TTD $1,000 of face amount.
-    Source: PAL Illustration Software — Plan 001-NP rate table.
-    Extrapolates linearly outside the table range (ages 18-65).
-    """
-    clamped = max(18, min(65, age))
-    m_ns, m_sm, f_ns, f_sm = _LIFE_RATES[clamped]
+def _life_rate(plan_code: str, age: int, sex: str, smoker: bool) -> float:
+    """Look up net rate per $1,000 from the plan's rate table (Band 1)."""
+    cfg = PLAN_REGISTRY[plan_code]
+    plan_type = cfg["type"]
+    rates = cfg["rates"]
+
+    if plan_type == "unisex":
+        # Silver Lining — single rate for all
+        clamped = max(cfg["min_age"], min(cfg["max_age"], age))
+        rate = rates.get(clamped)
+        if rate is None:
+            raise ValueError(f"No rate for age {age} in plan {plan_code}")
+        return float(rate)
+
+    # Standard M/F × NS/SM table: (M_NS, M_SM, F_NS, F_SM)
+    clamped = max(cfg["min_age"], min(cfg["max_age"], age))
+    entry = rates.get(clamped)
+    if entry is None:
+        raise ValueError(f"No rate for age {age} in plan {plan_code}")
+    m_ns, m_sm, f_ns, f_sm = entry
     if sex.upper() == "M":
         return m_sm if smoker else m_ns
     return f_sm if smoker else f_ns
 
 
-def _life_premium(age: int, sex: str, smoker: bool, coverage: float) -> dict:
-    """
-    Compute annual + monthly premium for a Life policy.
-    Formula: annual = (face / 1000 × net_rate) + POLICY_FEE_ANNUAL
-    Calibrated: age 57, F, NS, $45,000 → TTD $1,732.80/yr, $144.40/mo ✓
-    """
-    net_rate = _life_net_rate(age, sex, smoker)
+def _life_premium(plan_code: str, age: int, sex: str, smoker: bool,
+                  coverage: float) -> dict:
+    """Annual + monthly premium for a standard or Silver Lining life plan."""
+    net_rate = _life_rate(plan_code, age, sex, smoker)
     annual   = round((coverage / 1000) * net_rate + POLICY_FEE_ANNUAL, 2)
     monthly  = round(annual / 12, 2)
     return {
+        "annual":     annual,
+        "monthly":    monthly,
+        "net_rate":   round(net_rate, 2),
+        "policy_fee": POLICY_FEE_ANNUAL,
+    }
+
+
+def _esp_premium(age: int, duration: int, coverage: float) -> dict:
+    """Annual + monthly premium for Education Security Plan."""
+    payor_rates = RATES_818.get(age)
+    if payor_rates is None:
+        raise ValueError(f"No ESP rates for payor age {age}")
+    if duration not in ESP_DURATIONS:
+        raise ValueError(f"Duration {duration} not available; choose from {ESP_DURATIONS}")
+    rate = payor_rates.get(duration)
+    if rate is None:
+        raise ValueError(f"No ESP rate for age {age}, duration {duration}")
+    annual  = round((coverage / 1000) * rate + POLICY_FEE_ANNUAL, 2)
+    monthly = round(annual / 12, 2)
+    return {
         "annual":      annual,
         "monthly":     monthly,
-        "net_rate":    round(net_rate, 2),
+        "net_rate":    round(rate, 2),
         "policy_fee":  POLICY_FEE_ANNUAL,
+        "esp_duration": duration,
     }
 
 
@@ -147,6 +211,15 @@ def get_pa_tiers():
     return PA_TIERS
 
 
+@router.get("/plans")
+def list_plans():
+    """Return all available plan codes and their display names."""
+    return [
+        {"plan_code": code, "name": cfg["name"], "plan_type": cfg["type"]}
+        for code, cfg in PLAN_REGISTRY.items()
+    ]
+
+
 @router.post("/calculate")
 async def calculate_quote(
     data: QuoteInput,
@@ -154,18 +227,17 @@ async def calculate_quote(
 ):
     """
     Calculate an indicative premium quote.
-    Age source priority: date_of_birth in request > client's fact-find record.
+    Age source priority: date_of_birth in request > client fact-find.
+    If plan_code is provided it routes to that specific plan's rate table.
     """
     # ── Resolve age ──────────────────────────────────────────────────────────
-    age: int | None = None
+    age: Optional[int] = None
 
     if data.date_of_birth:
         try:
             age = _age_from_dob(data.date_of_birth)
         except ValueError:
             raise HTTPException(status_code=422, detail="Invalid date of birth. Use YYYY-MM-DD.")
-        if age < 18 or age > 80:
-            raise HTTPException(status_code=422, detail="Age must be between 18 and 80 to quote.")
     else:
         client_id = current["sub"]
         pool = get_pool()
@@ -183,13 +255,75 @@ async def calculate_quote(
             detail="Please enter your date of birth to calculate a quote.",
         )
 
-    # ── Life ─────────────────────────────────────────────────────────────────
+    # ── Route by plan_code (Life plans) ──────────────────────────────────────
+    if data.plan_code and data.plan_code in PLAN_REGISTRY:
+        cfg = PLAN_REGISTRY[data.plan_code]
+        plan_type = cfg["type"]
+
+        if plan_type == "esp":
+            # Education Security Plan
+            if data.coverage_amount <= 0:
+                raise HTTPException(status_code=422, detail="Coverage amount must be greater than 0.")
+            if data.esp_duration not in ESP_DURATIONS:
+                raise HTTPException(
+                    status_code=422,
+                    detail=f"Please select a duration ({ESP_DURATIONS[0]}–{ESP_DURATIONS[-1]} years).",
+                )
+            if age < cfg["min_age"] or age > cfg["max_age"]:
+                raise HTTPException(
+                    status_code=422,
+                    detail=f"Age {age} is outside the available range ({cfg['min_age']}–{cfg['max_age']}) for this plan.",
+                )
+            try:
+                prem = _esp_premium(age, data.esp_duration, data.coverage_amount)
+            except ValueError as e:
+                raise HTTPException(status_code=422, detail=str(e))
+            return {
+                "product_line":    "Life",
+                "plan_code":       data.plan_code,
+                "plan_name":       cfg["name"],
+                "age":             age,
+                "coverage_amount": data.coverage_amount,
+                **prem,
+            }
+
+        else:
+            # Standard life or unisex (Silver Lining)
+            if data.coverage_amount <= 0:
+                raise HTTPException(status_code=422, detail="Coverage amount must be greater than 0.")
+            if age < cfg["min_age"] or age > cfg["max_age"]:
+                raise HTTPException(
+                    status_code=422,
+                    detail=f"Age {age} is outside the available range ({cfg['min_age']}–{cfg['max_age']}) for this plan.",
+                )
+            try:
+                prem = _life_premium(data.plan_code, age, data.sex, data.smoker,
+                                     data.coverage_amount)
+            except ValueError as e:
+                raise HTTPException(status_code=422, detail=str(e))
+            return {
+                "product_line":    "Life",
+                "plan_code":       data.plan_code,
+                "plan_name":       cfg["name"],
+                "age":             age,
+                "sex":             data.sex,
+                "smoker":          data.smoker,
+                "coverage_amount": data.coverage_amount,
+                **prem,
+            }
+
+    # ── Fallback: route by product_line ──────────────────────────────────────
     if data.product_line == "Life":
+        # Legacy fallback — use Plan 001-NP (Ordinary Life Non-Participating)
         if data.coverage_amount <= 0:
             raise HTTPException(status_code=422, detail="Coverage amount must be greater than 0.")
-        prem = _life_premium(age, data.sex, data.smoker, data.coverage_amount)
+        if age < 10 or age > 80:
+            raise HTTPException(status_code=422, detail="Age must be between 10 and 80 to quote.")
+        prem = _life_premium("001-NP", age, data.sex, data.smoker, data.coverage_amount)
         return {
             "product_line":    "Life",
+            "plan_code":       "001-NP",
+            "plan_name":       "Ordinary Life - Non-Participating",
             "age":             age,
             "sex":             data.sex,
             "smoker":          data.smoker,
@@ -197,22 +331,15 @@ async def calculate_quote(
             **prem,
         }
 
-    # ── PA&S ─────────────────────────────────────────────────────────────────
     elif data.product_line == "PA&S":
         if not data.pa_tier_id:
             raise HTTPException(status_code=422, detail="Please select a PA&S package tier.")
         tier = next((t for t in PA_TIERS if t["tier_id"] == data.pa_tier_id), None)
         if not tier:
             raise HTTPException(status_code=422, detail="Invalid PA&S tier selected.")
-        return {
-            "product_line": "PA&S",
-            "age":          age,
-            **tier,
-        }
+        return {"product_line": "PA&S", "age": age, **tier}
 
-    # ── Health ───────────────────────────────────────────────────────────────
     elif data.product_line == "Health":
-        # Age-banded estimate (PAL Health does not use the life rate table)
         if age < 30:
             annual = 1_800.0
         elif age < 45:
@@ -231,7 +358,6 @@ async def calculate_quote(
             "note":         "Estimated range — final premium determined after medical underwriting.",
         }
 
-    # ── Annuities ────────────────────────────────────────────────────────────
     elif data.product_line == "Annuities":
         return {
             "product_line": "Annuities",
@@ -242,4 +368,7 @@ async def calculate_quote(
         }
 
     else:
-        raise HTTPException(status_code=422, detail=f"Unknown product line: {data.product_line}")
+        raise HTTPException(
+            status_code=422,
+            detail=f"Unknown product line or plan code: {data.product_line} / {data.plan_code}",
+        )

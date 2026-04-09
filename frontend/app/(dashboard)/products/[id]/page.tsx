@@ -113,7 +113,11 @@ export default function ProductDetailPage() {
         </div>
 
         {/* Quote widget */}
-        <QuoteWidget productId={product.product_id} productLine={product.line} />
+        <QuoteWidget
+          productId={product.product_id}
+          productLine={product.line}
+          planCode={product.plan_code ?? ''}
+        />
       </div>
     </div>
   )

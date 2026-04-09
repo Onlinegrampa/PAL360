@@ -7,58 +7,76 @@ import { useRouter } from 'next/navigation'
 
 interface QuoteResult {
   product_line: string
+  plan_code?: string
+  plan_name?: string
   age: number
   sex?: string
   smoker?: boolean
   coverage_amount?: number
   annual: number
   monthly: number
-  rate_per_1k?: number
+  net_rate?: number
+  esp_duration?: number
   note?: string
 }
 
 const PA_TIERS = [
-  { tier_id: 'pa-std',   name: 'Personal Protector Standard', annual: 780,  monthly: 66.95,  description: 'Core personal accident protection' },
-  { tier_id: 'pa-plus',  name: 'Personal Protector Plus',     annual: 1560, monthly: 133.90, description: 'Enhanced cover with additional benefits' },
-  { tier_id: 'pa-total', name: 'Total Protector',             annual: 1620, monthly: 139.05, description: 'Comprehensive all-in-one package' },
+  { tier_id: 'pa-std',   name: 'Personal Protector Standard', annual: 780,  monthly: 65.00,  description: 'Core personal accident protection' },
+  { tier_id: 'pa-plus',  name: 'Personal Protector Plus',     annual: 1560, monthly: 130.00, description: 'Enhanced cover with additional benefits' },
+  { tier_id: 'pa-total', name: 'Total Protector',             annual: 1620, monthly: 135.00, description: 'Comprehensive all-in-one package' },
 ]
+
+// Unisex plans — no sex or smoker inputs needed
+const UNISEX_PLANS = ['361', '362', '363', '365', '366', '367']
+
+// Plans that don't require a coverage amount (annuities only)
+const NO_COVERAGE_PLANS: string[] = []
 
 interface Props {
   productId: string
   productLine: string   // "Life" | "Health" | "Annuities" | "PA&S"
+  planCode?: string     // e.g. "001-NP", "361", "818"
 }
 
 function fmt(n: number) {
   return `TTD ${n.toLocaleString('en-TT', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
 }
 
-export default function QuoteWidget({ productId, productLine }: Props) {
+// Education Security Plan available durations
+const ESP_DURATIONS = [10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25]
+
+export default function QuoteWidget({ productId, productLine, planCode = '' }: Props) {
   const router = useRouter()
   const [dob, setDob] = useState('')
   const [sex, setSex] = useState<'F' | 'M'>('F')
   const [smoker, setSmoker] = useState(false)
   const [coverage, setCoverage] = useState('')
   const [selectedTier, setSelectedTier] = useState('')
+  const [espDuration, setEspDuration] = useState(15)
   const [loading, setLoading] = useState(false)
   const [result, setResult] = useState<QuoteResult | null>(null)
   const [error, setError] = useState<string | null>(null)
 
   const isLifeOrHealth = productLine === 'Life' || productLine === 'Health'
+  const isESP          = planCode === '818'
+  const isUnisex       = UNISEX_PLANS.includes(planCode)
+  const isPAS          = productLine === 'PA&S'
+  const isAnnuity      = productLine === 'Annuities'
 
-  // Max DOB = 18 years ago; min DOB = 80 years ago
-  const today = new Date()
+  // Age limits from DOB picker
+  const today  = new Date()
   const maxDob = new Date(today.getFullYear() - 18, today.getMonth(), today.getDate())
     .toISOString().split('T')[0]
   const minDob = new Date(today.getFullYear() - 80, today.getMonth(), today.getDate())
     .toISOString().split('T')[0]
 
   const canQuote = () => {
-    // PA&S is flat-rate — DOB optional, just need a tier selected
-    if (productLine === 'PA&S') return selectedTier !== ''
-    // Life and Health require DOB (age-rated)
-    if (!dob) return false
-    if (productLine === 'Life') return coverage !== '' && parseFloat(coverage) > 0
-    return true  // Health
+    if (isPAS)     return selectedTier !== ''
+    if (isAnnuity) return true
+    if (!dob)      return false
+    if (isLifeOrHealth && productLine === 'Life') return coverage !== '' && parseFloat(coverage) > 0
+    if (productLine === 'Health') return true
+    return false
   }
 
   const handleGetQuote = async () => {
@@ -66,9 +84,17 @@ export default function QuoteWidget({ productId, productLine }: Props) {
     setError(null)
     setResult(null)
     try {
-      const body: Record<string, unknown> = { product_line: productLine, sex, smoker, date_of_birth: dob }
+      const body: Record<string, unknown> = {
+        product_line: productLine,
+        sex,
+        smoker,
+        date_of_birth: dob,
+      }
+      if (planCode) body.plan_code = planCode
       if (isLifeOrHealth) body.coverage_amount = parseFloat(coverage) || 0
-      if (productLine === 'PA&S') body.pa_tier_id = selectedTier
+      if (isPAS)     body.pa_tier_id = selectedTier
+      if (isESP)     body.esp_duration = espDuration
+
       const data = await apiFetch<QuoteResult>('/quotes/calculate', {
         method: 'POST',
         body: JSON.stringify(body),
@@ -106,10 +132,10 @@ export default function QuoteWidget({ productId, productLine }: Props) {
       </div>
 
       {/* DOB — shown for all age-rated product lines */}
-      {productLine !== 'Annuities' && (
+      {!isPAS && !isAnnuity && (
         <div className="space-y-1.5">
           <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide">
-            Date of Birth
+            {isESP ? 'Your Date of Birth (Payor)' : 'Date of Birth'}
             {isLifeOrHealth && <span className="text-red-400 ml-1">*</span>}
           </label>
           <input
@@ -131,73 +157,99 @@ export default function QuoteWidget({ productId, productLine }: Props) {
         </div>
       )}
 
-      {/* Inputs — Life / Health */}
+      {/* Life / Health inputs */}
       {isLifeOrHealth && (
         <div className="space-y-4">
-          {/* Sex */}
-          <div className="space-y-1.5">
-            <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Sex at birth</label>
-            <div className="flex gap-2">
-              {(['F', 'M'] as const).map(v => (
-                <button
-                  key={v}
-                  type="button"
-                  onClick={() => setSex(v)}
-                  className={`flex-1 py-2.5 rounded-xl border text-sm font-semibold transition-all ${
-                    sex === v
-                      ? 'bg-[#002855] text-white border-[#002855]'
-                      : 'bg-white text-gray-600 border-gray-300 hover:border-[#002855]/40'
-                  }`}
-                >
-                  {v === 'F' ? 'Female' : 'Male'}
-                </button>
-              ))}
+          {/* Sex — hidden for unisex plans */}
+          {!isUnisex && (
+            <div className="space-y-1.5">
+              <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Sex at birth</label>
+              <div className="flex gap-2">
+                {(['F', 'M'] as const).map(v => (
+                  <button
+                    key={v}
+                    type="button"
+                    onClick={() => setSex(v)}
+                    className={`flex-1 py-2.5 rounded-xl border text-sm font-semibold transition-all ${
+                      sex === v
+                        ? 'bg-[#002855] text-white border-[#002855]'
+                        : 'bg-white text-gray-600 border-gray-300 hover:border-[#002855]/40'
+                    }`}
+                  >
+                    {v === 'F' ? 'Female' : 'Male'}
+                  </button>
+                ))}
+              </div>
             </div>
-          </div>
+          )}
 
-          {/* Smoker */}
-          <div className="space-y-1.5">
-            <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Do you smoke?</label>
-            <div className="flex gap-2">
-              {([false, true] as const).map(v => (
-                <button
-                  key={String(v)}
-                  type="button"
-                  onClick={() => setSmoker(v)}
-                  className={`flex-1 py-2.5 rounded-xl border text-sm font-semibold transition-all ${
-                    smoker === v
-                      ? 'bg-[#002855] text-white border-[#002855]'
-                      : 'bg-white text-gray-600 border-gray-300 hover:border-[#002855]/40'
-                  }`}
-                >
-                  {v ? 'Yes' : 'No'}
-                </button>
-              ))}
+          {/* Smoker — hidden for unisex plans */}
+          {!isUnisex && (
+            <div className="space-y-1.5">
+              <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Do you smoke?</label>
+              <div className="flex gap-2">
+                {([false, true] as const).map(v => (
+                  <button
+                    key={String(v)}
+                    type="button"
+                    onClick={() => setSmoker(v)}
+                    className={`flex-1 py-2.5 rounded-xl border text-sm font-semibold transition-all ${
+                      smoker === v
+                        ? 'bg-[#002855] text-white border-[#002855]'
+                        : 'bg-white text-gray-600 border-gray-300 hover:border-[#002855]/40'
+                    }`}
+                  >
+                    {v ? 'Yes' : 'No'}
+                  </button>
+                ))}
+              </div>
             </div>
-          </div>
+          )}
+
+          {/* ESP duration picker */}
+          {isESP && (
+            <div className="space-y-1.5">
+              <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Plan Duration</label>
+              <select
+                value={espDuration}
+                onChange={e => setEspDuration(Number(e.target.value))}
+                className="w-full border border-gray-300 rounded-xl px-4 py-3 text-gray-900 text-sm focus:outline-none focus:ring-2 focus:ring-[#002855]"
+              >
+                {ESP_DURATIONS.map(d => (
+                  <option key={d} value={d}>{d} years</option>
+                ))}
+              </select>
+              <p className="text-xs text-gray-400">Years until the education fund matures</p>
+            </div>
+          )}
 
           {/* Coverage amount */}
           <div className="space-y-1.5">
-            <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Coverage amount</label>
+            <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide">
+              {isESP ? 'Education Fund Amount' : 'Coverage amount'}
+            </label>
             <div className="relative">
               <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-sm font-medium">TTD</span>
               <input
                 type="number"
                 min="0"
                 step="50000"
-                placeholder="e.g. 500000"
+                placeholder={isESP ? 'e.g. 100000' : 'e.g. 500000'}
                 value={coverage}
                 onChange={e => setCoverage(e.target.value)}
                 onKeyDown={e => e.key === 'Enter' && canQuote() && handleGetQuote()}
                 className="w-full border border-gray-300 rounded-xl py-3 pl-16 pr-4 text-gray-900 font-semibold focus:outline-none focus:ring-2 focus:ring-[#002855]"
               />
             </div>
+            {isUnisex && (
+              <p className="text-xs text-gray-400">This plan has a single rate for all — no sex or smoker loading.</p>
+            )}
           </div>
         </div>
       )}
 
       {/* PA&S tier picker */}
-      {productLine === 'PA&S' && (
+      {isPAS && (
         <div className="space-y-2">
           <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Select package</label>
           {PA_TIERS.map(tier => (
@@ -227,7 +279,7 @@ export default function QuoteWidget({ productId, productLine }: Props) {
       )}
 
       {/* Annuities — no rater */}
-      {productLine === 'Annuities' && (
+      {isAnnuity && (
         <div className="bg-[#002855]/5 rounded-xl p-4 text-sm text-gray-600 leading-relaxed">
           Annuity illustrations are personalised based on your retirement goals.
           Apply below and an advisor will contact you with a detailed projection.
@@ -256,6 +308,11 @@ export default function QuoteWidget({ productId, productLine }: Props) {
               <p className="text-xs text-gray-400">per year</p>
             </div>
           </div>
+          {result.net_rate !== undefined && (
+            <p className="text-xs text-gray-400">
+              Rate: TTD {result.net_rate}/1,000 · Policy fee: TTD 151.05/yr
+            </p>
+          )}
           {result.note && (
             <p className="text-xs text-gray-500 italic border-t border-[#002855]/10 pt-2">{result.note}</p>
           )}
@@ -279,7 +336,7 @@ export default function QuoteWidget({ productId, productLine }: Props) {
       )}
 
       {/* Get Quote button */}
-      {!result && productLine !== 'Annuities' && (
+      {!result && !isAnnuity && (
         <button
           onClick={handleGetQuote}
           disabled={!canQuote() || loading}
@@ -294,7 +351,7 @@ export default function QuoteWidget({ productId, productLine }: Props) {
       )}
 
       {/* Annuities — go straight to apply */}
-      {productLine === 'Annuities' && (
+      {isAnnuity && (
         <button
           onClick={() => router.push(`/products/${productId}/apply`)}
           className="w-full flex items-center justify-center gap-2 py-3 bg-[#002855] text-white rounded-xl font-semibold hover:bg-[#002855]/90 transition-all"
