@@ -16,6 +16,7 @@ from routes.payments import router as payments_router
 from routes.fact_finds import router as fact_finds_router
 from routes.applications import router as applications_router
 from routes.agents import router as agents_router
+from routes.policy_statements import router as statements_router
 
 load_dotenv()
 
@@ -304,6 +305,7 @@ app.include_router(payments_router,   tags=["payments"])
 app.include_router(fact_finds_router,    tags=["fact-finds"])
 app.include_router(applications_router, tags=["applications"])
 app.include_router(agents_router,       tags=["agents"])
+app.include_router(statements_router,   tags=["policy-statements"])
 
 
 @app.get("/health")
