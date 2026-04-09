@@ -1,6 +1,7 @@
 import os
 import json
 from contextlib import asynccontextmanager
+from datetime import datetime, timezone
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from dotenv import load_dotenv
@@ -94,21 +95,24 @@ async def _seed_if_empty(pool):
         )
 
         # ── Policies ───────────────────────────────────────────────────────────
+        def dt(s: str):
+            return datetime.fromisoformat(s).replace(tzinfo=timezone.utc)
+
         await conn.executemany(
             """INSERT INTO policies
                (policy_id, client_id, line, status, premium, due_date, coverage_amount, start_date)
-               VALUES ($1,$2,$3,$4,$5,$6::timestamptz,$7,$8::timestamptz)""",
+               VALUES ($1,$2,$3,$4,$5,$6,$7,$8)""",
             [
                 # Marcus — all 4 lines
-                ("PAL-TT-2019-001", "CLI-001", "Life",      "IN-FORCE", 2400, "2026-04-20", 500000, "2019-03-01"),
-                ("PAL-TT-2021-044", "CLI-001", "Health",    "IN-FORCE", 1800, "2026-05-01", 100000, "2021-07-15"),
-                ("PAL-TT-2018-007", "CLI-001", "Annuities", "IN-FORCE", 6000, "2026-06-01", 250000, "2018-01-10"),
-                ("PAL-TT-2022-112", "CLI-001", "PA&S",      "LAPSED",    900, "2025-11-01",  75000, "2022-09-01"),
+                ("PAL-TT-2019-001", "CLI-001", "Life",      "IN-FORCE", 2400, dt("2026-04-20"), 500000, dt("2019-03-01")),
+                ("PAL-TT-2021-044", "CLI-001", "Health",    "IN-FORCE", 1800, dt("2026-05-01"), 100000, dt("2021-07-15")),
+                ("PAL-TT-2018-007", "CLI-001", "Annuities", "IN-FORCE", 6000, dt("2026-06-01"), 250000, dt("2018-01-10")),
+                ("PAL-TT-2022-112", "CLI-001", "PA&S",      "LAPSED",    900, dt("2025-11-01"),  75000, dt("2022-09-01")),
                 # Priya
-                ("PAL-TT-2020-055", "CLI-002", "Life",   "IN-FORCE", 1800, "2026-04-25", 300000, "2020-05-01"),
-                ("PAL-TT-2023-088", "CLI-002", "Health", "IN-FORCE", 1200, "2026-05-15",  80000, "2023-02-01"),
+                ("PAL-TT-2020-055", "CLI-002", "Life",   "IN-FORCE", 1800, dt("2026-04-25"), 300000, dt("2020-05-01")),
+                ("PAL-TT-2023-088", "CLI-002", "Health", "IN-FORCE", 1200, dt("2026-05-15"),  80000, dt("2023-02-01")),
                 # Jerome
-                ("PAL-TT-2017-003", "CLI-003", "Life", "IN-FORCE", 3000, "2026-04-30", 750000, "2017-06-01"),
+                ("PAL-TT-2017-003", "CLI-003", "Life", "IN-FORCE", 3000, dt("2026-04-30"), 750000, dt("2017-06-01")),
             ],
         )
 
@@ -116,7 +120,7 @@ async def _seed_if_empty(pool):
         await conn.executemany(
             """INSERT INTO claims
                (claim_id, policy_id, stage, timestamps, est_resolution, amount, description)
-               VALUES ($1,$2,$3,$4::jsonb,$5::timestamptz,$6,$7)""",
+               VALUES ($1,$2,$3,$4::jsonb,$5,$6,$7)""",
             [
                 (
                     "CLM-2026-001", "PAL-TT-2021-044", "Claims Dept",
@@ -125,7 +129,7 @@ async def _seed_if_empty(pool):
                         {"stage": "Agent Review", "ts": "2026-03-17T11:30:00"},
                         {"stage": "Claims Dept",  "ts": "2026-03-21T14:00:00"},
                     ]),
-                    "2026-04-15", 4500.00,
+                    dt("2026-04-15"), 4500.00,
                     "Emergency hospitalization — St. Clair Medical Centre",
                 ),
                 (
@@ -137,7 +141,7 @@ async def _seed_if_empty(pool):
                         {"stage": "Finance",      "ts": "2025-10-10T09:00:00"},
                         {"stage": "Paid",         "ts": "2025-10-14T16:00:00"},
                     ]),
-                    "2025-10-14", 12000.00,
+                    dt("2025-10-14"), 12000.00,
                     "Critical illness benefit — Type 2 Diabetes diagnosis",
                 ),
             ],
