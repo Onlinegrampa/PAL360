@@ -14,6 +14,7 @@ from routes.claims import router as claims_router
 from routes.products import router as products_router
 from routes.payments import router as payments_router
 from routes.fact_finds import router as fact_finds_router
+from routes.applications import router as applications_router
 
 load_dotenv()
 
@@ -71,6 +72,27 @@ async def _create_tables(pool):
                 wipay_ref  TEXT,
                 status     TEXT NOT NULL DEFAULT 'pending',
                 created_at TIMESTAMPTZ DEFAULT NOW()
+            );
+
+            CREATE TABLE IF NOT EXISTS applications (
+                id                       SERIAL PRIMARY KEY,
+                app_ref                  TEXT UNIQUE NOT NULL,
+                client_id                TEXT NOT NULL REFERENCES clients(client_id),
+                product_id               TEXT NOT NULL,
+                product_name             TEXT NOT NULL,
+                full_name                TEXT NOT NULL,
+                date_of_birth            TEXT NOT NULL,
+                address                  TEXT NOT NULL,
+                phone                    TEXT NOT NULL,
+                occupation               TEXT NOT NULL,
+                smoker                   BOOLEAN NOT NULL DEFAULT false,
+                pre_existing_conditions  TEXT NOT NULL DEFAULT '',
+                beneficiary_name         TEXT NOT NULL,
+                beneficiary_relationship TEXT NOT NULL,
+                beneficiary_phone        TEXT NOT NULL,
+                status                   TEXT NOT NULL DEFAULT 'under_review',
+                assigned_policy_number   TEXT,
+                created_at               TIMESTAMPTZ DEFAULT NOW()
             );
 
             CREATE TABLE IF NOT EXISTS fact_finds (
@@ -227,7 +249,8 @@ app.include_router(policies_router,   tags=["policies"])
 app.include_router(claims_router,     tags=["claims"])
 app.include_router(products_router,   tags=["products"])
 app.include_router(payments_router,   tags=["payments"])
-app.include_router(fact_finds_router, tags=["fact-finds"])
+app.include_router(fact_finds_router,    tags=["fact-finds"])
+app.include_router(applications_router, tags=["applications"])
 
 
 @app.get("/health")

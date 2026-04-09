@@ -45,10 +45,10 @@ export function ProductCard({ product }: { product: Product }) {
       </ul>
 
       <Link
-        href="/payment"
-        className="block w-full bg-[#002855] text-white text-sm font-medium py-2.5 px-4 rounded-xl text-center hover:bg-[#003a7a] transition-colors"
+        href={`/products/${product.product_id}/apply`}
+        className="block w-full bg-[#002855] text-white text-sm font-semibold py-2.5 px-4 rounded-xl text-center hover:bg-[#003a7a] transition-colors"
       >
-        Learn More / Enroll
+        Apply Now
       </Link>
     </div>
   )

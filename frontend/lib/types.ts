@@ -28,6 +28,27 @@ export interface Product {
   use_case: string
 }
 
+export interface Application {
+  id: number
+  app_ref: string
+  client_id: string
+  product_id: string
+  product_name: string
+  full_name: string
+  date_of_birth: string
+  address: string
+  phone: string
+  occupation: string
+  smoker: boolean
+  pre_existing_conditions: string
+  beneficiary_name: string
+  beneficiary_relationship: string
+  beneficiary_phone: string
+  status: 'under_review' | 'approved' | 'declined'
+  assigned_policy_number: string | null
+  created_at: string
+}
+
 export interface Client {
   client_id: string
   name: string
