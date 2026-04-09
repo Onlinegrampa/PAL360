@@ -123,6 +123,7 @@ async def _create_tables(pool):
             CREATE TABLE IF NOT EXISTS fact_finds (
                 id                    SERIAL PRIMARY KEY,
                 client_id             TEXT NOT NULL REFERENCES clients(client_id) ON DELETE CASCADE,
+                age                   INTEGER,
                 annual_income         NUMERIC(14,2),
                 annual_expenses       NUMERIC(14,2),
                 total_debt            NUMERIC(14,2),
@@ -136,6 +137,10 @@ async def _create_tables(pool):
                 created_at            TIMESTAMPTZ DEFAULT NOW(),
                 updated_at            TIMESTAMPTZ DEFAULT NOW()
             );
+        """)
+        # Live-database migrations — safe to run on every boot
+        await conn.execute("""
+            ALTER TABLE fact_finds ADD COLUMN IF NOT EXISTS age INTEGER;
         """)
 
 

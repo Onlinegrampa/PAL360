@@ -7,6 +7,7 @@ router = APIRouter(prefix="/fact-finds", tags=["fact-finds"])
 
 
 class FactFindInput(BaseModel):
+    age: int
     annual_income: float
     annual_expenses: float
     total_debt: float
@@ -14,9 +15,14 @@ class FactFindInput(BaseModel):
     financial_goals: str
 
 
-def _calculate_insurance_needed(income: float, expenses: float, debt: float) -> float:
-    """DIME method: Debt + Income×10 + Expenses×10 + Final expenses."""
-    return debt + (income * 10) + (expenses * 10) + 15_000
+def _income_multiplier(age: int) -> int:
+    """Years of income replacement needed based on retirement at 65. Floor of 5."""
+    return max(5, 65 - age)
+
+
+def _calculate_insurance_needed(age: int, income: float, expenses: float, debt: float) -> float:
+    """Age-adjusted DIME method: Debt + Income×(65-age) + Expenses×10 + Final expenses."""
+    return debt + (income * _income_multiplier(age)) + (expenses * 10) + 15_000
 
 
 def _status_label(gap_pct: float) -> str:
@@ -28,9 +34,12 @@ def _status_label(gap_pct: float) -> str:
 
 
 def _fmt(row: dict) -> dict:
+    age = row.get("age") or 0
     return {
         "id":                    row["id"],
         "client_id":             row["client_id"],
+        "age":                   age,
+        "income_multiplier":     _income_multiplier(age) if age else None,
         "annual_income":         float(row["annual_income"]),
         "annual_expenses":       float(row["annual_expenses"]),
         "total_debt":            float(row["total_debt"]),
@@ -66,7 +75,7 @@ async def calculate_fact_find(
         current_coverage = float(raw_coverage or 0)
 
         insurance_needed = _calculate_insurance_needed(
-            data.annual_income, data.annual_expenses, data.total_debt
+            data.age, data.annual_income, data.annual_expenses, data.total_debt
         )
         protection_gap = max(0.0, insurance_needed - current_coverage)
         gap_pct = (protection_gap / insurance_needed * 100) if insurance_needed > 0 else 0.0
@@ -80,14 +89,15 @@ async def calculate_fact_find(
         row = await conn.fetchrow(
             """
             INSERT INTO fact_finds
-              (client_id, annual_income, annual_expenses, total_debt,
+              (client_id, age, annual_income, annual_expenses, total_debt,
                num_dependents, financial_goals,
                life_insurance_needed, current_coverage, protection_gap,
                gap_percentage, is_current)
-            VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,true)
+            VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,true)
             RETURNING *
             """,
             client_id,
+            data.age,
             data.annual_income,
             data.annual_expenses,
             data.total_debt,

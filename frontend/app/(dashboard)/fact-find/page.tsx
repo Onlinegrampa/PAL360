@@ -10,6 +10,8 @@ import HealthDashboard from '@/components/HealthDashboard'
 interface FactFindResult {
   id: number
   client_id: string
+  age: number
+  income_multiplier: number | null
   life_insurance_needed: number
   current_coverage: number
   protection_gap: number

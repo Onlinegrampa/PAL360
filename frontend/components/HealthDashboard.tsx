@@ -3,6 +3,8 @@
 import { CheckCircle, AlertCircle, AlertTriangle, TrendingUp, RefreshCw } from 'lucide-react'
 
 interface FactFindResult {
+  age?: number
+  income_multiplier?: number | null
   life_insurance_needed: number
   current_coverage: number
   protection_gap: number
@@ -52,7 +54,7 @@ function CoverageBar({ current, needed }: { current: number; needed: number }) {
 }
 
 export default function HealthDashboard({ data, onRecalculate }: Props) {
-  const { life_insurance_needed, current_coverage, protection_gap, gap_percentage } = data
+  const { life_insurance_needed, current_coverage, protection_gap, gap_percentage, age, income_multiplier } = data
 
   const coveredPct = Math.max(0, Math.min(100, 100 - gap_percentage))
 
@@ -163,13 +165,20 @@ export default function HealthDashboard({ data, onRecalculate }: Props) {
           How we calculated this
         </p>
         <p className="text-xs text-gray-600 leading-relaxed">
-          We used the <strong>DIME method</strong> — an industry-standard formula:
+          We used the <strong>age-adjusted DIME method</strong>:
           <br />
           <span className="font-mono text-[#002855]">
-            Debt + (Income × 10) + (Expenses × 10) + Final Expenses
+            Debt + (Income × {income_multiplier ?? 10}) + (Expenses × 10) + Final Expenses
           </span>
           <br />
-          This estimates how much your family would need if you were no longer there.
+          {age && income_multiplier ? (
+            <>
+              At age <strong>{age}</strong>, we used a <strong>{income_multiplier}× income multiplier</strong>{' '}
+              — the estimated years of earnings your family would need to replace before retirement at 65.
+            </>
+          ) : (
+            'This estimates how much your family would need if you were no longer there.'
+          )}
         </p>
       </div>
 
