@@ -13,6 +13,7 @@ from routes.policies import router as policies_router
 from routes.claims import router as claims_router
 from routes.products import router as products_router
 from routes.payments import router as payments_router
+from routes.fact_finds import router as fact_finds_router
 
 load_dotenv()
 
@@ -70,6 +71,23 @@ async def _create_tables(pool):
                 wipay_ref  TEXT,
                 status     TEXT NOT NULL DEFAULT 'pending',
                 created_at TIMESTAMPTZ DEFAULT NOW()
+            );
+
+            CREATE TABLE IF NOT EXISTS fact_finds (
+                id                    SERIAL PRIMARY KEY,
+                client_id             TEXT NOT NULL REFERENCES clients(client_id) ON DELETE CASCADE,
+                annual_income         NUMERIC(14,2),
+                annual_expenses       NUMERIC(14,2),
+                total_debt            NUMERIC(14,2),
+                num_dependents        INTEGER,
+                financial_goals       TEXT,
+                life_insurance_needed NUMERIC(14,2),
+                current_coverage      NUMERIC(14,2),
+                protection_gap        NUMERIC(14,2),
+                gap_percentage        NUMERIC(6,2),
+                is_current            BOOLEAN DEFAULT true,
+                created_at            TIMESTAMPTZ DEFAULT NOW(),
+                updated_at            TIMESTAMPTZ DEFAULT NOW()
             );
         """)
 
@@ -204,11 +222,12 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.include_router(auth_router,     tags=["auth"])
-app.include_router(policies_router, tags=["policies"])
-app.include_router(claims_router,   tags=["claims"])
-app.include_router(products_router, tags=["products"])
-app.include_router(payments_router, tags=["payments"])
+app.include_router(auth_router,       tags=["auth"])
+app.include_router(policies_router,   tags=["policies"])
+app.include_router(claims_router,     tags=["claims"])
+app.include_router(products_router,   tags=["products"])
+app.include_router(payments_router,   tags=["payments"])
+app.include_router(fact_finds_router, tags=["fact-finds"])
 
 
 @app.get("/health")
