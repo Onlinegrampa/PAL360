@@ -1,3 +1,4 @@
+from datetime import date
 from fastapi import APIRouter, HTTPException, Depends
 from pydantic import BaseModel
 from db import get_pool
@@ -42,11 +43,19 @@ PA_TIERS = [
 
 
 class QuoteInput(BaseModel):
-    product_line: str          # "Life", "Health", "Annuities", "PA&S"
-    coverage_amount: float = 0 # face amount for Life / Health
-    pa_tier_id: str = ""       # for PA&S
-    sex: str = "F"             # "M" or "F"
+    product_line: str           # "Life", "Health", "Annuities", "PA&S"
+    coverage_amount: float = 0  # face amount for Life / Health
+    pa_tier_id: str = ""        # for PA&S
+    sex: str = "F"              # "M" or "F"
     smoker: bool = False
+    date_of_birth: str = ""     # YYYY-MM-DD — overrides fact-find age when provided
+
+
+def _age_from_dob(dob_str: str) -> int:
+    """Calculate age in whole years from a YYYY-MM-DD date string."""
+    dob = date.fromisoformat(dob_str)
+    today = date.today()
+    return today.year - dob.year - ((today.month, today.day) < (dob.month, dob.day))
 
 
 def _life_annual(age: int, sex: str, smoker: bool, coverage: float) -> float:
@@ -72,24 +81,35 @@ async def calculate_quote(
 ):
     """
     Calculate an indicative premium quote.
-    Pulls client age from their most recent fact-find assessment.
+    Age source priority: date_of_birth in request > fact-find record.
     """
-    client_id = current["sub"]
-    pool = get_pool()
+    # ── Resolve age ──────────────────────────────────────────────────────────
+    age: int | None = None
 
-    async with pool.acquire() as conn:
-        row = await conn.fetchrow(
-            "SELECT age FROM fact_finds WHERE client_id = $1 AND is_current = true",
-            client_id,
-        )
+    if data.date_of_birth:
+        try:
+            age = _age_from_dob(data.date_of_birth)
+        except ValueError:
+            raise HTTPException(status_code=422, detail="Invalid date of birth format. Use YYYY-MM-DD.")
+        if age < 18 or age > 80:
+            raise HTTPException(status_code=422, detail="Age must be between 18 and 80 to quote.")
+    else:
+        # Fall back to the client's saved fact-find
+        client_id = current["sub"]
+        pool = get_pool()
+        async with pool.acquire() as conn:
+            row = await conn.fetchrow(
+                "SELECT age FROM fact_finds WHERE client_id = $1 AND is_current = true",
+                client_id,
+            )
+        if row and row["age"]:
+            age = row["age"]
 
-    if not row or not row["age"]:
+    if age is None:
         raise HTTPException(
             status_code=422,
-            detail="Please complete your Health Check first — we use your age to calculate the premium.",
+            detail="Please enter your date of birth to calculate a quote.",
         )
-
-    age = row["age"]
 
     # ── Life ────────────────────────────────────────────────────────────────
     if data.product_line == "Life":

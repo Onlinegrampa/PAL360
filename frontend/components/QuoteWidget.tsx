@@ -34,6 +34,7 @@ function fmt(n: number) {
 
 export default function QuoteWidget({ productId, productLine }: Props) {
   const router = useRouter()
+  const [dob, setDob] = useState('')
   const [sex, setSex] = useState<'F' | 'M'>('F')
   const [smoker, setSmoker] = useState(false)
   const [coverage, setCoverage] = useState('')
@@ -44,10 +45,20 @@ export default function QuoteWidget({ productId, productLine }: Props) {
 
   const isLifeOrHealth = productLine === 'Life' || productLine === 'Health'
 
+  // Max DOB = 18 years ago; min DOB = 80 years ago
+  const today = new Date()
+  const maxDob = new Date(today.getFullYear() - 18, today.getMonth(), today.getDate())
+    .toISOString().split('T')[0]
+  const minDob = new Date(today.getFullYear() - 80, today.getMonth(), today.getDate())
+    .toISOString().split('T')[0]
+
   const canQuote = () => {
-    if (productLine === 'Life') return coverage !== '' && parseFloat(coverage) > 0
+    // PA&S is flat-rate — DOB optional, just need a tier selected
     if (productLine === 'PA&S') return selectedTier !== ''
-    return true
+    // Life and Health require DOB (age-rated)
+    if (!dob) return false
+    if (productLine === 'Life') return coverage !== '' && parseFloat(coverage) > 0
+    return true  // Health
   }
 
   const handleGetQuote = async () => {
@@ -55,7 +66,7 @@ export default function QuoteWidget({ productId, productLine }: Props) {
     setError(null)
     setResult(null)
     try {
-      const body: Record<string, unknown> = { product_line: productLine, sex, smoker }
+      const body: Record<string, unknown> = { product_line: productLine, sex, smoker, date_of_birth: dob }
       if (isLifeOrHealth) body.coverage_amount = parseFloat(coverage) || 0
       if (productLine === 'PA&S') body.pa_tier_id = selectedTier
       const data = await apiFetch<QuoteResult>('/quotes/calculate', {
@@ -77,6 +88,7 @@ export default function QuoteWidget({ productId, productLine }: Props) {
     if (result.annual)           p.set('premium_annual',  String(result.annual))
     if (result.coverage_amount)  p.set('coverage',        String(result.coverage_amount))
     if (result.sex)              p.set('sex',              result.sex)
+    if (dob)                     p.set('dob',              dob)
     router.push(`/products/${productId}/apply?${p.toString()}`)
   }
 
@@ -92,6 +104,32 @@ export default function QuoteWidget({ productId, productLine }: Props) {
           <p className="text-xs text-gray-400">Indicative — final premium subject to underwriting</p>
         </div>
       </div>
+
+      {/* DOB — shown for all age-rated product lines */}
+      {productLine !== 'Annuities' && (
+        <div className="space-y-1.5">
+          <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide">
+            Date of Birth
+            {isLifeOrHealth && <span className="text-red-400 ml-1">*</span>}
+          </label>
+          <input
+            type="date"
+            min={minDob}
+            max={maxDob}
+            value={dob}
+            onChange={e => { setDob(e.target.value); setResult(null) }}
+            className="w-full border border-gray-300 rounded-xl px-4 py-3 text-gray-900 text-sm focus:outline-none focus:ring-2 focus:ring-[#002855]"
+          />
+          {dob && (
+            <p className="text-xs text-gray-400">
+              Age: <span className="font-semibold text-[#002855]">
+                {new Date().getFullYear() - new Date(dob).getFullYear() -
+                  (new Date() < new Date(new Date(dob).setFullYear(new Date().getFullYear())) ? 1 : 0)} years
+              </span>
+            </p>
+          )}
+        </div>
+      )}
 
       {/* Inputs — Life / Health */}
       {isLifeOrHealth && (
