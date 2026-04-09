@@ -187,6 +187,9 @@ app = FastAPI(
 FRONTEND_URL = os.getenv("FRONTEND_URL", "")
 origins = [
     "http://localhost:3000",
+    "http://localhost:3001",
+    "http://localhost:3002",
+    "http://localhost:3003",
     "http://localhost:4001",
 ]
 if FRONTEND_URL:
@@ -195,7 +198,7 @@ if FRONTEND_URL:
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
-    allow_origin_regex=r"https://.*\.up\.railway\.app",
+    allow_origin_regex=r"https?://localhost:\d+|https://.*\.up\.railway\.app|https://.*\.vercel\.app",
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
