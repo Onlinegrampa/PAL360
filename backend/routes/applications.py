@@ -16,11 +16,13 @@ class ApplicationInput(BaseModel):
     address: str
     phone: str
     occupation: str
+    sex: str = "F"
     smoker: bool
     pre_existing_conditions: str
     beneficiary_name: str
     beneficiary_relationship: str
     beneficiary_phone: str
+    signature: str = ""      # base64 PNG data URI from canvas pad
 
 
 def _fmt(row: dict) -> dict:
@@ -43,15 +45,17 @@ async def submit_application(
             """
             INSERT INTO applications
               (app_ref, client_id, product_id, product_name, full_name, date_of_birth,
-               address, phone, occupation, smoker, pre_existing_conditions,
-               beneficiary_name, beneficiary_relationship, beneficiary_phone, status)
-            VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,'under_review')
+               address, phone, occupation, sex, smoker, pre_existing_conditions,
+               beneficiary_name, beneficiary_relationship, beneficiary_phone,
+               signature, status)
+            VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,'under_review')
             RETURNING *
             """,
             app_ref, client_id, data.product_id, data.product_name,
             data.full_name, data.date_of_birth, data.address, data.phone,
-            data.occupation, data.smoker, data.pre_existing_conditions,
+            data.occupation, data.sex, data.smoker, data.pre_existing_conditions,
             data.beneficiary_name, data.beneficiary_relationship, data.beneficiary_phone,
+            data.signature or None,
         )
     return _fmt(dict(row))
 

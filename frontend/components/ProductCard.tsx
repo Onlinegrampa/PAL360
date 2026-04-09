@@ -45,10 +45,10 @@ export function ProductCard({ product }: { product: Product }) {
       </ul>
 
       <Link
-        href={`/products/${product.product_id}/apply`}
+        href={`/products/${product.product_id}`}
         className="block w-full bg-[#002855] text-white text-sm font-semibold py-2.5 px-4 rounded-xl text-center hover:bg-[#003a7a] transition-colors"
       >
-        Apply Now
+        View &amp; Quote
       </Link>
     </div>
   )

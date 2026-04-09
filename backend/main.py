@@ -17,6 +17,7 @@ from routes.fact_finds import router as fact_finds_router
 from routes.applications import router as applications_router
 from routes.agents import router as agents_router
 from routes.policy_statements import router as statements_router
+from routes.quotes import router as quotes_router
 
 load_dotenv()
 
@@ -141,6 +142,12 @@ async def _create_tables(pool):
         # Live-database migrations — safe to run on every boot
         await conn.execute("""
             ALTER TABLE fact_finds ADD COLUMN IF NOT EXISTS age INTEGER;
+        """)
+        await conn.execute("""
+            ALTER TABLE applications ADD COLUMN IF NOT EXISTS sex TEXT DEFAULT 'F';
+        """)
+        await conn.execute("""
+            ALTER TABLE applications ADD COLUMN IF NOT EXISTS signature TEXT;
         """)
 
 
@@ -311,6 +318,7 @@ app.include_router(fact_finds_router,    tags=["fact-finds"])
 app.include_router(applications_router, tags=["applications"])
 app.include_router(agents_router,       tags=["agents"])
 app.include_router(statements_router,   tags=["policy-statements"])
+app.include_router(quotes_router,       tags=["quotes"])
 
 
 @app.get("/health")

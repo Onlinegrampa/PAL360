@@ -1,17 +1,23 @@
 'use client'
 
-import { useEffect, useState } from 'react'
-import { useParams } from 'next/navigation'
+import { Suspense, useEffect, useState } from 'react'
+import { useParams, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import { ArrowLeft, Loader2 } from 'lucide-react'
 import { apiFetch } from '@/lib/api'
 import DigitalApplicationForm from '@/components/DigitalApplicationForm'
 import type { Product } from '@/lib/types'
 
-export default function ApplyPage() {
-  const { id } = useParams<{ id: string }>()
+function ApplyContent({ id }: { id: string }) {
+  const searchParams = useSearchParams()
   const [product, setProduct] = useState<Product | null>(null)
   const [loading, setLoading] = useState(true)
+
+  // Quote params passed from QuoteWidget via URL
+  const premiumMonthly = searchParams.get('premium_monthly')
+  const premiumAnnual  = searchParams.get('premium_annual')
+  const coverage       = searchParams.get('coverage')
+  const quotedSex      = searchParams.get('sex') as 'F' | 'M' | null
 
   useEffect(() => {
     apiFetch<Product>(`/products/${id}`)
@@ -32,10 +38,7 @@ export default function ApplyPage() {
     return (
       <div className="max-w-xl mx-auto text-center py-20">
         <p className="text-gray-500 mb-4">Product not found.</p>
-        <Link
-          href="/products"
-          className="text-[#002855] font-semibold hover:underline"
-        >
+        <Link href="/products" className="text-[#002855] font-semibold hover:underline">
           ← Back to Products
         </Link>
       </div>
@@ -47,12 +50,11 @@ export default function ApplyPage() {
       {/* Header */}
       <div className="mb-8">
         <Link
-          href="/products"
+          href={`/products/${id}`}
           className="inline-flex items-center gap-2 text-sm text-gray-500 hover:text-[#002855] transition-colors mb-4"
         >
-          <ArrowLeft size={15} /> Back to Products
+          <ArrowLeft size={15} /> Back to Product
         </Link>
-
         <div className="flex items-start gap-4">
           <div className="w-12 h-12 bg-[#002855] rounded-xl flex items-center justify-center flex-shrink-0">
             <span className="text-[#C9A84C] font-bold text-xs">PAL</span>
@@ -64,11 +66,30 @@ export default function ApplyPage() {
             </p>
           </div>
         </div>
-
         <p className="text-gray-600 text-sm leading-relaxed mt-4">{product.use_case}</p>
       </div>
 
-      <DigitalApplicationForm productId={product.product_id} productName={product.name} />
+      <DigitalApplicationForm
+        productId={product.product_id}
+        productName={product.name}
+        premiumMonthly={premiumMonthly}
+        premiumAnnual={premiumAnnual}
+        coverage={coverage}
+        quotedSex={quotedSex}
+      />
     </div>
+  )
+}
+
+export default function ApplyPage() {
+  const { id } = useParams<{ id: string }>()
+  return (
+    <Suspense fallback={
+      <div className="flex items-center justify-center py-20">
+        <Loader2 size={28} className="animate-spin text-[#002855]" />
+      </div>
+    }>
+      <ApplyContent id={id} />
+    </Suspense>
   )
 }
