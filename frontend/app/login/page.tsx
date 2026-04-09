@@ -1,10 +1,10 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { Suspense, useState, useEffect } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useAuth } from '@/lib/auth'
 
-export default function LoginPage() {
+function LoginForm() {
   const { signIn, user, loading } = useAuth()
   const router = useRouter()
   const params = useSearchParams()
@@ -15,7 +15,6 @@ export default function LoginPage() {
   const [error, setError] = useState<string | null>(null)
   const [submitting, setSubmitting] = useState(false)
 
-  // Already logged in — bounce to dashboard
   useEffect(() => {
     if (!loading && user) router.replace(next)
   }, [user, loading, router, next])
@@ -37,6 +36,64 @@ export default function LoginPage() {
   }
 
   return (
+    <div className="bg-white rounded-2xl shadow-xl p-8 w-full max-w-sm">
+      <h2 className="text-[#002855] text-xl font-semibold mb-6">Sign in to your account</h2>
+
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1.5">
+            Email address
+          </label>
+          <input
+            type="email"
+            required
+            autoComplete="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#002855]/30 focus:border-[#002855] transition-colors"
+            placeholder="you@example.com"
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1.5">
+            Password
+          </label>
+          <input
+            type="password"
+            required
+            autoComplete="current-password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            className="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#002855]/30 focus:border-[#002855] transition-colors"
+            placeholder="••••••••"
+          />
+        </div>
+
+        {error && (
+          <div className="bg-red-50 border border-red-200 text-red-700 text-sm px-4 py-3 rounded-xl">
+            {error}
+          </div>
+        )}
+
+        <button
+          type="submit"
+          disabled={submitting}
+          className="w-full bg-[#002855] text-white font-semibold py-3 rounded-xl hover:bg-[#003a7a] disabled:opacity-60 disabled:cursor-not-allowed transition-colors mt-2"
+        >
+          {submitting ? 'Signing in…' : 'Sign In'}
+        </button>
+      </form>
+
+      <p className="text-center text-xs text-gray-400 mt-6">
+        Pan American Life Insurance Group · Trinidad &amp; Tobago
+      </p>
+    </div>
+  )
+}
+
+export default function LoginPage() {
+  return (
     <div className="min-h-screen bg-[#002855] flex flex-col items-center justify-center px-6">
       {/* Logo */}
       <div className="mb-8 text-center">
@@ -47,60 +104,18 @@ export default function LoginPage() {
         <p className="text-white/50 text-sm mt-1">Client Insurance Portal</p>
       </div>
 
-      {/* Card */}
-      <div className="bg-white rounded-2xl shadow-xl p-8 w-full max-w-sm">
-        <h2 className="text-[#002855] text-xl font-semibold mb-6">Sign in to your account</h2>
-
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1.5">
-              Email address
-            </label>
-            <input
-              type="email"
-              required
-              autoComplete="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#002855]/30 focus:border-[#002855] transition-colors"
-              placeholder="you@example.com"
-            />
+      <Suspense fallback={
+        <div className="bg-white rounded-2xl shadow-xl p-8 w-full max-w-sm">
+          <div className="h-8 bg-gray-100 rounded animate-pulse mb-6" />
+          <div className="space-y-4">
+            <div className="h-12 bg-gray-100 rounded-xl animate-pulse" />
+            <div className="h-12 bg-gray-100 rounded-xl animate-pulse" />
+            <div className="h-12 bg-gray-100 rounded-xl animate-pulse" />
           </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1.5">
-              Password
-            </label>
-            <input
-              type="password"
-              required
-              autoComplete="current-password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#002855]/30 focus:border-[#002855] transition-colors"
-              placeholder="••••••••"
-            />
-          </div>
-
-          {error && (
-            <div className="bg-red-50 border border-red-200 text-red-700 text-sm px-4 py-3 rounded-xl">
-              {error}
-            </div>
-          )}
-
-          <button
-            type="submit"
-            disabled={submitting}
-            className="w-full bg-[#002855] text-white font-semibold py-3 rounded-xl hover:bg-[#003a7a] disabled:opacity-60 disabled:cursor-not-allowed transition-colors mt-2"
-          >
-            {submitting ? 'Signing in…' : 'Sign In'}
-          </button>
-        </form>
-
-        <p className="text-center text-xs text-gray-400 mt-6">
-          Pan American Life Insurance Group · Trinidad &amp; Tobago
-        </p>
-      </div>
+        </div>
+      }>
+        <LoginForm />
+      </Suspense>
 
       <p className="text-white/30 text-xs mt-8">
         Protected by JWT Auth · TLS encrypted
