@@ -10,7 +10,6 @@
       "Dividends can reduce premiums, increase coverage, or accumulate as cash",
       "Guaranteed cash surrender value grows with time"
     ],
-    "cost_range": "TTD $150–$600/month",
     "use_case": "Classic whole life protection that rewards long-term policyholders with dividends and growing cash value."
   },
   {
@@ -24,7 +23,6 @@
       "Guaranteed cash surrender value",
       "Predictable cost — no dividend variability"
     ],
-    "cost_range": "TTD $120–$500/month",
     "use_case": "Simple, predictable whole life insurance with fixed costs and guaranteed lifetime coverage."
   },
   {
@@ -38,7 +36,6 @@
       "Policy fully paid up after 20 payments",
       "Cash value accumulates throughout the premium period"
     ],
-    "cost_range": "TTD $180–$700/month",
     "use_case": "Commit to 20 years of premiums and enjoy lifetime protection with dividend participation."
   },
   {
@@ -52,7 +49,6 @@
       "No dividend variability — fully predictable costs",
       "Guaranteed cash surrender value"
     ],
-    "cost_range": "TTD $160–$650/month",
     "use_case": "A structured whole life plan — pay for 20 years, covered for life, with no premium surprises."
   },
   {
@@ -66,7 +62,6 @@
       "Policy loans available against cash value",
       "Shorter payment period, more flexibility in later years"
     ],
-    "cost_range": "TTD $220–$850/month",
     "use_case": "Pay off your life insurance in 15 years and enjoy decades of dividend-earning, loan-ready coverage."
   },
   {
@@ -80,7 +75,6 @@
       "Fixed premium schedule — budget with certainty",
       "Guaranteed cash value accumulation"
     ],
-    "cost_range": "TTD $200–$800/month",
     "use_case": "15 years of fixed payments, then lifetime coverage at zero cost — simple and predictable."
   },
   {
@@ -94,7 +88,6 @@
       "Lifetime death benefit after final payment",
       "Maximum cash value growth after pay period ends"
     ],
-    "cost_range": "TTD $350–$1,200/month",
     "use_case": "The fastest way to pay off whole life insurance — 10 years of payments, lifetime of coverage and dividends."
   },
   {
@@ -108,7 +101,6 @@
       "Fixed premiums — no surprises",
       "Guaranteed cash surrender value"
     ],
-    "cost_range": "TTD $320–$1,100/month",
     "use_case": "Pay once a year for 10 years, then own your life insurance policy outright — forever."
   },
   {
@@ -122,7 +114,6 @@
       "Acts as disciplined savings with life coverage built in",
       "Lump sum payout ideal for a specific financial goal"
     ],
-    "cost_range": "TTD $500–$1,800/month",
     "use_case": "Save toward a specific 15-year goal — home purchase, education, or business — with life cover included."
   },
   {
@@ -136,7 +127,6 @@
       "Full death benefit if policyholder passes during term",
       "Predictable savings plan with a defined end date"
     ],
-    "cost_range": "TTD $480–$1,700/month",
     "use_case": "A guaranteed 15-year savings plan with fixed costs and a defined payout you can plan around."
   },
   {
@@ -150,7 +140,6 @@
       "Death benefit active throughout the savings period",
       "Ideal for education, property, or retirement planning"
     ],
-    "cost_range": "TTD $400–$1,500/month",
     "use_case": "A 20-year savings and protection plan with dividends boosting your payout — perfect for long-term financial goals."
   },
   {
@@ -164,7 +153,6 @@
       "Full death benefit if policyholder passes during term",
       "Disciplined long-term saving with a guaranteed end value"
     ],
-    "cost_range": "TTD $380–$1,400/month",
     "use_case": "Know exactly what you will receive in 20 years — guaranteed savings with life protection built in."
   },
   {
@@ -178,7 +166,6 @@
       "Life coverage active throughout the 25-year period",
       "Structured long-term wealth building"
     ],
-    "cost_range": "TTD $280–$1,000/month",
     "use_case": "Build wealth over 25 years with dividend participation — protection and savings working together."
   },
   {
@@ -192,7 +179,6 @@
       "Full death benefit throughout the term",
       "No fluctuation — a reliable savings contract"
     ],
-    "cost_range": "TTD $260–$950/month",
     "use_case": "A 25-year guaranteed savings contract — fixed payments, guaranteed outcome, full life coverage throughout."
   },
   {
@@ -206,7 +192,6 @@
       "Dividends can be reinvested to boost maturity value",
       "Ideal retirement planning vehicle"
     ],
-    "cost_range": "TTD $220–$800/month",
     "use_case": "A 30-year wealth-building plan — dividends grow your fund while life cover protects your family."
   },
   {
@@ -220,7 +205,6 @@
       "Full death benefit throughout the 30 years",
       "A disciplined, long-range savings commitment"
     ],
-    "cost_range": "TTD $200–$750/month",
     "use_case": "Lock in fixed payments for 30 years and guarantee a known lump sum — perfect for retirement planning."
   },
   {
@@ -234,7 +218,6 @@
       "Acts as forced savings and life cover in one",
       "Lump sum payout supports retirement planning"
     ],
-    "cost_range": "TTD $160–$600/month",
     "use_case": "A dual-purpose plan that builds a retirement nest egg while keeping your family protected to age 65."
   },
   {
@@ -248,7 +231,6 @@
       "Full death benefit if policyholder passes before 65",
       "Predictable, structured retirement savings"
     ],
-    "cost_range": "TTD $140–$550/month",
     "use_case": "Guaranteed retirement savings plan with fixed costs and a defined payout at age 65."
   },
   {
@@ -262,7 +244,6 @@
       "No premiums in retirement — full coverage remains active",
       "Policy loans available against cash value at any time"
     ],
-    "cost_range": "TTD $180–$700/month",
     "use_case": "Pay off your life policy before retirement and enjoy lifelong coverage with zero premiums as a senior."
   },
   {
@@ -276,7 +257,6 @@
       "Full death benefit active throughout the savings period",
       "Participating — eligible for dividend enhancement"
     ],
-    "cost_range": "TTD $250–$900/month",
     "use_case": "Plan for an early exit at 55 — guaranteed lump sum and life coverage combined into one structured plan."
   },
   {
@@ -290,7 +270,6 @@
       "Level premiums for the full 10-year term",
       "Ideal for covering a mortgage or business loan"
     ],
-    "cost_range": "TTD $30–$150/month",
     "use_case": "Maximum coverage for the least cost — protect a specific liability or income stream for 10 years."
   },
   {
@@ -304,7 +283,6 @@
       "High coverage at a low entry cost",
       "Ideal for protecting income during peak earning years"
     ],
-    "cost_range": "TTD $35–$180/month",
     "use_case": "Protect your family's income and mortgage for 20 years — high benefit, low monthly cost."
   },
   {
@@ -318,7 +296,6 @@
       "Standard face amount band — ideal for most coverage needs",
       "Convertible to permanent insurance"
     ],
-    "cost_range": "TTD $40–$250/month",
     "use_case": "Flexible long-term coverage extending to age 80 — ideal for those who want term protection well into retirement age."
   },
   {
@@ -332,7 +309,6 @@
       "Level premiums for the entire term period",
       "Suitable for high-net-worth protection needs"
     ],
-    "cost_range": "TTD $50–$300/month",
     "use_case": "High-value term coverage to age 80 with preferential rates — for those who need substantial long-term protection."
   },
   {
@@ -346,7 +322,6 @@
       "Increases total coverage without a new base policy",
       "Available as a rider on a qualifying base plan"
     ],
-    "cost_range": "TTD $20–$100/month",
     "use_case": "Temporarily boost your coverage for 10 years — ideal for covering a mortgage or income replacement need."
   },
   {
@@ -360,7 +335,6 @@
       "Flexible add-on to an existing life policy",
       "Provides enhanced coverage during key life stages"
     ],
-    "cost_range": "TTD $22–$110/month",
     "use_case": "Add 15 years of extra coverage to your existing policy — cost-effective protection for growing families."
   },
   {
@@ -374,7 +348,6 @@
       "Stacks on top of your base whole life policy",
       "Ideal for covering long-term financial obligations"
     ],
-    "cost_range": "TTD $25–$120/month",
     "use_case": "20 more years of extra protection — pairs perfectly with a whole life base to cover peak liability years."
   },
   {
@@ -388,7 +361,6 @@
       "Maximises total coverage at a young entry age",
       "Flexible complement to any base life plan"
     ],
-    "cost_range": "TTD $28–$130/month",
     "use_case": "Lock in 25 years of supplemental coverage — best entered young for maximum protection at lowest cost."
   },
   {
@@ -402,7 +374,6 @@
       "Designed to protect pre-retirement income years",
       "Rider terminates at 55 — base policy continues"
     ],
-    "cost_range": "TTD $22–$115/month",
     "use_case": "Extra coverage through your working years — the rider drops off at 55 when income protection needs typically reduce."
   },
   {
@@ -416,7 +387,6 @@
       "Covers peak earning and family responsibility years",
       "Rider terminates at 60 — underlying policy continues"
     ],
-    "cost_range": "TTD $25–$125/month",
     "use_case": "Supplement your base plan with extra coverage through to age 60 — when dependents and mortgages are typically settled."
   },
   {
@@ -430,7 +400,6 @@
       "Extends protection through your highest-income years",
       "Pairs with any qualifying base whole life policy"
     ],
-    "cost_range": "TTD $28–$140/month",
     "use_case": "Maximum supplemental coverage right through to retirement — ideal for high-income earners with large financial obligations."
   },
   {
@@ -444,7 +413,6 @@
       "Level premiums for the 10-year period",
       "No sex or smoker distinction — single flat rate"
     ],
-    "cost_range": "TTD $25–$120/month",
     "use_case": "Win either way — if you survive the 10-year term, every dollar you paid comes back to you."
   },
   {
@@ -458,7 +426,6 @@
       "Level premiums — no increases over 15 years",
       "Return of premium feature makes this zero-net-cost coverage"
     ],
-    "cost_range": "TTD $30–$140/month",
     "use_case": "15 years of life coverage with a money-back guarantee — your premiums are returned if you outlive the term."
   },
   {
@@ -472,7 +439,6 @@
       "Level premiums throughout — no surprises",
       "Effective zero-net-cost protection over the long term"
     ],
-    "cost_range": "TTD $40–$180/month",
     "use_case": "The most popular Silver Lining — 20 years of family protection with every premium refunded at the end."
   },
   {
@@ -486,7 +452,6 @@
       "Level premiums — predictable budgeting",
       "Retirement savings and life cover in one"
     ],
-    "cost_range": "TTD $50–$200/month",
     "use_case": "Protect your family until 55 and receive all your premiums back — a built-in pre-retirement bonus."
   },
   {
@@ -500,7 +465,6 @@
       "Level premiums from policy issue to age 60",
       "Complements retirement planning with a lump-sum return"
     ],
-    "cost_range": "TTD $55–$220/month",
     "use_case": "Cover your family until 60, then get every cent back — a retirement booster built into your life plan."
   },
   {
@@ -514,7 +478,6 @@
       "Level premiums for the full term period",
       "No investment risk — guaranteed return of premiums"
     ],
-    "cost_range": "TTD $65–$250/month",
     "use_case": "Lifetime coverage to 65 with a guaranteed refund on retirement day — protect and save in a single plan."
   },
   {
@@ -528,7 +491,6 @@
       "Full death benefit protects the fund if the payor passes",
       "Premiums based on payor's age and chosen plan duration"
     ],
-    "cost_range": "TTD $80–$400/month",
     "use_case": "Guarantee your child's education regardless of what happens — a savings plan that opens every door."
   },
   {
@@ -542,7 +504,6 @@
       "Guaranteed death benefit from policy issue",
       "Fixed premiums for the life of the plan"
     ],
-    "cost_range": "TTD $300–$900/month",
     "use_case": "A specialised life plan with uniform rates across all insured categories — speak to an advisor for full details."
   },
   {
@@ -556,7 +517,6 @@
       "Coverage from age 20 through age 55",
       "Competitive rates for larger face amounts (higher bands)"
     ],
-    "cost_range": "TTD $25–$130/month",
     "use_case": "A term-equivalent plan with multi-band pricing — rates improve significantly at higher face amounts."
   },
   {
@@ -570,7 +530,6 @@
       "Sex and smoker ratings applied — standard M/F loadings",
       "Multiple face amount bands for competitive pricing"
     ],
-    "cost_range": "TTD $100–$450/month",
     "use_case": "A flexible whole life variant with extended age coverage — ask your advisor which variant suits your situation."
   },
   {
@@ -584,7 +543,6 @@
       "Convert to guaranteed income stream at retirement",
       "Partial withdrawals permitted after lock-in period"
     ],
-    "cost_range": "From TTD $500/contribution",
     "use_case": "Build your retirement fund at your own pace — contribute when you can, grow tax-deferred, withdraw when ready."
   },
   {
@@ -598,7 +556,6 @@
       "Choose monthly, quarterly, or annual payouts",
       "Beneficiary protection on remaining balance"
     ],
-    "cost_range": "Lump sum from TTD $50,000",
     "use_case": "Turn a bonus, inheritance, or retirement gratuity into a guaranteed income for life."
   },
   {
@@ -612,7 +569,6 @@
       "Prescription drug benefit",
       "Emergency medical evacuation"
     ],
-    "cost_range": "TTD $800–$2,700/month",
     "use_case": "Protect against the rising cost of healthcare for you and your family."
   },
   {
@@ -626,7 +582,6 @@
       "Medical expense reimbursement after accidents",
       "24-hour worldwide coverage"
     ],
-    "cost_range": "TTD $65/month",
     "use_case": "Core personal accident protection for individuals and families at an affordable flat rate."
   },
   {
@@ -640,7 +595,6 @@
       "Hospitalisation cash benefit for accident-related stays",
       "Increased medical expense reimbursement"
     ],
-    "cost_range": "TTD $130/month",
     "use_case": "Enhanced accident protection with higher limits — for those who need more comprehensive cover."
   },
   {
@@ -654,7 +608,6 @@
       "Full disability income replacement benefit",
       "Widest scope of accidental injury coverage"
     ],
-    "cost_range": "TTD $135/month",
     "use_case": "The most complete personal accident package — maximum protection at a flat predictable rate."
   }
 ]

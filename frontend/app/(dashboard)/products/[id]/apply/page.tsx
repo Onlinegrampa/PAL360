@@ -62,7 +62,7 @@ function ApplyContent({ id }: { id: string }) {
           <div>
             <h1 className="text-2xl font-bold text-[#002855]">{product.name}</h1>
             <p className="text-gray-500 text-sm mt-0.5">
-              {product.line} · {product.cost_range}
+              {product.line}
             </p>
           </div>
         </div>

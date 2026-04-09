@@ -25,7 +25,7 @@ export interface Product {
   line: 'Life' | 'Health' | 'Annuities' | 'PA&S'
   name: string
   benefits: string[]
-  cost_range: string
+
   use_case: string
 }
 

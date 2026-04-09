@@ -75,7 +75,6 @@ export default function ProductDetailPage() {
               </span>
             </div>
             <h1 className="text-2xl font-black text-[#002855] leading-tight">{product.name}</h1>
-            <p className="text-[#C9A84C] font-semibold mt-1">{product.cost_range}</p>
           </div>
         </div>
         <p className="text-gray-700 mt-4 leading-relaxed">{product.use_case}</p>

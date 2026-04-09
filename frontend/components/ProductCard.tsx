@@ -29,7 +29,6 @@ export function ProductCard({ product }: { product: Product }) {
               {product.line}
             </span>
           </div>
-          <p className="text-[#C9A84C] text-sm font-semibold mt-0.5">{product.cost_range}</p>
         </div>
       </div>
 
