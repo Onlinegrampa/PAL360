@@ -13,7 +13,7 @@ export default function ProductsPage() {
   const [filter, setFilter] = useState('All')
 
   useEffect(() => {
-    fetch(`${process.env.NEXT_PUBLIC_API_URL}/products`)
+    fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}/products`)
       .then((r) => r.json())
       .then((data) => {
         setProducts(data)
