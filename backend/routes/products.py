@@ -9,10 +9,10 @@ router = APIRouter()
 
 class Product(BaseModel):
     product_id: str
+    plan_code: str = ""
     line: Literal["Life", "Health", "Annuities", "PA&S"]
     name: str
     benefits: list[str]
-    cost_range: str
     use_case: str
 
 
@@ -29,7 +29,9 @@ def _fmt_product(row) -> dict:
 async def get_products():
     pool = get_pool()
     async with pool.acquire() as conn:
-        rows = await conn.fetch("SELECT * FROM products ORDER BY product_id")
+        rows = await conn.fetch(
+            "SELECT product_id, plan_code, line, name, benefits, use_case FROM products ORDER BY product_id"
+        )
     return [_fmt_product(r) for r in rows]
 
 
@@ -38,7 +40,8 @@ async def get_product(product_id: str):
     pool = get_pool()
     async with pool.acquire() as conn:
         row = await conn.fetchrow(
-            "SELECT * FROM products WHERE product_id = $1", product_id
+            "SELECT product_id, plan_code, line, name, benefits, use_case FROM products WHERE product_id = $1",
+            product_id,
         )
     if not row:
         raise HTTPException(status_code=404, detail="Product not found")

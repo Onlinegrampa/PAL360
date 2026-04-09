@@ -61,12 +61,15 @@ async def _create_tables(pool):
 
             CREATE TABLE IF NOT EXISTS products (
                 product_id TEXT PRIMARY KEY,
+                plan_code  TEXT NOT NULL DEFAULT '',
                 line       TEXT NOT NULL,
                 name       TEXT NOT NULL,
                 benefits   JSONB NOT NULL DEFAULT '[]',
-                cost_range TEXT NOT NULL,
+                cost_range TEXT NOT NULL DEFAULT '',
                 use_case   TEXT NOT NULL
             );
+            ALTER TABLE products ADD COLUMN IF NOT EXISTS plan_code TEXT NOT NULL DEFAULT '';
+            ALTER TABLE products ALTER COLUMN cost_range SET DEFAULT '';
 
             CREATE TABLE IF NOT EXISTS payments (
                 payment_id TEXT PRIMARY KEY,
@@ -256,12 +259,26 @@ async def _seed_if_empty(pool):
         seeds_path = os.path.join(os.path.dirname(__file__), "data", "seeds", "products.json")
         with open(seeds_path) as f:
             products_data = json.load(f)
+
+
+async def _sync_products(pool):
+    """Always replace product catalog from products.json on startup."""
+    seeds_path = os.path.join(os.path.dirname(__file__), "data", "seeds", "products.json")
+    with open(seeds_path) as f:
+        products_data = json.load(f)
+    async with pool.acquire() as conn:
+        await conn.execute("DELETE FROM products")
         await conn.executemany(
-            "INSERT INTO products (product_id, line, name, benefits, cost_range, use_case) VALUES ($1,$2,$3,$4::jsonb,$5,$6)",
+            """INSERT INTO products (product_id, plan_code, line, name, benefits, use_case, cost_range)
+               VALUES ($1,$2,$3,$4,$5::jsonb,$6,'')
+               ON CONFLICT (product_id) DO UPDATE
+               SET plan_code=EXCLUDED.plan_code, line=EXCLUDED.line,
+                   name=EXCLUDED.name, benefits=EXCLUDED.benefits,
+                   use_case=EXCLUDED.use_case, cost_range=''""",
             [
                 (
-                    p["product_id"], p["line"], p["name"],
-                    json.dumps(p["benefits"]), p["cost_range"], p["use_case"],
+                    p["product_id"], p.get("plan_code", ""), p["line"],
+                    p["name"], json.dumps(p["benefits"]), p["use_case"],
                 )
                 for p in products_data
             ],
@@ -275,6 +292,7 @@ async def lifespan(app: FastAPI):
     pool = await init_pool()
     await _create_tables(pool)
     await _seed_if_empty(pool)
+    await _sync_products(pool)
     yield
     await close_pool()
 
