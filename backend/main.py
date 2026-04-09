@@ -15,6 +15,7 @@ from routes.products import router as products_router
 from routes.payments import router as payments_router
 from routes.fact_finds import router as fact_finds_router
 from routes.applications import router as applications_router
+from routes.agents import router as agents_router
 
 load_dotenv()
 
@@ -70,6 +71,29 @@ async def _create_tables(pool):
                 policy_id  TEXT NOT NULL REFERENCES policies(policy_id),
                 amount     NUMERIC(12,2) NOT NULL,
                 wipay_ref  TEXT,
+                status     TEXT NOT NULL DEFAULT 'pending',
+                created_at TIMESTAMPTZ DEFAULT NOW()
+            );
+
+            CREATE TABLE IF NOT EXISTS agents (
+                agent_id    TEXT PRIMARY KEY,
+                name        TEXT NOT NULL,
+                title       TEXT NOT NULL,
+                email       TEXT NOT NULL,
+                phone       TEXT NOT NULL,
+                whatsapp    TEXT NOT NULL,
+                bio         TEXT NOT NULL,
+                specialties TEXT[] NOT NULL DEFAULT '{}',
+                photo_initials TEXT NOT NULL DEFAULT 'AG',
+                is_active   BOOLEAN NOT NULL DEFAULT true,
+                created_at  TIMESTAMPTZ DEFAULT NOW()
+            );
+
+            CREATE TABLE IF NOT EXISTS agent_requests (
+                id         SERIAL PRIMARY KEY,
+                client_id  TEXT NOT NULL UNIQUE REFERENCES clients(client_id),
+                agent_id   TEXT NOT NULL REFERENCES agents(agent_id),
+                message    TEXT NOT NULL DEFAULT '',
                 status     TEXT NOT NULL DEFAULT 'pending',
                 created_at TIMESTAMPTZ DEFAULT NOW()
             );
@@ -187,6 +211,34 @@ async def _seed_if_empty(pool):
             ],
         )
 
+        # ── Agents ─────────────────────────────────────────────────────────────
+        await conn.executemany(
+            """INSERT INTO agents
+               (agent_id, name, title, email, phone, whatsapp, bio, specialties, photo_initials)
+               VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9)
+               ON CONFLICT (agent_id) DO NOTHING""",
+            [
+                (
+                    "AGT-001", "Camille Joseph", "Senior Insurance Advisor",
+                    "camille.joseph@pal360.tt", "+1 868 765-4321", "+18687654321",
+                    "15 years helping families in T&T secure their financial future. Specialises in life and health portfolios for young professionals.",
+                    ["Life Insurance", "Health Insurance", "Family Planning"], "CJ",
+                ),
+                (
+                    "AGT-002", "Marcus Browne", "Wealth & Protection Specialist",
+                    "marcus.browne@pal360.tt", "+1 868 876-5432", "+18688765432",
+                    "Former banker turned insurance advisor. Expert in annuities and retirement planning for business owners and executives.",
+                    ["Annuities", "Retirement Planning", "Business Insurance"], "MB",
+                ),
+                (
+                    "AGT-003", "Priya Maharaj", "Personal Lines Consultant",
+                    "priya.maharaj@pal360.tt", "+1 868 987-6543", "+18689876543",
+                    "Passionate about making insurance simple and accessible. Fluent in English and Hindi. Serves clients across Trinidad and Tobago.",
+                    ["PA&S", "Life Insurance", "First-time Buyers"], "PM",
+                ),
+            ],
+        )
+
         # ── Products (loaded from seed file) ───────────────────────────────────
         seeds_path = os.path.join(os.path.dirname(__file__), "data", "seeds", "products.json")
         with open(seeds_path) as f:
@@ -251,6 +303,7 @@ app.include_router(products_router,   tags=["products"])
 app.include_router(payments_router,   tags=["payments"])
 app.include_router(fact_finds_router,    tags=["fact-finds"])
 app.include_router(applications_router, tags=["applications"])
+app.include_router(agents_router,       tags=["agents"])
 
 
 @app.get("/health")
