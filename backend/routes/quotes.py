@@ -4,6 +4,17 @@ from pydantic import BaseModel
 from typing import Optional
 from db import get_pool
 from auth import get_current_client
+from routes.pa_rates import (
+    RATES_60A, RATES_61A, RATES_62, RATES_68A, EP_LABELS,
+    RATES_67C, RATES_67D, RATES_77B,
+    RATES_78C, RATES_69L, RATES_CI,
+    RATES_CANCER_CARE, CANCER_CARE_CHILD_RIDER, RATE_CANCER_CARE_PLUS_C,
+    RATES_TOTAL_PROTECTOR, RATES_SUPER_FAMILY,
+    RATES_PP_MALE, RATES_PP_FEMALE,
+    RATES_LS_STANDARD, RATES_LS_ENHANCED,
+    RATES_SUPREME_SINGLE, RATES_SUPREME_FAMILY,
+    _age_band,
+)
 from routes.plan_rates import (
     RATES_001P, RATES_001NP,
     RATES_002P, RATES_002NP,
@@ -102,41 +113,51 @@ PLAN_REGISTRY: dict[str, dict] = {
     "201":    {"type": "life",   "rates": RATES_201,   "min_age": 18, "max_age": 70, "name": "Plan 201-202"},
 }
 
-# ── PA&S tier packages ────────────────────────────────────────────────────────
-PA_TIERS = [
-    {
-        "tier_id":    "pa-std",
-        "name":       "Personal Protector Standard",
-        "annual":     780,
-        "monthly":    round(780  / 12, 2),
-        "description": "Core personal accident protection",
-    },
-    {
-        "tier_id":    "pa-plus",
-        "name":       "Personal Protector Plus",
-        "annual":     1560,
-        "monthly":    round(1560 / 12, 2),
-        "description": "Enhanced cover with additional benefits",
-    },
-    {
-        "tier_id":    "pa-total",
-        "name":       "Total Protector",
-        "annual":     1620,
-        "monthly":    round(1620 / 12, 2),
-        "description": "Comprehensive all-in-one protection package",
-    },
-]
+# ── PA&S plan registry ────────────────────────────────────────────────────────
+PA_REGISTRY: dict[str, dict] = {
+    "60A":     {"name": "Accidental Death and Dismemberment",               "type": "pa_add"},
+    "61A":     {"name": "Accident Medical Expense Reimbursement",           "type": "pa_med"},
+    "62A":     {"name": "Accident Disability Income - 52 Weeks",            "type": "pa_di_acc"},
+    "62B":     {"name": "Accident Disability Income - 104 Weeks",           "type": "pa_di_acc"},
+    "67C":     {"name": "A&S In-Hospital Income + Convalescent Care",       "type": "pa_hospital"},
+    "67D":     {"name": "A&S In-Hospital Income without Convalescent Care", "type": "pa_hospital"},
+    "68A":     {"name": "A&S Disability Income - 104 Weeks",               "type": "pa_as_di"},
+    "77B":     {"name": "Accident and Sickness In-Hospital Surgical Expense","type": "pa_surgical"},
+    "78C":     {"name": "Accident Annuity - AD&D with PTD",                "type": "pa_annuity"},
+    "69L":     {"name": "Level Term Life",                                  "type": "pa_term"},
+    "CI":      {"name": "Critical Illness Cover",                           "type": "pa_ci"},
+    "PP":      {"name": "Personal Protector",                              "type": "pa_pp"},
+    "TP":      {"name": "Total Protector",                                 "type": "pa_tp"},
+    "SFP":     {"name": "Super Family Protector",                          "type": "pa_sfp"},
+    "SFP-SP":  {"name": "Supreme Family Protector - Single Parent",        "type": "pa_supreme"},
+    "SFP-FG":  {"name": "Supreme Family Protector - Family Group",         "type": "pa_supreme"},
+    "CCP-C":   {"name": "Cancer Care Plus - Plan C: Standard Care",        "type": "pa_ccp"},
+    "CC-A":    {"name": "Cancer Care Cover - Plan A: Essential Shield Cover","type": "pa_cc"},
+    "CC-B":    {"name": "Cancer Care Cover - Plan B: Premiere Guard Cover", "type": "pa_cc"},
+    "CC-C":    {"name": "Cancer Care Cover - Plan C: Elite Armour Cover",   "type": "pa_cc"},
+    "LS-STD":  {"name": "Life Support - Standard Option",                  "type": "pa_ls"},
+    "LS-ENH":  {"name": "Life Support - Enhanced Option",                  "type": "pa_ls"},
+    "IS":      {"name": "Income Shield",                                   "type": "pa_is"},
+}
+
+# Legacy tiers kept for backward compat
+PA_TIERS: list[dict] = []
 
 
 class QuoteInput(BaseModel):
     product_line: str             # "Life", "Health", "Annuities", "PA&S"
-    plan_code: str = ""           # e.g. "001-NP", "361", "818" — if set, overrides product_line for Life
-    coverage_amount: float = 0    # face amount (TTD)
-    pa_tier_id: str = ""          # PA&S tier
+    plan_code: str = ""           # e.g. "001-NP", "361", "818", "60A", "PP" …
+    coverage_amount: float = 0    # face amount / benefit amount (TTD)
+    pa_tier_id: str = ""          # legacy PA&S tier (deprecated)
     sex: str = "F"                # "M" or "F"
     smoker: bool = False
     date_of_birth: str = ""       # YYYY-MM-DD
-    esp_duration: int = 0         # for ESP only: plan duration in years (10–25)
+    esp_duration: int = 0         # ESP only: plan duration in years (10–25)
+    # PA&S-specific
+    occ_class: int = 1            # occupation class 1–4
+    plan_tier: str = ""           # Platinum/Gold/Silver | I/II/III/IV | A/B/C
+    coverage_type: str = "Individual"  # Individual | Single_Parent | Husband_Wife | Full_Family
+    ep_code: str = "G_30S_14A"   # elimination period code for A&S DI 68A
 
 
 def _age_from_dob(dob_str: str) -> int:
@@ -205,6 +226,257 @@ def _esp_premium(age: int, duration: int, coverage: float) -> dict:
     }
 
 
+def _pa_quote(data: QuoteInput, age: int) -> dict:  # noqa: C901
+    """Route to the correct PA rate table based on plan_code."""
+    pc = data.plan_code
+    cfg = PA_REGISTRY[pc]
+    t = cfg["type"]
+    sex = data.sex.upper()
+
+    # ── 60A: AD&D per $1,000 FA ───────────────────────────────────────────────
+    if t == "pa_add":
+        band = "16-59" if age <= 59 else "60-69"
+        rate = RATES_60A.get(data.occ_class, {}).get(band)
+        if rate is None:
+            raise HTTPException(422, f"No rate for class {data.occ_class}, age {age}.")
+        if data.coverage_amount <= 0:
+            raise HTTPException(422, "Coverage amount must be > 0.")
+        annual  = round((data.coverage_amount / 1000) * rate, 2)
+        return {"annual": annual, "monthly": round(annual / 12, 2),
+                "net_rate": rate, "unit": "per $1,000 FA"}
+
+    # ── 61A: Medical Expense base $2,000 + extra ──────────────────────────────
+    elif t == "pa_med":
+        entry = RATES_61A.get(data.occ_class)
+        if entry is None:
+            raise HTTPException(422, f"No rate for class {data.occ_class}.")
+        base_rate, per_100 = entry
+        benefit = max(data.coverage_amount, 2000.0)
+        extra_hundreds = max(0, (benefit - 2000) / 100)
+        annual  = round(base_rate + extra_hundreds * per_100, 2)
+        return {"annual": annual, "monthly": round(annual / 12, 2),
+                "note": f"Base $2,000 benefit; extra TTD {per_100:.2f} per $100 above base"}
+
+    # ── 62A / 62B: Accident DI per $50 weekly benefit ─────────────────────────
+    elif t == "pa_di_acc":
+        code = "62A" if pc == "62A" else "62B"
+        band = "16-59" if age <= 59 else "60-69"
+        rate = RATES_62.get(data.occ_class, {}).get(code, {}).get(band)
+        if rate is None:
+            raise HTTPException(422, f"No rate for class {data.occ_class}, age {age}, plan {pc}.")
+        weekly = max(data.coverage_amount, 50.0)
+        annual = round((weekly / 50) * rate, 2)
+        return {"annual": annual, "monthly": round(annual / 12, 2),
+                "net_rate": rate, "unit": "per $50 weekly benefit",
+                "weekly_benefit": weekly}
+
+    # ── 67C / 67D: Hospital Income per $100 weekly benefit ────────────────────
+    elif t == "pa_hospital":
+        rates = RATES_67C if pc == "67C" else RATES_67D
+        sex_rates = rates.get(sex, rates["M"])
+        band = _age_band(age, sex_rates)
+        if band is None:
+            raise HTTPException(422, f"Age {age} is outside the available range for {pc}.")
+        rate = sex_rates[band]
+        weekly = max(data.coverage_amount, 100.0)
+        annual = round((weekly / 100) * rate, 2)
+        return {"annual": annual, "monthly": round(annual / 12, 2),
+                "net_rate": rate, "unit": "per $100 weekly benefit",
+                "weekly_benefit": weekly}
+
+    # ── 68A: A&S DI per $50 weekly benefit, EP variant ───────────────────────
+    elif t == "pa_as_di":
+        ep = data.ep_code if data.ep_code in RATES_68A else "G_30S_14A"
+        age_rates = RATES_68A[ep].get(data.occ_class)
+        if age_rates is None:
+            raise HTTPException(422, f"No rate for class {data.occ_class}.")
+        band = _age_band(age, age_rates)
+        if band is None:
+            raise HTTPException(422, f"Age {age} outside range (18–57) for A&S DI.")
+        rate = age_rates[band]
+        if rate is None:
+            raise HTTPException(422, f"Not available for class {data.occ_class}, age {age}.")
+        weekly = max(data.coverage_amount, 50.0)
+        annual = round((weekly / 50) * rate, 2)
+        return {"annual": annual, "monthly": round(annual / 12, 2),
+                "net_rate": rate, "unit": "per $50 weekly benefit",
+                "weekly_benefit": weekly,
+                "ep_label": EP_LABELS.get(ep, ep)}
+
+    # ── 77B: Surgical Expense per $1,000 benefit ─────────────────────────────
+    elif t == "pa_surgical":
+        sex_rates = RATES_77B.get(sex, RATES_77B["M"])
+        band = _age_band(age, sex_rates)
+        if band is None:
+            raise HTTPException(422, f"Age {age} is outside available range for 77B.")
+        rate = sex_rates[band]
+        benefit = max(data.coverage_amount, 1000.0)
+        annual  = round((benefit / 1000) * rate, 2)
+        return {"annual": annual, "monthly": round(annual / 12, 2),
+                "net_rate": rate, "unit": "per $1,000 benefit"}
+
+    # ── 78C: Accident Annuity per $1,000 monthly benefit ─────────────────────
+    elif t == "pa_annuity":
+        rate = RATES_78C.get(data.occ_class)
+        if rate is None:
+            raise HTTPException(422, f"No rate for class {data.occ_class} (max class 3 for 78C).")
+        monthly_benefit = max(data.coverage_amount, 1000.0)
+        annual = round((monthly_benefit / 1000) * rate, 2)
+        return {"annual": annual, "monthly": round(annual / 12, 2),
+                "net_rate": rate, "unit": "per $1,000 monthly benefit"}
+
+    # ── 69L: Level Term Life per $1,000 FA ───────────────────────────────────
+    elif t == "pa_term":
+        band = _age_band(age, RATES_69L)
+        if band is None:
+            raise HTTPException(422, f"Age {age} is outside range (5–55) for 69L.")
+        rate = RATES_69L[band]
+        fa = max(data.coverage_amount, 1000.0)
+        annual = round((fa / 1000) * rate, 2)
+        return {"annual": annual, "monthly": round(annual / 12, 2),
+                "net_rate": rate, "unit": "per $1,000 face amount"}
+
+    # ── CI: Critical Illness per $1,000 benefit ───────────────────────────────
+    elif t == "pa_ci":
+        entry = RATES_CI.get(age)
+        if entry is None:
+            raise HTTPException(422, f"Age {age} outside available range (5–61) for CI.")
+        rate = entry[0] if sex == "M" else entry[1]
+        benefit = max(data.coverage_amount, 1000.0)
+        annual  = round((benefit / 1000) * rate, 2)
+        return {"annual": annual, "monthly": round(annual / 12, 2),
+                "net_rate": rate, "unit": "per $1,000 benefit amount"}
+
+    # ── PP: Personal Protector per unit ───────────────────────────────────────
+    elif t == "pa_pp":
+        rates = RATES_PP_MALE if sex == "M" else RATES_PP_FEMALE
+        class_rates = rates.get(data.occ_class)
+        if class_rates is None:
+            raise HTTPException(422, f"Class {data.occ_class} not available (max class 3) for Personal Protector.")
+        band = _age_band(age, class_rates)
+        if band is None:
+            raise HTTPException(422, f"Age {age} is outside range (0–55) for Personal Protector.")
+        rate_per_unit = class_rates[band]
+        units = max(1, int(data.coverage_amount)) if data.coverage_amount > 0 else 1
+        annual  = round(rate_per_unit * units, 2)
+        monthly = round(annual / 11, 2)  # rater note: "Para Mensual dividir por 11"
+        return {"annual": annual, "monthly": monthly,
+                "rate_per_unit": rate_per_unit, "units": units,
+                "note": "Monthly = annual / 11 (as per PA rater)"}
+
+    # ── TP: Total Protector per unit ──────────────────────────────────────────
+    elif t == "pa_tp":
+        band = _age_band(age, RATES_TOTAL_PROTECTOR)
+        if band is None:
+            raise HTTPException(422, f"Age {age} outside range (0–59) for Total Protector.")
+        rate_per_unit = RATES_TOTAL_PROTECTOR[band]
+        units = max(1, int(data.coverage_amount)) if data.coverage_amount > 0 else 1
+        annual  = round(rate_per_unit * units, 2)
+        return {"annual": annual, "monthly": round(annual / 12, 2),
+                "rate_per_unit": rate_per_unit, "units": units}
+
+    # ── SFP: Super Family Protector per unit ──────────────────────────────────
+    elif t == "pa_sfp":
+        band = _age_band(age, RATES_SUPER_FAMILY)
+        if band is None:
+            raise HTTPException(422, f"Age {age} outside range (0–59) for Super Family Protector.")
+        rate_per_unit = RATES_SUPER_FAMILY[band]
+        units = max(1, int(data.coverage_amount)) if data.coverage_amount > 0 else 1
+        annual  = round(rate_per_unit * units, 2)
+        return {"annual": annual, "monthly": round(annual / 12, 2),
+                "rate_per_unit": rate_per_unit, "units": units}
+
+    # ── SFP-SP / SFP-FG: Supreme Family Protector ─────────────────────────────
+    elif t == "pa_supreme":
+        rates = RATES_SUPREME_SINGLE if pc == "SFP-SP" else RATES_SUPREME_FAMILY
+        band  = _age_band(age, rates)
+        if band is None:
+            raise HTTPException(422, f"Age {age} outside range for Supreme Family Protector.")
+        plan  = data.plan_tier if data.plan_tier in ("I", "II", "III", "IV") else "I"
+        annual = rates[band][plan]
+        return {"annual": annual, "monthly": round(annual / 12, 2), "plan": plan}
+
+    # ── CCP-C: Cancer Care Plus Plan C — fixed price ──────────────────────────
+    elif t == "pa_ccp":
+        return {"annual": RATE_CANCER_CARE_PLUS_C,
+                "monthly": round(RATE_CANCER_CARE_PLUS_C / 12, 2),
+                "note": "Fixed annual premium — Cancer Care Plus Plan C: Standard Care"}
+
+    # ── CC-A/B/C: Cancer Care Cover by plan tier ─────────────────────────────
+    elif t == "pa_cc":
+        cc_plan = {"CC-A": "A", "CC-B": "B", "CC-C": "C"}[pc]
+        plan_rates = RATES_CANCER_CARE[cc_plan]
+        band = _age_band(age, plan_rates)
+        if band is None:
+            raise HTTPException(422, f"Age {age} outside range (1–55) for Cancer Care Cover.")
+        ct = data.coverage_type if data.coverage_type in (
+            "Individual", "Single_Parent", "Husband_Wife", "Full_Family"
+        ) else "Individual"
+        monthly = plan_rates[band][ct]
+        annual  = round(monthly * 12, 2)
+        child_rider_monthly = CANCER_CARE_CHILD_RIDER[cc_plan]
+        return {"monthly": monthly, "annual": annual,
+                "coverage_type": ct,
+                "child_rider_monthly": child_rider_monthly,
+                "note": "Monthly premium — Cancer Care Cover"}
+
+    # ── LS-STD / LS-ENH: Life Support monthly rates ───────────────────────────
+    elif t == "pa_ls":
+        rates = RATES_LS_STANDARD if pc == "LS-STD" else RATES_LS_ENHANCED
+        sex_rates = rates.get(sex, rates["M"])
+        band = _age_band(age, sex_rates)
+        if band is None:
+            raise HTTPException(422, f"Age {age} outside range (1–64) for Life Support.")
+        tier = data.plan_tier if data.plan_tier in ("Platinum", "Gold", "Silver") else "Platinum"
+        monthly = sex_rates[band][tier]
+        annual  = round(monthly * 12, 2)
+        return {"monthly": monthly, "annual": annual, "plan_tier": tier}
+
+    # ── IS: Income Shield — calculate from component rates ────────────────────
+    elif t == "pa_is":
+        # One unit = $200,000 60A + $10,000 69L + $500/wk 68A(G) + $5,000 61A + $500/wk 67C
+        errors = []
+        total = 0.0
+
+        # 60A: $200,000
+        band_60a = "16-59" if age <= 59 else "60-69"
+        r60a = RATES_60A.get(data.occ_class, {}).get(band_60a)
+        if r60a:
+            total += (200000 / 1000) * r60a
+
+        # 69L: $10,000
+        band_69l = _age_band(age, RATES_69L)
+        if band_69l:
+            total += (10000 / 1000) * RATES_69L[band_69l]
+
+        # 68A G_30S_14A: $500/wk
+        ep_r = RATES_68A["G_30S_14A"].get(data.occ_class)
+        if ep_r:
+            age_b = _age_band(age, ep_r)
+            r68a = ep_r.get(age_b) if age_b else None
+            if r68a:
+                total += (500 / 50) * r68a
+
+        # 61A: $5,000 ($2,000 base + $3,000 extra → 30 units of $100)
+        r61a = RATES_61A.get(data.occ_class)
+        if r61a:
+            total += r61a[0] + 30 * r61a[1]
+
+        # 67C: $500/wk
+        sex_67c = RATES_67C.get(sex, RATES_67C["M"])
+        band_67c = _age_band(age, sex_67c)
+        if band_67c:
+            total += (500 / 100) * sex_67c[band_67c]
+
+        units = max(1, int(data.coverage_amount)) if data.coverage_amount > 0 else 1
+        annual  = round(total * units, 2)
+        return {"annual": annual, "monthly": round(annual / 12, 2),
+                "units": units,
+                "note": "Income Shield includes 60A, 69L, 68A, 61A, 67C benefits per unit"}
+
+    raise HTTPException(422, f"Unknown PA plan type: {t}")
+
+
 @router.get("/pa-tiers")
 def get_pa_tiers():
     """Return PA&S package tier pricing — no auth required."""
@@ -254,6 +526,18 @@ async def calculate_quote(
             status_code=422,
             detail="Please enter your date of birth to calculate a quote.",
         )
+
+    # ── Route by plan_code — PA&S plans ──────────────────────────────────────
+    if data.plan_code and data.plan_code in PA_REGISTRY:
+        cfg = PA_REGISTRY[data.plan_code]
+        result = _pa_quote(data, age)
+        return {
+            "product_line": "PA&S",
+            "plan_code": data.plan_code,
+            "plan_name": cfg["name"],
+            "age": age,
+            **result,
+        }
 
     # ── Route by plan_code (Life plans) ──────────────────────────────────────
     if data.plan_code and data.plan_code in PLAN_REGISTRY:
@@ -332,12 +616,10 @@ async def calculate_quote(
         }
 
     elif data.product_line == "PA&S":
-        if not data.pa_tier_id:
-            raise HTTPException(status_code=422, detail="Please select a PA&S package tier.")
-        tier = next((t for t in PA_TIERS if t["tier_id"] == data.pa_tier_id), None)
-        if not tier:
-            raise HTTPException(status_code=422, detail="Invalid PA&S tier selected.")
-        return {"product_line": "PA&S", "age": age, **tier}
+        raise HTTPException(
+            status_code=422,
+            detail="Please select a specific PA&S product to get a quote.",
+        )
 
     elif data.product_line == "Health":
         if age < 30:

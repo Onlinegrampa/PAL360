@@ -5,7 +5,7 @@
     "line": "Life",
     "name": "Ordinary Life - Participating",
     "benefits": [
-      "Lifelong whole life coverage — policy never expires",
+      "Lifelong whole life coverage \u00e2\u20ac\u201d policy never expires",
       "Eligible for annual policy dividends",
       "Dividends can reduce premiums, increase coverage, or accumulate as cash",
       "Guaranteed cash surrender value grows with time"
@@ -21,7 +21,7 @@
       "Lifelong whole life coverage with fixed premiums",
       "Guaranteed death benefit paid to named beneficiaries",
       "Guaranteed cash surrender value",
-      "Predictable cost — no dividend variability"
+      "Predictable cost \u00e2\u20ac\u201d no dividend variability"
     ],
     "use_case": "Simple, predictable whole life insurance with fixed costs and guaranteed lifetime coverage."
   },
@@ -31,7 +31,7 @@
     "line": "Life",
     "name": "20-Pay Life - Participating",
     "benefits": [
-      "Premiums paid over 20 years — coverage lasts a lifetime",
+      "Premiums paid over 20 years \u00e2\u20ac\u201d coverage lasts a lifetime",
       "Eligible for annual policy dividends during pay period",
       "Policy fully paid up after 20 payments",
       "Cash value accumulates throughout the premium period"
@@ -44,12 +44,12 @@
     "line": "Life",
     "name": "20-Pay Life - Non-Participating",
     "benefits": [
-      "Premiums paid over 20 years — fixed and guaranteed",
+      "Premiums paid over 20 years \u00e2\u20ac\u201d fixed and guaranteed",
       "Lifelong death benefit after 20 payments",
-      "No dividend variability — fully predictable costs",
+      "No dividend variability \u00e2\u20ac\u201d fully predictable costs",
       "Guaranteed cash surrender value"
     ],
-    "use_case": "A structured whole life plan — pay for 20 years, covered for life, with no premium surprises."
+    "use_case": "A structured whole life plan \u00e2\u20ac\u201d pay for 20 years, covered for life, with no premium surprises."
   },
   {
     "product_id": "PROD-LIFE-005P",
@@ -57,8 +57,8 @@
     "line": "Life",
     "name": "15-Pay Life - Participating",
     "benefits": [
-      "Fully paid up in 15 years — lifelong coverage continues",
-      "Dividend eligible — builds policy value over time",
+      "Fully paid up in 15 years \u00e2\u20ac\u201d lifelong coverage continues",
+      "Dividend eligible \u00e2\u20ac\u201d builds policy value over time",
       "Policy loans available against cash value",
       "Shorter payment period, more flexibility in later years"
     ],
@@ -70,12 +70,12 @@
     "line": "Life",
     "name": "15-Pay Life - Non-Participating",
     "benefits": [
-      "Fully paid up in 15 years — no further premiums ever",
+      "Fully paid up in 15 years \u00e2\u20ac\u201d no further premiums ever",
       "Guaranteed lifelong death benefit",
-      "Fixed premium schedule — budget with certainty",
+      "Fixed premium schedule \u00e2\u20ac\u201d budget with certainty",
       "Guaranteed cash value accumulation"
     ],
-    "use_case": "15 years of fixed payments, then lifetime coverage at zero cost — simple and predictable."
+    "use_case": "15 years of fixed payments, then lifetime coverage at zero cost \u00e2\u20ac\u201d simple and predictable."
   },
   {
     "product_id": "PROD-LIFE-010P",
@@ -88,7 +88,7 @@
       "Lifetime death benefit after final payment",
       "Maximum cash value growth after pay period ends"
     ],
-    "use_case": "The fastest way to pay off whole life insurance — 10 years of payments, lifetime of coverage and dividends."
+    "use_case": "The fastest way to pay off whole life insurance \u00e2\u20ac\u201d 10 years of payments, lifetime of coverage and dividends."
   },
   {
     "product_id": "PROD-LIFE-010NP",
@@ -98,10 +98,10 @@
     "benefits": [
       "Fully paid up after 10 premium payments",
       "Guaranteed death benefit continues for life",
-      "Fixed premiums — no surprises",
+      "Fixed premiums \u00e2\u20ac\u201d no surprises",
       "Guaranteed cash surrender value"
     ],
-    "use_case": "Pay once a year for 10 years, then own your life insurance policy outright — forever."
+    "use_case": "Pay once a year for 10 years, then own your life insurance policy outright \u00e2\u20ac\u201d forever."
   },
   {
     "product_id": "PROD-LIFE-015P",
@@ -109,12 +109,12 @@
     "line": "Life",
     "name": "15-Year Endowment - Participating",
     "benefits": [
-      "Pays full face value at 15-year maturity or on death — whichever is first",
+      "Pays full face value at 15-year maturity or on death \u00e2\u20ac\u201d whichever is first",
       "Eligible for annual dividends to grow the fund",
       "Acts as disciplined savings with life coverage built in",
       "Lump sum payout ideal for a specific financial goal"
     ],
-    "use_case": "Save toward a specific 15-year goal — home purchase, education, or business — with life cover included."
+    "use_case": "Save toward a specific 15-year goal \u00e2\u20ac\u201d home purchase, education, or business \u00e2\u20ac\u201d with life cover included."
   },
   {
     "product_id": "PROD-LIFE-015NP",
@@ -123,7 +123,7 @@
     "name": "15-Year Endowment - Non-Participating",
     "benefits": [
       "Guaranteed payout at 15-year maturity",
-      "Fixed premiums — no dividend variability",
+      "Fixed premiums \u00e2\u20ac\u201d no dividend variability",
       "Full death benefit if policyholder passes during term",
       "Predictable savings plan with a defined end date"
     ],
@@ -140,7 +140,7 @@
       "Death benefit active throughout the savings period",
       "Ideal for education, property, or retirement planning"
     ],
-    "use_case": "A 20-year savings and protection plan with dividends boosting your payout — perfect for long-term financial goals."
+    "use_case": "A 20-year savings and protection plan with dividends boosting your payout \u00e2\u20ac\u201d perfect for long-term financial goals."
   },
   {
     "product_id": "PROD-LIFE-020NP",
@@ -149,11 +149,11 @@
     "name": "20-Year Endowment - Non-Participating",
     "benefits": [
       "Guaranteed lump sum at 20-year maturity",
-      "Fixed premiums — fully predictable",
+      "Fixed premiums \u00e2\u20ac\u201d fully predictable",
       "Full death benefit if policyholder passes during term",
       "Disciplined long-term saving with a guaranteed end value"
     ],
-    "use_case": "Know exactly what you will receive in 20 years — guaranteed savings with life protection built in."
+    "use_case": "Know exactly what you will receive in 20 years \u00e2\u20ac\u201d guaranteed savings with life protection built in."
   },
   {
     "product_id": "PROD-LIFE-025P",
@@ -166,7 +166,7 @@
       "Life coverage active throughout the 25-year period",
       "Structured long-term wealth building"
     ],
-    "use_case": "Build wealth over 25 years with dividend participation — protection and savings working together."
+    "use_case": "Build wealth over 25 years with dividend participation \u00e2\u20ac\u201d protection and savings working together."
   },
   {
     "product_id": "PROD-LIFE-025NP",
@@ -177,9 +177,9 @@
       "Guaranteed lump sum at 25-year maturity",
       "Fixed premiums for the full 25-year period",
       "Full death benefit throughout the term",
-      "No fluctuation — a reliable savings contract"
+      "No fluctuation \u00e2\u20ac\u201d a reliable savings contract"
     ],
-    "use_case": "A 25-year guaranteed savings contract — fixed payments, guaranteed outcome, full life coverage throughout."
+    "use_case": "A 25-year guaranteed savings contract \u00e2\u20ac\u201d fixed payments, guaranteed outcome, full life coverage throughout."
   },
   {
     "product_id": "PROD-LIFE-026P",
@@ -192,7 +192,7 @@
       "Dividends can be reinvested to boost maturity value",
       "Ideal retirement planning vehicle"
     ],
-    "use_case": "A 30-year wealth-building plan — dividends grow your fund while life cover protects your family."
+    "use_case": "A 30-year wealth-building plan \u00e2\u20ac\u201d dividends grow your fund while life cover protects your family."
   },
   {
     "product_id": "PROD-LIFE-026NP",
@@ -205,7 +205,7 @@
       "Full death benefit throughout the 30 years",
       "A disciplined, long-range savings commitment"
     ],
-    "use_case": "Lock in fixed payments for 30 years and guarantee a known lump sum — perfect for retirement planning."
+    "use_case": "Lock in fixed payments for 30 years and guarantee a known lump sum \u00e2\u20ac\u201d perfect for retirement planning."
   },
   {
     "product_id": "PROD-LIFE-027P",
@@ -213,7 +213,7 @@
     "line": "Life",
     "name": "Endowment to Age 65 - Participating",
     "benefits": [
-      "Policy pays out in full at age 65 or on death — whichever comes first",
+      "Policy pays out in full at age 65 or on death \u00e2\u20ac\u201d whichever comes first",
       "Eligible for annual dividends to grow the fund",
       "Acts as forced savings and life cover in one",
       "Lump sum payout supports retirement planning"
@@ -227,7 +227,7 @@
     "name": "Endowment to Age 65 - Non-Participating",
     "benefits": [
       "Guaranteed lump sum payout at age 65",
-      "Fixed premiums — no dividend variability",
+      "Fixed premiums \u00e2\u20ac\u201d no dividend variability",
       "Full death benefit if policyholder passes before 65",
       "Predictable, structured retirement savings"
     ],
@@ -239,9 +239,9 @@
     "line": "Life",
     "name": "Life Paid Up at 65",
     "benefits": [
-      "Premiums stop at age 65 — coverage continues for life",
+      "Premiums stop at age 65 \u00e2\u20ac\u201d coverage continues for life",
       "Participating plan eligible for annual dividends",
-      "No premiums in retirement — full coverage remains active",
+      "No premiums in retirement \u00e2\u20ac\u201d full coverage remains active",
       "Policy loans available against cash value at any time"
     ],
     "use_case": "Pay off your life policy before retirement and enjoy lifelong coverage with zero premiums as a senior."
@@ -255,9 +255,9 @@
       "Policy matures with full payout at age 55",
       "Earlier retirement planning compared to age-65 endowments",
       "Full death benefit active throughout the savings period",
-      "Participating — eligible for dividend enhancement"
+      "Participating \u00e2\u20ac\u201d eligible for dividend enhancement"
     ],
-    "use_case": "Plan for an early exit at 55 — guaranteed lump sum and life coverage combined into one structured plan."
+    "use_case": "Plan for an early exit at 55 \u00e2\u20ac\u201d guaranteed lump sum and life coverage combined into one structured plan."
   },
   {
     "product_id": "PROD-LIFE-056",
@@ -270,7 +270,7 @@
       "Level premiums for the full 10-year term",
       "Ideal for covering a mortgage or business loan"
     ],
-    "use_case": "Maximum coverage for the least cost — protect a specific liability or income stream for 10 years."
+    "use_case": "Maximum coverage for the least cost \u00e2\u20ac\u201d protect a specific liability or income stream for 10 years."
   },
   {
     "product_id": "PROD-LIFE-058",
@@ -283,7 +283,7 @@
       "High coverage at a low entry cost",
       "Ideal for protecting income during peak earning years"
     ],
-    "use_case": "Protect your family's income and mortgage for 20 years — high benefit, low monthly cost."
+    "use_case": "Protect your family's income and mortgage for 20 years \u00e2\u20ac\u201d high benefit, low monthly cost."
   },
   {
     "product_id": "PROD-LIFE-T80S",
@@ -293,10 +293,10 @@
     "benefits": [
       "Term coverage extending all the way to age 80",
       "Level premiums guaranteed for the entire term",
-      "Standard face amount band — ideal for most coverage needs",
+      "Standard face amount band \u00e2\u20ac\u201d ideal for most coverage needs",
       "Convertible to permanent insurance"
     ],
-    "use_case": "Flexible long-term coverage extending to age 80 — ideal for those who want term protection well into retirement age."
+    "use_case": "Flexible long-term coverage extending to age 80 \u00e2\u20ac\u201d ideal for those who want term protection well into retirement age."
   },
   {
     "product_id": "PROD-LIFE-T80H",
@@ -309,7 +309,7 @@
       "Level premiums for the entire term period",
       "Suitable for high-net-worth protection needs"
     ],
-    "use_case": "High-value term coverage to age 80 with preferential rates — for those who need substantial long-term protection."
+    "use_case": "High-value term coverage to age 80 with preferential rates \u00e2\u20ac\u201d for those who need substantial long-term protection."
   },
   {
     "product_id": "PROD-LIFE-076",
@@ -322,7 +322,7 @@
       "Increases total coverage without a new base policy",
       "Available as a rider on a qualifying base plan"
     ],
-    "use_case": "Temporarily boost your coverage for 10 years — ideal for covering a mortgage or income replacement need."
+    "use_case": "Temporarily boost your coverage for 10 years \u00e2\u20ac\u201d ideal for covering a mortgage or income replacement need."
   },
   {
     "product_id": "PROD-LIFE-077",
@@ -335,7 +335,7 @@
       "Flexible add-on to an existing life policy",
       "Provides enhanced coverage during key life stages"
     ],
-    "use_case": "Add 15 years of extra coverage to your existing policy — cost-effective protection for growing families."
+    "use_case": "Add 15 years of extra coverage to your existing policy \u00e2\u20ac\u201d cost-effective protection for growing families."
   },
   {
     "product_id": "PROD-LIFE-078",
@@ -348,7 +348,7 @@
       "Stacks on top of your base whole life policy",
       "Ideal for covering long-term financial obligations"
     ],
-    "use_case": "20 more years of extra protection — pairs perfectly with a whole life base to cover peak liability years."
+    "use_case": "20 more years of extra protection \u00e2\u20ac\u201d pairs perfectly with a whole life base to cover peak liability years."
   },
   {
     "product_id": "PROD-LIFE-170",
@@ -361,7 +361,7 @@
       "Maximises total coverage at a young entry age",
       "Flexible complement to any base life plan"
     ],
-    "use_case": "Lock in 25 years of supplemental coverage — best entered young for maximum protection at lowest cost."
+    "use_case": "Lock in 25 years of supplemental coverage \u00e2\u20ac\u201d best entered young for maximum protection at lowest cost."
   },
   {
     "product_id": "PROD-LIFE-168",
@@ -372,9 +372,9 @@
       "Additional coverage layer that remains active until age 55",
       "Level premiums throughout the rider period",
       "Designed to protect pre-retirement income years",
-      "Rider terminates at 55 — base policy continues"
+      "Rider terminates at 55 \u00e2\u20ac\u201d base policy continues"
     ],
-    "use_case": "Extra coverage through your working years — the rider drops off at 55 when income protection needs typically reduce."
+    "use_case": "Extra coverage through your working years \u00e2\u20ac\u201d the rider drops off at 55 when income protection needs typically reduce."
   },
   {
     "product_id": "PROD-LIFE-074",
@@ -385,9 +385,9 @@
       "Additional death benefit active until age 60",
       "Level premiums for the full rider period",
       "Covers peak earning and family responsibility years",
-      "Rider terminates at 60 — underlying policy continues"
+      "Rider terminates at 60 \u00e2\u20ac\u201d underlying policy continues"
     ],
-    "use_case": "Supplement your base plan with extra coverage through to age 60 — when dependents and mortgages are typically settled."
+    "use_case": "Supplement your base plan with extra coverage through to age 60 \u00e2\u20ac\u201d when dependents and mortgages are typically settled."
   },
   {
     "product_id": "PROD-LIFE-075",
@@ -400,7 +400,7 @@
       "Extends protection through your highest-income years",
       "Pairs with any qualifying base whole life policy"
     ],
-    "use_case": "Maximum supplemental coverage right through to retirement — ideal for high-income earners with large financial obligations."
+    "use_case": "Maximum supplemental coverage right through to retirement \u00e2\u20ac\u201d ideal for high-income earners with large financial obligations."
   },
   {
     "product_id": "PROD-LIFE-361",
@@ -411,9 +411,9 @@
       "All premiums returned in full if no claim is made",
       "Full death benefit paid if policyholder passes during term",
       "Level premiums for the 10-year period",
-      "No sex or smoker distinction — single flat rate"
+      "No sex or smoker distinction \u00e2\u20ac\u201d single flat rate"
     ],
-    "use_case": "Win either way — if you survive the 10-year term, every dollar you paid comes back to you."
+    "use_case": "Win either way \u00e2\u20ac\u201d if you survive the 10-year term, every dollar you paid comes back to you."
   },
   {
     "product_id": "PROD-LIFE-362",
@@ -423,10 +423,10 @@
     "benefits": [
       "All premiums returned at end of 15-year term",
       "Full death benefit if claim is made during the term",
-      "Level premiums — no increases over 15 years",
+      "Level premiums \u00e2\u20ac\u201d no increases over 15 years",
       "Return of premium feature makes this zero-net-cost coverage"
     ],
-    "use_case": "15 years of life coverage with a money-back guarantee — your premiums are returned if you outlive the term."
+    "use_case": "15 years of life coverage with a money-back guarantee \u00e2\u20ac\u201d your premiums are returned if you outlive the term."
   },
   {
     "product_id": "PROD-LIFE-363",
@@ -436,10 +436,10 @@
     "benefits": [
       "All premiums returned at end of 20-year term",
       "Death benefit paid in full during the 20-year period",
-      "Level premiums throughout — no surprises",
+      "Level premiums throughout \u00e2\u20ac\u201d no surprises",
       "Effective zero-net-cost protection over the long term"
     ],
-    "use_case": "The most popular Silver Lining — 20 years of family protection with every premium refunded at the end."
+    "use_case": "The most popular Silver Lining \u00e2\u20ac\u201d 20 years of family protection with every premium refunded at the end."
   },
   {
     "product_id": "PROD-LIFE-365",
@@ -449,10 +449,10 @@
     "benefits": [
       "Full premium refund when you reach age 55",
       "Death benefit active throughout the term",
-      "Level premiums — predictable budgeting",
+      "Level premiums \u00e2\u20ac\u201d predictable budgeting",
       "Retirement savings and life cover in one"
     ],
-    "use_case": "Protect your family until 55 and receive all your premiums back — a built-in pre-retirement bonus."
+    "use_case": "Protect your family until 55 and receive all your premiums back \u00e2\u20ac\u201d a built-in pre-retirement bonus."
   },
   {
     "product_id": "PROD-LIFE-366",
@@ -465,7 +465,7 @@
       "Level premiums from policy issue to age 60",
       "Complements retirement planning with a lump-sum return"
     ],
-    "use_case": "Cover your family until 60, then get every cent back — a retirement booster built into your life plan."
+    "use_case": "Cover your family until 60, then get every cent back \u00e2\u20ac\u201d a retirement booster built into your life plan."
   },
   {
     "product_id": "PROD-LIFE-367",
@@ -473,12 +473,12 @@
     "line": "Life",
     "name": "Silver Lining to Age 65",
     "benefits": [
-      "Full premium refund at age 65 — your retirement bonus",
+      "Full premium refund at age 65 \u00e2\u20ac\u201d your retirement bonus",
       "Death benefit active from day one through age 65",
       "Level premiums for the full term period",
-      "No investment risk — guaranteed return of premiums"
+      "No investment risk \u00e2\u20ac\u201d guaranteed return of premiums"
     ],
-    "use_case": "Lifetime coverage to 65 with a guaranteed refund on retirement day — protect and save in a single plan."
+    "use_case": "Lifetime coverage to 65 with a guaranteed refund on retirement day \u00e2\u20ac\u201d protect and save in a single plan."
   },
   {
     "product_id": "PROD-LIFE-818",
@@ -491,7 +491,7 @@
       "Full death benefit protects the fund if the payor passes",
       "Premiums based on payor's age and chosen plan duration"
     ],
-    "use_case": "Guarantee your child's education regardless of what happens — a savings plan that opens every door."
+    "use_case": "Guarantee your child's education regardless of what happens \u00e2\u20ac\u201d a savings plan that opens every door."
   },
   {
     "product_id": "PROD-LIFE-094",
@@ -499,12 +499,12 @@
     "line": "Life",
     "name": "Plan 094",
     "benefits": [
-      "Uniform premium rates — no sex or smoker rating",
+      "Uniform premium rates \u00e2\u20ac\u201d no sex or smoker rating",
       "Coverage available from age 10",
       "Guaranteed death benefit from policy issue",
       "Fixed premiums for the life of the plan"
     ],
-    "use_case": "A specialised life plan with uniform rates across all insured categories — speak to an advisor for full details."
+    "use_case": "A specialised life plan with uniform rates across all insured categories \u00e2\u20ac\u201d speak to an advisor for full details."
   },
   {
     "product_id": "PROD-LIFE-164",
@@ -517,7 +517,7 @@
       "Coverage from age 20 through age 55",
       "Competitive rates for larger face amounts (higher bands)"
     ],
-    "use_case": "A term-equivalent plan with multi-band pricing — rates improve significantly at higher face amounts."
+    "use_case": "A term-equivalent plan with multi-band pricing \u00e2\u20ac\u201d rates improve significantly at higher face amounts."
   },
   {
     "product_id": "PROD-LIFE-201",
@@ -527,10 +527,10 @@
     "benefits": [
       "Whole life-style rates available from age 18",
       "Coverage extends through age 70",
-      "Sex and smoker ratings applied — standard M/F loadings",
+      "Sex and smoker ratings applied \u00e2\u20ac\u201d standard M/F loadings",
       "Multiple face amount bands for competitive pricing"
     ],
-    "use_case": "A flexible whole life variant with extended age coverage — ask your advisor which variant suits your situation."
+    "use_case": "A flexible whole life variant with extended age coverage \u00e2\u20ac\u201d ask your advisor which variant suits your situation."
   },
   {
     "product_id": "PROD-ANNUITY-001",
@@ -538,12 +538,12 @@
     "line": "Annuities",
     "name": "Flexible Premium Retirement Annuity",
     "benefits": [
-      "Contribute any amount at any time — no rigid schedule",
+      "Contribute any amount at any time \u00e2\u20ac\u201d no rigid schedule",
       "Tax-deferred growth during accumulation phase",
       "Convert to guaranteed income stream at retirement",
       "Partial withdrawals permitted after lock-in period"
     ],
-    "use_case": "Build your retirement fund at your own pace — contribute when you can, grow tax-deferred, withdraw when ready."
+    "use_case": "Build your retirement fund at your own pace \u00e2\u20ac\u201d contribute when you can, grow tax-deferred, withdraw when ready."
   },
   {
     "product_id": "PROD-ANNUITY-002",
@@ -573,41 +573,330 @@
   },
   {
     "product_id": "PROD-PAS-001",
-    "plan_code": "pa-std",
+    "plan_code": "PP",
     "line": "PA&S",
-    "name": "Personal Protector Standard",
+    "name": "Personal Protector",
     "benefits": [
-      "Personal accident cover — lump sum on accidental death or disability",
-      "Weekly income benefit during temporary disability",
-      "Medical expense reimbursement after accidents",
-      "24-hour worldwide coverage"
+      "A&S Disability Income - weekly benefit during sickness or accident",
+      "Double indemnity when hospitalised",
+      "Accidental Loss of Life benefit",
+      "Accidental Loss of Sight, Speech, Hearing or Limbs",
+      "Accidental Permanent Total Disability",
+      "Waiver of Premiums on all covered benefits"
     ],
-    "use_case": "Core personal accident protection for individuals and families at an affordable flat rate."
+    "use_case": "Core personal accident and sickness package offering weekly income replacement, hospitalisation benefits, and accidental death cover - rated by sex, occupation class, and age."
   },
   {
     "product_id": "PROD-PAS-002",
-    "plan_code": "pa-plus",
-    "line": "PA&S",
-    "name": "Personal Protector Plus",
-    "benefits": [
-      "Enhanced personal accident benefit — higher payout limits",
-      "Extended weekly income for temporary total disability",
-      "Hospitalisation cash benefit for accident-related stays",
-      "Increased medical expense reimbursement"
-    ],
-    "use_case": "Enhanced accident protection with higher limits — for those who need more comprehensive cover."
-  },
-  {
-    "product_id": "PROD-PAS-003",
-    "plan_code": "pa-total",
+    "plan_code": "TP",
     "line": "PA&S",
     "name": "Total Protector",
     "benefits": [
-      "Comprehensive all-in-one personal accident package",
-      "Maximum benefit limits across all cover categories",
-      "Full disability income replacement benefit",
-      "Widest scope of accidental injury coverage"
+      "Death by Natural Causes (Level Term Life 69L)",
+      "Accidental Loss of Life (AD&D 60A)",
+      "Accidental Loss of both eyes, hearing, speech, both hands or feet",
+      "Accidental Loss of one eye, hand, or foot - partial benefit",
+      "Accidental Permanent Total Disability",
+      "Accidental Medical Expense Reimbursement (61A)"
     ],
-    "use_case": "The most complete personal accident package — maximum protection at a flat predictable rate."
+    "use_case": "All-in-one protection combining natural death cover with comprehensive accidental death, dismemberment, and medical expense benefits - priced per unit by age."
+  },
+  {
+    "product_id": "PROD-PAS-003",
+    "plan_code": "SFP",
+    "line": "PA&S",
+    "name": "Super Family Protector",
+    "benefits": [
+      "Accident and sickness protection for the whole family",
+      "Covers principal insured and dependants",
+      "Annual premium per unit per person - scales with family size",
+      "24-hour worldwide accidental coverage",
+      "Affordable group-rate pricing"
+    ],
+    "use_case": "Family-oriented personal accident and sickness package providing comprehensive cover for the principal insured and dependants at a per-unit group rate."
+  },
+  {
+    "product_id": "PROD-PAS-004",
+    "plan_code": "SFP-SP",
+    "line": "PA&S",
+    "name": "Supreme Family Protector - Single Parent",
+    "benefits": [
+      "Four benefit levels: Plan I, II, III, and IV",
+      "Comprehensive accident and sickness benefits",
+      "Covers single parent and dependent children",
+      "Higher benefit levels provide greater coverage limits",
+      "Annual premium based on age band and chosen plan"
+    ],
+    "use_case": "Premium family protection for single-parent households - choose from four benefit tiers with premiums based on the insured's age."
+  },
+  {
+    "product_id": "PROD-PAS-005",
+    "plan_code": "SFP-FG",
+    "line": "PA&S",
+    "name": "Supreme Family Protector - Family Group",
+    "benefits": [
+      "Four benefit levels: Plan I, II, III, and IV",
+      "Full family coverage including spouse and children",
+      "Comprehensive accident and sickness benefits",
+      "Higher plans deliver substantially increased benefit limits",
+      "Annual premium based on primary insured age"
+    ],
+    "use_case": "Top-tier family protection for complete household units - four plan levels covering the entire family group with premiums driven by the primary insured's age."
+  },
+  {
+    "product_id": "PROD-PAS-006",
+    "plan_code": "CCP-C",
+    "line": "PA&S",
+    "name": "Cancer Care Plus - Plan C: Standard Care",
+    "benefits": [
+      "Lump sum payment on cancer diagnosis",
+      "Daily in-hospital confinement income benefit",
+      "Surgical procedure expense coverage",
+      "Chemotherapy and radiation treatment benefit",
+      "Loss of Income benefit for up to 3 months",
+      "Term Life Insurance benefit included"
+    ],
+    "use_case": "Fixed-premium cancer care plan providing a lump-sum diagnosis benefit, hospitalisation income, surgical coverage, and treatment expense reimbursement. Annual premium: TTD 4,944."
+  },
+  {
+    "product_id": "PROD-PAS-007",
+    "plan_code": "CC-A",
+    "line": "PA&S",
+    "name": "Cancer Care Cover - Plan A: Essential Shield Cover",
+    "benefits": [
+      "Individual, Single Parent, Husband/Wife, and Full Family options",
+      "Monthly premium based on age band and coverage type",
+      "Optional child rider available",
+      "Core cancer diagnosis and treatment benefits",
+      "Surgical and hospitalisation expense coverage"
+    ],
+    "use_case": "Entry-level cancer care cover with flexible family options - monthly premiums vary by age and the coverage type selected."
+  },
+  {
+    "product_id": "PROD-PAS-008",
+    "plan_code": "CC-B",
+    "line": "PA&S",
+    "name": "Cancer Care Cover - Plan B: Premiere Guard Cover",
+    "benefits": [
+      "Enhanced cancer benefits over Plan A",
+      "Individual, Single Parent, Husband/Wife, and Full Family options",
+      "Higher surgical and hospitalisation limits",
+      "Optional child rider available",
+      "Monthly premium by age and coverage type"
+    ],
+    "use_case": "Mid-tier cancer care cover with stronger benefit limits than Essential Shield - suitable for individuals and families wanting greater financial security against cancer."
+  },
+  {
+    "product_id": "PROD-PAS-009",
+    "plan_code": "CC-C",
+    "line": "PA&S",
+    "name": "Cancer Care Cover - Plan C: Elite Armour Cover",
+    "benefits": [
+      "Highest cancer benefit levels across all plan tiers",
+      "Individual, Single Parent, Husband/Wife, and Full Family options",
+      "Maximum surgical, treatment, and hospitalisation limits",
+      "Optional child rider available",
+      "Monthly premium by age and coverage type"
+    ],
+    "use_case": "Top-tier cancer cover delivering the broadest protection - ideal for those seeking comprehensive financial coverage against cancer diagnosis, treatment, and associated costs."
+  },
+  {
+    "product_id": "PROD-PAS-010",
+    "plan_code": "LS-STD",
+    "line": "PA&S",
+    "name": "Life Support - Standard Option",
+    "benefits": [
+      "Covers Heart Attack and Coronary Artery Bypass Surgery",
+      "Covers Stroke, Kidney Failure, and Major Organ Transplants",
+      "Cancer, Paralysis, Multiple Sclerosis, and Coma coverage",
+      "Cancer Daily Hospital Income Benefit",
+      "Accidental Death benefit included",
+      "Choose Platinum, Gold, or Silver benefit level"
+    ],
+    "use_case": "Standard critical illness and life support plan covering a broad range of serious medical events - monthly premiums by sex, age, and your chosen benefit tier."
+  },
+  {
+    "product_id": "PROD-PAS-011",
+    "plan_code": "LS-ENH",
+    "line": "PA&S",
+    "name": "Life Support - Enhanced Option",
+    "benefits": [
+      "All Standard Option benefits at higher coverage limits",
+      "Enhanced Heart Attack and cancer benefit amounts",
+      "Higher Stroke, Organ Transplant, and Paralysis payouts",
+      "Increased Cancer Daily Hospital Income Benefit",
+      "Higher Accidental Death benefit",
+      "Choose Platinum, Gold, or Silver benefit level"
+    ],
+    "use_case": "Enhanced critical illness protection with substantially higher benefit amounts than the Standard Option - for clients seeking maximum security against life-altering illnesses."
+  },
+  {
+    "product_id": "PROD-PAS-012",
+    "plan_code": "IS",
+    "line": "PA&S",
+    "name": "Income Shield",
+    "benefits": [
+      "AD&D with PTD (60A): TTD 200,000 per unit",
+      "Level Term Life (69L): TTD 10,000 per unit",
+      "A&S Disability Income 104wk (68A): TTD 500/week per unit",
+      "Accident Medical Expense Reimbursement (61A): TTD 5,000 per unit",
+      "A&S In-Hospital Income + Convalescent Care (67C): TTD 500/week per unit",
+      "Waiver of Premiums on all benefits"
+    ],
+    "use_case": "Unit-based income protection bundle combining accidental death, term life, disability income, medical expense, and hospital income benefits - rated by occupation class, sex, and age."
+  },
+  {
+    "product_id": "PROD-PAS-013",
+    "plan_code": "CI",
+    "line": "PA&S",
+    "name": "Critical Illness Cover",
+    "benefits": [
+      "Lump sum payment on diagnosis of a covered critical illness",
+      "Coverage from age 5 through 61",
+      "Age-banded rates - premiums increase at each policy anniversary",
+      "Male and female rates available",
+      "Coverage amount in TTD 1,000 increments"
+    ],
+    "use_case": "Critical illness cover providing a lump sum on diagnosis to help cover medical costs and income loss - premiums are age-attained and reset annually."
+  },
+  {
+    "product_id": "PROD-PAS-014",
+    "plan_code": "60A",
+    "line": "PA&S",
+    "name": "Accidental Death and Dismemberment",
+    "benefits": [
+      "Lump sum on accidental death or total permanent disability",
+      "Covers loss of limbs, sight, speech, or hearing",
+      "Four occupation risk classes - Class 1 is lowest risk",
+      "Available up to age 69",
+      "Per TTD 1,000 of face amount"
+    ],
+    "use_case": "Individual AD&D benefit paying a lump sum on accidental death, dismemberment, or permanent total disability - rated per TTD 1,000 face amount by occupation class and age."
+  },
+  {
+    "product_id": "PROD-PAS-015",
+    "plan_code": "61A",
+    "line": "PA&S",
+    "name": "Accident Medical Expense Reimbursement",
+    "benefits": [
+      "Base benefit of TTD 2,000 for accidental medical expenses",
+      "Additional coverage available in TTD 100 increments above base",
+      "Four occupation risk classes",
+      "Reimburses hospital, physician, and treatment costs",
+      "Annual premium - no age banding"
+    ],
+    "use_case": "Reimburses medical expenses incurred as a result of an accident - base TTD 2,000 benefit with flexible top-up coverage, rated by occupation class."
+  },
+  {
+    "product_id": "PROD-PAS-016",
+    "plan_code": "62A",
+    "line": "PA&S",
+    "name": "Accident Disability Income - 52 Weeks",
+    "benefits": [
+      "Weekly income benefit during accidental disability - up to 52 weeks",
+      "Available for ages 16 through 69",
+      "Four occupation risk classes",
+      "Benefit in TTD 50/week increments",
+      "Separate rates for age bands 16-59 and 60-69"
+    ],
+    "use_case": "Provides up to 52 weeks of weekly income replacement if disabled by an accident - rated per TTD 50 weekly benefit by occupation class and age band."
+  },
+  {
+    "product_id": "PROD-PAS-017",
+    "plan_code": "62B",
+    "line": "PA&S",
+    "name": "Accident Disability Income - 104 Weeks",
+    "benefits": [
+      "Extended weekly income during accidental disability - up to 104 weeks",
+      "Available for ages 16 through 59",
+      "Three occupation risk classes (Classes 1-3)",
+      "Benefit in TTD 50/week increments",
+      "Doubles the maximum benefit period vs. 52-week plan"
+    ],
+    "use_case": "Extended accident disability income providing up to two years of weekly benefit replacement - rated per TTD 50 weekly benefit by occupation class and age."
+  },
+  {
+    "product_id": "PROD-PAS-018",
+    "plan_code": "67C",
+    "line": "PA&S",
+    "name": "A&S In-Hospital Income + Convalescent Care",
+    "benefits": [
+      "Weekly benefit for each day hospitalised due to accident or sickness",
+      "Includes convalescent care period benefit",
+      "Separate male and female rates",
+      "Four age bands: 1-19, 20-39, 40-49, 50-59",
+      "Benefit in TTD 100/week increments"
+    ],
+    "use_case": "Hospital income benefit paying a weekly rate for each day confined to hospital plus a convalescent care extension - rated by sex and age band per TTD 100 weekly benefit."
+  },
+  {
+    "product_id": "PROD-PAS-019",
+    "plan_code": "67D",
+    "line": "PA&S",
+    "name": "A&S In-Hospital Income without Convalescent Care",
+    "benefits": [
+      "Weekly benefit for each day hospitalised due to accident or sickness",
+      "No convalescent care extension - lower premium than 67C",
+      "Separate male and female rates",
+      "Four age bands: 1-19, 20-39, 40-49, 50-59",
+      "Benefit in TTD 100/week increments"
+    ],
+    "use_case": "Hospital income benefit covering days confined to hospital without the convalescent care rider - a more affordable alternative to 67C, rated by sex and age."
+  },
+  {
+    "product_id": "PROD-PAS-020",
+    "plan_code": "68A",
+    "line": "PA&S",
+    "name": "A&S Disability Income - 104 Weeks",
+    "benefits": [
+      "Weekly income replacement for accident and sickness disability",
+      "Up to 104 weeks of benefit payments",
+      "Nine elimination period options (30-90 days Sickness; 0-14 days Accident)",
+      "Three occupation risk classes",
+      "Three age bands: 18-39, 40-49, 50-57"
+    ],
+    "use_case": "Comprehensive A&S disability income providing up to 104 weeks of income replacement with your choice of elimination period - rated by occupation class, age, and EP."
+  },
+  {
+    "product_id": "PROD-PAS-021",
+    "plan_code": "77B",
+    "line": "PA&S",
+    "name": "Accident and Sickness In-Hospital Surgical Expense",
+    "benefits": [
+      "Reimburses surgical expenses incurred during hospitalisation",
+      "Separate male and female rates",
+      "Four age bands: 1-19, 20-39, 40-49, 50-59",
+      "Benefit in TTD 1,000 increments",
+      "Covers a broad range of in-hospital surgical procedures"
+    ],
+    "use_case": "Surgical expense reimbursement covering costs of in-hospital surgical procedures - rated per TTD 1,000 of benefit by sex and age band."
+  },
+  {
+    "product_id": "PROD-PAS-022",
+    "plan_code": "78C",
+    "line": "PA&S",
+    "name": "Accident Annuity - AD&D with PTD",
+    "benefits": [
+      "Monthly annuity benefit on accidental death or Permanent Total Disability",
+      "Three occupation risk classes",
+      "Benefit in TTD 1,000/month increments",
+      "Provides ongoing income rather than a lump sum",
+      "Annual premium based on class and monthly benefit selected"
+    ],
+    "use_case": "Converts accidental death or permanent total disability into a guaranteed monthly income stream - providing lasting income replacement for the insured's beneficiaries or the insured."
+  },
+  {
+    "product_id": "PROD-PAS-023",
+    "plan_code": "69L",
+    "line": "PA&S",
+    "name": "Level Term Life",
+    "benefits": [
+      "Death benefit for natural causes - term life component",
+      "Three age bands: 5-40, 41-50, 51-55",
+      "Per TTD 1,000 of face amount",
+      "Low flat rate - simple and affordable",
+      "Commonly combined with PA&S accident benefits"
+    ],
+    "use_case": "Simple level term life rider providing natural death cover - often bundled with personal accident benefits. Per TTD 1,000 face amount rated by age band."
   }
 ]
