@@ -246,7 +246,7 @@ export default function FortressPage() {
         estate_value_usd: num('estate_value_usd'),
         has_will: bool('has_will'),
       }
-      const data = await apiFetch('/financial-fortress/calculate', {
+      const data = await apiFetch<FortressResult>('/financial-fortress/calculate', {
         method: 'POST',
         body: JSON.stringify(payload),
       })
