@@ -18,6 +18,7 @@ from routes.applications import router as applications_router
 from routes.agents import router as agents_router
 from routes.policy_statements import router as statements_router
 from routes.quotes import router as quotes_router
+from routes.financial_fortress import router as fortress_router
 
 load_dotenv()
 
@@ -337,6 +338,7 @@ app.include_router(applications_router, tags=["applications"])
 app.include_router(agents_router,       tags=["agents"])
 app.include_router(statements_router,   tags=["policy-statements"])
 app.include_router(quotes_router,       tags=["quotes"])
+app.include_router(fortress_router,     tags=["financial-fortress"])
 
 
 @app.get("/health")

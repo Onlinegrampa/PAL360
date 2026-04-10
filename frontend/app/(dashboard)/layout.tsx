@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { useRouter, usePathname } from 'next/navigation'
-import { LayoutDashboard, FileText, Package, CreditCard, LogOut, Activity, Users } from 'lucide-react'
+import { LayoutDashboard, FileText, Package, CreditCard, LogOut, Activity, Users, Shield } from 'lucide-react'
 import { useAuth } from '@/lib/auth'
 
 const navItems = [
@@ -11,6 +11,7 @@ const navItems = [
   { href: '/products',   icon: Package,          label: 'Products' },
   { href: '/fact-find',  icon: Activity,          label: 'Health' },
   { href: '/agents',     icon: Users,             label: 'Agents' },
+  { href: '/fortress',   icon: Shield,            label: 'Fortress' },
   { href: '/payment',    icon: CreditCard,        label: 'Pay' },
 ]
 
@@ -112,7 +113,7 @@ export default function DashboardLayout({
 
       {/* Mobile bottom nav */}
       <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-40">
-        <div className="grid grid-cols-6">
+        <div className="grid grid-cols-7">
           {navItems.map(({ href, icon: Icon, label }) => {
             const active = pathname === href
             return (
