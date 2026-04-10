@@ -62,16 +62,24 @@ async def process_payment(
 
     pool = get_pool()
     async with pool.acquire() as conn:
-        await conn.execute(
-            """
-            INSERT INTO payments (payment_id, policy_id, amount, wipay_ref, status)
-            VALUES ($1, $2, $3, $4, 'succeeded')
-            """,
-            f"PAY-{uuid.uuid4().hex[:8].upper()}",
+        # Only record the payment if the policy_id is a real policy.
+        # First-premium payments use the app_ref as policy_id, which is not
+        # in the policies table yet — skip the insert to avoid a FK violation.
+        policy_exists = await conn.fetchval(
+            "SELECT COUNT(*) FROM policies WHERE policy_id = $1",
             request.policy_id,
-            request.amount,
-            transaction_id,
         )
+        if policy_exists:
+            await conn.execute(
+                """
+                INSERT INTO payments (payment_id, policy_id, amount, wipay_ref, status)
+                VALUES ($1, $2, $3, $4, 'succeeded')
+                """,
+                f"PAY-{uuid.uuid4().hex[:8].upper()}",
+                request.policy_id,
+                request.amount,
+                transaction_id,
+            )
 
     return PaymentResponse(
         success=True,

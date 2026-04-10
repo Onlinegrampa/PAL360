@@ -15,6 +15,7 @@ from routes.pa_rates import (
     RATES_SUPREME_SINGLE, RATES_SUPREME_FAMILY,
     _age_band,
 )
+from routes.cash_values import get_cash_values
 from routes.plan_rates import (
     RATES_001P, RATES_001NP,
     RATES_002P, RATES_002NP,
@@ -502,6 +503,17 @@ async def calculate_quote(
     Age source priority: date_of_birth in request > client fact-find.
     If plan_code is provided it routes to that specific plan's rate table.
     """
+    # ── Fixed-price PA plans — no age required ────────────────────────────────
+    if data.plan_code == "CCP-C":
+        return {
+            "product_line": "PA&S",
+            "plan_code":    "CCP-C",
+            "plan_name":    "Cancer Care Plus - Plan C: Standard Care",
+            "annual":       RATE_CANCER_CARE_PLUS_C,
+            "monthly":      round(RATE_CANCER_CARE_PLUS_C / 12, 2),
+            "note":         "Fixed annual premium — Cancer Care Plus Plan C: Standard Care",
+        }
+
     # ── Resolve age ──────────────────────────────────────────────────────────
     age: Optional[int] = None
 
@@ -585,6 +597,7 @@ async def calculate_quote(
                                      data.coverage_amount)
             except ValueError as e:
                 raise HTTPException(status_code=422, detail=str(e))
+            cash_values = get_cash_values(data.plan_code, age, data.coverage_amount)
             return {
                 "product_line":    "Life",
                 "plan_code":       data.plan_code,
@@ -593,6 +606,7 @@ async def calculate_quote(
                 "sex":             data.sex,
                 "smoker":          data.smoker,
                 "coverage_amount": data.coverage_amount,
+                "cash_values":     cash_values,
                 **prem,
             }
 

@@ -1,9 +1,16 @@
 'use client'
 
 import { useState } from 'react'
-import { Calculator, Loader2, AlertCircle, TrendingUp, RefreshCw } from 'lucide-react'
+import { Calculator, Loader2, AlertCircle, TrendingUp, RefreshCw, ChevronDown, ChevronUp } from 'lucide-react'
 import { apiFetch } from '@/lib/api'
 import { useRouter } from 'next/navigation'
+
+interface CashValueRow {
+  year: number
+  age: number
+  gcv: number
+  death_benefit: number
+}
 
 interface QuoteResult {
   product_line: string
@@ -22,6 +29,7 @@ interface QuoteResult {
   plan_tier?: string
   plan?: string
   note?: string
+  cash_values?: CashValueRow[] | null
 }
 
 // ── PA plan classification ────────────────────────────────────────────────────
@@ -92,9 +100,10 @@ export default function QuoteWidget({ productId, productLine, planCode = '' }: P
   const [coverageType, setCoverageType] = useState('Individual')
   const [epCode,       setEpCode]       = useState('G_30S_14A')
   const [espDuration,  setEspDuration]  = useState(15)
-  const [loading,      setLoading]      = useState(false)
-  const [result,       setResult]       = useState<QuoteResult | null>(null)
-  const [error,        setError]        = useState<string | null>(null)
+  const [loading,         setLoading]         = useState(false)
+  const [result,          setResult]          = useState<QuoteResult | null>(null)
+  const [error,           setError]           = useState<string | null>(null)
+  const [showCashValues,  setShowCashValues]  = useState(false)
 
   const isLifeOrHealth = productLine === 'Life' || productLine === 'Health'
   const isESP          = planCode === '818'
@@ -492,6 +501,46 @@ export default function QuoteWidget({ productId, productLine, planCode = '' }: P
               <RefreshCw size={16} />
             </button>
           </div>
+        </div>
+      )}
+
+      {/* Cash Value Schedule */}
+      {result?.cash_values && result.cash_values.length > 0 && (
+        <div className="border border-gray-200 rounded-xl overflow-hidden">
+          <button
+            onClick={() => setShowCashValues(v => !v)}
+            className="w-full flex items-center justify-between px-4 py-3 bg-gray-50 hover:bg-gray-100 transition-colors text-left"
+          >
+            <div>
+              <p className="text-xs font-bold text-gray-700 uppercase tracking-wide">Guaranteed Cash Values</p>
+              <p className="text-[10px] text-gray-400 mt-0.5">Per $1,000 face — illustrative only</p>
+            </div>
+            {showCashValues ? <ChevronUp size={16} className="text-gray-400" /> : <ChevronDown size={16} className="text-gray-400" />}
+          </button>
+          {showCashValues && (
+            <div className="overflow-x-auto max-h-72 overflow-y-auto">
+              <table className="w-full text-xs">
+                <thead className="sticky top-0 bg-[#002855] text-white">
+                  <tr>
+                    <th className="px-3 py-2 text-left font-semibold">Year</th>
+                    <th className="px-3 py-2 text-left font-semibold">Age</th>
+                    <th className="px-3 py-2 text-right font-semibold">Cash Value</th>
+                    <th className="px-3 py-2 text-right font-semibold">Death Benefit</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {result.cash_values.map((row, i) => (
+                    <tr key={row.year} className={i % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
+                      <td className="px-3 py-1.5 text-gray-600">{row.year}</td>
+                      <td className="px-3 py-1.5 text-gray-600">{row.age}</td>
+                      <td className="px-3 py-1.5 text-right font-semibold text-[#002855]">{fmt(row.gcv)}</td>
+                      <td className="px-3 py-1.5 text-right text-gray-500">{fmt(row.death_benefit)}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
         </div>
       )}
 
