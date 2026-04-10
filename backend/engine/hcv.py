@@ -1,27 +1,18 @@
-import numpy as np
-
-
 def calculate_hcv(profile) -> dict:
     """
-    HCV = sum over t=1 to n of [ E_t * (1+g)^t / (1+i)^t ] - PV(self-maintenance costs)
-    Where:
-      n  = years to retirement
-      E_t = current annual income (base, grows at g each year)
-      g  = income growth rate
-      i  = personal discount rate
+    HCV = sum over t=1 to n of [ E * (1+g)^t / (1+i)^t ] - PV(self-maintenance costs)
+    Pure Python — no numpy required.
     """
     n = max(profile.retirement_age - profile.age, 1)
     E = profile.annual_income_usd
     g = profile.income_growth_rate
     i = profile.discount_rate
 
-    t_values = np.arange(1, n + 1)
-    income_pv = np.sum(E * (1 + g)**t_values / (1 + i)**t_values)
+    income_pv = sum(E * (1 + g)**t / (1 + i)**t for t in range(1, n + 1))
 
-    # PV of self-maintenance costs over same period
-    maintenance_pv = np.sum(
-        profile.annual_living_costs_usd * (1 + profile.inflation_rate_home)**t_values
-        / (1 + i)**t_values
+    maintenance_pv = sum(
+        profile.annual_living_costs_usd * (1 + profile.inflation_rate_home)**t / (1 + i)**t
+        for t in range(1, n + 1)
     )
 
     net_hcv = income_pv - maintenance_pv
