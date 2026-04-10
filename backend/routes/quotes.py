@@ -615,8 +615,8 @@ async def calculate_quote(
         # Legacy fallback — use Plan 001-NP (Ordinary Life Non-Participating)
         if data.coverage_amount <= 0:
             raise HTTPException(status_code=422, detail="Coverage amount must be greater than 0.")
-        if age < 10 or age > 80:
-            raise HTTPException(status_code=422, detail="Age must be between 10 and 80 to quote.")
+        if age < 10 or age > 65:
+            raise HTTPException(status_code=422, detail="Age must be between 10 and 65 for an Ordinary Life quote. Please select a specific plan for your age.")
         prem = _life_premium("001-NP", age, data.sex, data.smoker, data.coverage_amount)
         return {
             "product_line":    "Life",

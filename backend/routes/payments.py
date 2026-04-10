@@ -62,12 +62,12 @@ async def process_payment(
 
     pool = get_pool()
     async with pool.acquire() as conn:
-        # Only record the payment if the policy_id is a real policy.
-        # First-premium payments use the app_ref as policy_id, which is not
-        # in the policies table yet — skip the insert to avoid a FK violation.
+        # Only record the payment if the policy_id is a real policy owned by
+        # this client. First-premium payments use an app_ref — skip insert.
         policy_exists = await conn.fetchval(
-            "SELECT COUNT(*) FROM policies WHERE policy_id = $1",
+            "SELECT COUNT(*) FROM policies WHERE policy_id = $1 AND client_id = $2",
             request.policy_id,
+            current["client_id"],
         )
         if policy_exists:
             await conn.execute(

@@ -184,10 +184,11 @@ export default function QuoteWidget({ productId, productLine, planCode = '' }: P
   const handleApply = () => {
     if (!result) return
     const p = new URLSearchParams()
-    if (result.monthly) p.set('premium_monthly', String(result.monthly))
-    if (result.annual)  p.set('premium_annual',  String(result.annual))
-    if (result.sex)     p.set('sex',              result.sex)
-    if (dob)            p.set('dob',              dob)
+    if (result.monthly)  p.set('premium_monthly', String(result.monthly))
+    if (result.annual)   p.set('premium_annual',  String(result.annual))
+    if (result.sex)      p.set('sex',              result.sex)
+    if (dob)             p.set('dob',              dob)
+    if (coverage)        p.set('coverage',         coverage)
     router.push(`/products/${productId}/apply?${p.toString()}`)
   }
 
